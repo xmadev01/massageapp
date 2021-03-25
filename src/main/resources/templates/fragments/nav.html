@@ -1,0 +1,47 @@
+<div th:fragment="nav" xmlns:th="http://www.w3.org/1999/xhtml">
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-content js-simplebar">
+            <a class="sidebar-brand" href="index.html">
+                <span class="align-middle">Massage Hurstville</span>
+            </a>
+
+            <ul class="sidebar-nav">
+                <li class="sidebar-header">
+
+                </li>
+
+                <li class="sidebar-item active">
+                    <a class="sidebar-link" href="/home">
+                        <i class="align-middle" data-feather="sliders"></i> <span
+                            class="align-middle">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="#auth" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                        <i class="align-middle" data-feather="users"></i> <span class="align-middle">Customer</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                        <li class="sidebar-item"><a class="sidebar-link" href="/addCustomer">Show</a></li>
+                        <li class="sidebar-item"><a class="sidebar-link" href="/addCustomer">Add</a></li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#">
+                        <i class="align-middle" data-feather="settings"></i> <span
+                            class="align-middle">Settings</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#">
+                        <i class="align-middle" data-feather="credit-card"></i> <span
+                            class="align-middle">Invoice</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+</nav>
+</div>
