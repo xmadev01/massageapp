@@ -43,3 +43,5 @@ CREATE TABLE Service (
    version INT DEFAULT 0 NOT NULL,
    foreign key (customer) references Customer(id)
 )
+
+GO

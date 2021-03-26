@@ -16,6 +16,7 @@ public class Service {
     private long id;
 
     @ManyToOne
+    @JoinColumn(name = "customer", nullable = false)
     private Customer customer;
 
     private LocalDateTime serviceDateTime;

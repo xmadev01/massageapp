@@ -3,7 +3,7 @@
 
 <head th:insert="fragments/head.html :: head" />
 <head>
-    <script type="text/javascript" th:src="@{/js/addCustomer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/updateCustomer.js}"></script>
 </head>
 
 <body>
@@ -38,7 +38,8 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="m-sm-4">
-                                        <form id="addCustomerFrm" name="addCustomerFrm" method="post" th:action="@{/createCustomer}" th:object="${customer}">
+                                        <form id="updateCustomerFrm" name="updateCustomerFrm" method="post" th:action="@{/updateCustomer}" th:object="${customer}">
+                                            <input th:type="hidden" th:field="*{id}" />
                                             <div class="mb-3">
                                                 <label class="form-label">First Name</label>
                                                 <input class="form-control form-control-lg" type="text" th:field="*{firstName}" name="firstName" />
@@ -100,7 +101,7 @@
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('rebateRate')}" th:errors="*{rebateRate}"></div>
                                             </div>
                                             <div class="text-center mt-3">
-                                                <a id="btnCreate" href="#" class="btn btn-lg btn-info">Create</a>
+                                                <a id="btnUpdate" href="#" class="btn btn-lg btn-info">Update</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                                 <a id="btnCancel" href="#" class="btn btn-lg btn-info">Cancel</a>
                                             </div>
