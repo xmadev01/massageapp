@@ -9,7 +9,7 @@ CREATE TABLE User (
    version INT DEFAULT 0 NOT NULL
 )
 
-GO
+
 
 CREATE TABLE Customer (
 
@@ -27,7 +27,7 @@ CREATE TABLE Customer (
    version INT DEFAULT 0 NOT NULL
 )
 
-GO
+
 
 CREATE TABLE Service (
 
@@ -35,7 +35,7 @@ CREATE TABLE Service (
    customer INT NOT NULL,
    service_date_time TIMESTAMP NOT NULL,
    expense_amt DECIMAL NOT NULL,
-   massage_type INT NOT NULL,
+   service_type INT NOT NULL,
    claimed_amt DECIMAL NOT NULL,
    duration INT NOT NULL,
    venue VARCHAR(200) NULL,
@@ -44,4 +44,3 @@ CREATE TABLE Service (
    foreign key (customer) references Customer(id)
 )
 
-GO

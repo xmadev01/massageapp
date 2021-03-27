@@ -27,7 +27,7 @@
                         <div class="d-table-cell align-middle">
 
                             <div class="text-center mt-4">
-                                <h1 class="h2">New Customer Profile</h1>
+                                <h1 class="h2">Update Customer Profile</h1>
                             </div>
                             <div class="errorMsg">
                                 <ul>
@@ -75,18 +75,10 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Health Fund</label>
-                                                <select class="form-control form-control-lg" name="healthFund">
-                                                    <option value="-1">Please select...</option>
-                                                    <option value="0">Medibank</option>
-                                                    <option value="1">Bupa</option>
-                                                    <option value="2">HCF</option>
-                                                    <option value="3">Nib</option>
-                                                    <option value="4">HBF</option>
-                                                    <option value="5">Australian Unity</option>
-                                                    <option value="6">Teachers Health</option>
-                                                    <option value="7">GBHBA</option>
-                                                    <option value="8">Defence Health</option>
-                                                    <option value="9">CBHS</option>
+                                                <select class="form-control form-control-lg" th:field="*{healthFund}">
+                                                    <option value="">Please select...</option>
+                                                    <option th:each="hf : ${T(com.xms.app.massage.enums.HealthFundEnum).values()}"
+                                                            th:value="${hf}" th:text="${hf.displayName}"></option>
                                                 </select>
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('healthFund')}" th:errors="*{healthFund}"></div>
                                             </div>

@@ -1,6 +1,6 @@
 package com.xms.app.massage.model;
 
-import com.xms.app.massage.enums.MassageTypeEnum;
+import com.xms.app.massage.enums.ServiceTypeEnum;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,7 +23,7 @@ public class Service {
 
     private BigDecimal expenseAmt;
 
-    private MassageTypeEnum massageType;
+    private ServiceTypeEnum serviceType;
 
     private BigDecimal claimedAmt;
 

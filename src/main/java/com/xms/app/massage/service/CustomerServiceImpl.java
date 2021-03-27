@@ -28,6 +28,14 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
 
     @Override
+    public List<String> getCustomerNames(String term) {
+        return customerRepository.findAll().stream()
+                                    .map(Customer::getFullName)
+                                    .filter(name -> name.toLowerCase().contains(term.toLowerCase()))
+                                    .collect(Collectors.toList());
+    }
+
+    @Override
     public Page<Customer> getPage(PagingRequest pagingRequest) {
 
         List<Customer> customers = new ArrayList<>();

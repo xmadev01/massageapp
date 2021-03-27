@@ -4,7 +4,11 @@ import com.xms.app.massage.model.Customer;
 import com.xms.app.massage.paging.Page;
 import com.xms.app.massage.paging.PagingRequest;
 
+import java.util.List;
+
 public interface CustomerService {
+
+    List<String> getCustomerNames(String term);
 
     Page<Customer> getPage(PagingRequest pagingRequest);
 

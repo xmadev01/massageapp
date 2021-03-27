@@ -62,13 +62,13 @@ function applyCustomerDataTable() {
             }
         },
         columns: [
-            {"data": "firstName", "width": "20%"},
-            {"data": "lastName","width": "20%"},
-            {"data": "email", "width": "10%"},
+            {"data": "firstName", "width": "10%"},
+            {"data": "lastName","width": "10%"},
+            {"data": "email", "width": "20%"},
             {"data": "phone", "width": "10%"},
             {"data": "mobile", "width": "10%"},
             {"data": "healthFund", "width": "10%"},
-            {"data": "membershipNum", "width": "10%"},
+            {"data": "membershipNum", "width": "20%"},
             {"data": "active", "width": "10%"}
         ],
         columnDefs: [

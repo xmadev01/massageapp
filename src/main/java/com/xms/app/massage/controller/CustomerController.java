@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 @Controller
 public class CustomerController {
@@ -76,5 +77,11 @@ public class CustomerController {
     public String deleteCustomer(@PathVariable long customerId, Model model) {
         customerService.deleteCustomer(customerId);
         return "redirect:/listCustomers";
+    }
+
+    @GetMapping("/getCustomerNames")
+    @ResponseBody
+    public List<String> getAllCustomerNames(@RequestParam String term) {
+        return customerService.getCustomerNames(term);
     }
 }
