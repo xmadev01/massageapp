@@ -23,11 +23,11 @@
                     </div>
                     <form id="listCustomerFrm" name="listCustomerFrm" method="post">
                     <div class="mt-3">
-                        <a id="btnUpdate" href="#" class="btn btn-lg btn-info">Update</a>
+                        <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a id="btnDeactivate" href="#" class="btn btn-lg btn-info">(De)activate</a>
+                        <a id="btnDeactivate" href="#" class="btn btn-info">(De)activate</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a id="btnDelete" href="#" class="btn btn-lg btn-info">Delete</a>
+                        <a id="btnDelete" href="#" class="btn btn-info">Delete</a>
                     </div>
                     <div class="row">
                         <div class="mt-5 mb-5">

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Service {
+public class MassageService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -18,7 +18,7 @@
 
                 <div class="row mb-2 mb-xl-3">
                     <div class="col-auto d-none d-sm-block">
-                        <h3><strong>Massage Admin</strong> Dashboard</h3>
+                        <h4><strong>Massage Admin</strong> Dashboard</h4>
                     </div>
                 </div>
 
@@ -27,7 +27,7 @@
                         <div class="d-table-cell align-middle">
 
                             <div class="text-center mt-4">
-                                <h1 class="h2">Assign Service</h1>
+                                <h1 class="h4">Assign Service</h1>
                             </div>
                             <div class="errorMsg">
                                 <ul>
@@ -41,11 +41,14 @@
                                         <form id="assignServiceFrm" name="assignServiceFrm" method="post" th:action="@{/assignService}">
                                             <div class="mb-3">
                                                 <label class="form-label">Customer Name</label>
-                                                <input class="form-control form-control-lg" type="text" id="customerName" name="customerName" />
+                                                <input class="form-control" type="text" id="customerName" name="customerName" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Service Date</label>
-                                                <input class="form-control form-control-lg" type="text" id="serviceDate" name="serviceDate" />
+                                                <input class="form-control" type="text" id="serviceDate" name="serviceDate" autocomplete="off" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Services:</label>
                                             </div>
                                             <div>
                                                 <label class="form-check form-check-inline" th:each="service : ${T(com.xms.app.massage.enums.ServiceTypeEnum).values()}">
@@ -54,9 +57,9 @@
                                                 </label>
                                             </div>
                                             <div class="text-center mt-3">
-                                                <a id="btnCreate" href="#" class="btn btn-lg btn-info">Assign</a>
+                                                <a id="btnAssign" href="#" class="btn btn-info">Assign</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                                <a id="btnCancel" href="#" class="btn btn-lg btn-info">Cancel</a>
+                                                <a id="btnCancel" href="#" class="btn btn-info">Cancel</a>
                                             </div>
                                         </form>
                                     </div>

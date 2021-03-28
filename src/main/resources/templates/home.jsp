@@ -18,6 +18,12 @@
                             <h3><strong>Massage Admin</strong> Dashboard</h3>
                         </div>
                     </div>
+
+                    <div class="row mb-2 mb-xl-3">
+                        <div class="alert alert-success alert-dismissible fade show" th:if="${successMsg}" th:text="${successMsg}">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>

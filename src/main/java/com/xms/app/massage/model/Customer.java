@@ -1,5 +1,6 @@
 package com.xms.app.massage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xms.app.massage.enums.HealthFundEnum;
 import lombok.Data;
 
@@ -46,8 +47,9 @@ public class Customer {
     @Column
     private Double rebateRate;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Service> services;
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<MassageService> massageServices;
 
     private boolean active = true;
 

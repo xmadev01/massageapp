@@ -4,12 +4,14 @@ import com.xms.app.massage.model.Customer;
 import com.xms.app.massage.paging.Page;
 import com.xms.app.massage.paging.PagingRequest;
 import com.xms.app.massage.service.CustomerService;
+import com.xms.app.massage.utils.MessageUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
@@ -39,12 +41,15 @@ public class CustomerController {
     }
 
     @PostMapping("/createCustomer")
-    public String createCustomer(@Valid Customer customer, BindingResult result, Model model) {
+    public String createCustomer(@Valid Customer customer, BindingResult result,
+                                 RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
+            MessageUtils.addErrorMessages(model, result.getFieldErrors());
             return "addCustomer";
         }
         customerService.saveCustomer(customer);
-        return "redirect:/home";
+        MessageUtils.addSuccessMessage(redirectAttributes, "The customer has been added successfully.");
+        return "redirect:/addCustomer";
     }
 
     @PostMapping("/loadCustomer/{customerId}")
@@ -55,8 +60,10 @@ public class CustomerController {
     }
 
     @PostMapping("/updateCustomer/{customerId}")
-    public String updateCustomer(@PathVariable long customerId, @Valid Customer customer, BindingResult result, Model model) throws InvocationTargetException, IllegalAccessException {
+    public String updateCustomer(@PathVariable long customerId, @Valid Customer customer, BindingResult result,
+                                 RedirectAttributes redirectAttributes, Model model) throws InvocationTargetException, IllegalAccessException {
         if (result.hasErrors()) {
+            MessageUtils.addErrorMessages(model, result.getFieldErrors());
             return "updateCustomer";
         }
 

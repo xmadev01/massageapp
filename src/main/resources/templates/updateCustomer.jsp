@@ -18,7 +18,7 @@
 
                 <div class="row mb-2 mb-xl-3">
                     <div class="col-auto d-none d-sm-block">
-                        <h3><strong>Massage Admin</strong> Dashboard</h3>
+                        <h4><strong>Massage Admin</strong> Dashboard</h4>
                     </div>
                 </div>
 
@@ -27,13 +27,9 @@
                         <div class="d-table-cell align-middle">
 
                             <div class="text-center mt-4">
-                                <h1 class="h2">Update Customer Profile</h1>
+                                <h1 class="h4">Update Customer Profile</h1>
                             </div>
-                            <div class="errorMsg">
-                                <ul>
-                                    <li th:each="err : ${#fields.errors('all')}" th:text="${err}" />
-                                </ul>
-                            </div>
+                            <div th:insert="fragments/messagediv.html :: messagediv" />
 
                             <div class="card">
                                 <div class="card-body">
@@ -42,40 +38,40 @@
                                             <input th:type="hidden" th:field="*{id}" />
                                             <div class="mb-3">
                                                 <label class="form-label">First Name</label>
-                                                <input class="form-control form-control-lg" type="text" th:field="*{firstName}" name="firstName" />
+                                                <input class="form-control" type="text" th:field="*{firstName}" name="firstName" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Middle Name</label>
-                                                <input class="form-control form-control-lg" type="text" name="middleName" />
+                                                <input class="form-control" type="text" name="middleName" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Last Name</label>
-                                                <input class="form-control form-control-lg" type="text" th:field="*{lastName}" name="lastName" />
+                                                <input class="form-control" type="text" th:field="*{lastName}" name="lastName" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Email</label>
-                                                <input class="form-control form-control-lg" type="email" th:field="*{email}" name="email" />
+                                                <input class="form-control" type="email" th:field="*{email}" name="email" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Phone</label>
-                                                <input class="form-control form-control-lg" type="text" th:field="*{phone}" name="phone" />
+                                                <input class="form-control" type="text" th:field="*{phone}" name="phone" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Mobile</label>
-                                                <input class="form-control form-control-lg" type="text" th:field="*{mobile}" name="mobile" />
+                                                <input class="form-control" type="text" th:field="*{mobile}" name="mobile" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Address</label>
-                                                <input class="form-control form-control-lg" type="text" name="address" />
+                                                <input class="form-control" type="text" name="address" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Health Fund</label>
-                                                <select class="form-control form-control-lg" th:field="*{healthFund}">
+                                                <select class="form-control" th:field="*{healthFund}">
                                                     <option value="">Please select...</option>
                                                     <option th:each="hf : ${T(com.xms.app.massage.enums.HealthFundEnum).values()}"
                                                             th:value="${hf}" th:text="${hf.displayName}"></option>
@@ -84,18 +80,18 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Membership Number</label>
-                                                <input class="form-control form-control-lg" type="text" th:field="*{membershipNum}" name="membershipNum" />
+                                                <input class="form-control" type="text" th:field="*{membershipNum}" name="membershipNum" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('membershipNum')}" th:errors="*{membershipNum}"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Rebate Rate (%)</label>
-                                                <input class="form-control form-control-lg" type="text" th:field="*{rebateRate}" name="rebateRate" />
+                                                <input class="form-control" type="text" th:field="*{rebateRate}" name="rebateRate" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('rebateRate')}" th:errors="*{rebateRate}"></div>
                                             </div>
                                             <div class="text-center mt-3">
-                                                <a id="btnUpdate" href="#" class="btn btn-lg btn-info">Update</a>
+                                                <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                                <a id="btnCancel" href="#" class="btn btn-lg btn-info">Cancel</a>
+                                                <a id="btnCancel" href="#" class="btn btn-info">Cancel</a>
                                             </div>
                                         </form>
                                     </div>

@@ -10,7 +10,14 @@ $(document ).ready(function() {
 
     $("#serviceDate").datepicker({
         showButtonPanel: true,
-        showAnim: "clip"
+        showAnim: "clip",
+        dateFormat: "mm/dd/yy"
+    });
+
+    $('#btnAssign').click(function() {
+        var form = document.getElementById('assignServiceFrm');
+        form.action = '/assignService';
+        form.submit();
     });
 
 });

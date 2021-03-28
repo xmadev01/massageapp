@@ -1,0 +1,4 @@
+<div th:fragment="messagediv" xmlns:th="http://www.w3.org/1999/xhtml">
+<div class="alert alert-success alert-dismissible fade show" th:if="${successMsg}" th:text="${successMsg}"/>
+<div class="alert alert-danger alert-dismissible fade show" th:each="errorMsg : ${errorMsgs}" th:text="${errorMsg}"/>
+</div>

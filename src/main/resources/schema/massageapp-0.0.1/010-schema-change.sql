@@ -29,7 +29,7 @@ CREATE TABLE Customer (
 
 
 
-CREATE TABLE Service (
+CREATE TABLE Massage_Service (
 
    id IDENTITY PRIMARY KEY,
    customer INT NOT NULL,

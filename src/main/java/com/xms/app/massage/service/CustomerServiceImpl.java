@@ -1,8 +1,12 @@
 package com.xms.app.massage.service;
 
+import com.xms.app.massage.enums.ServiceTypeEnum;
 import com.xms.app.massage.model.Customer;
+import com.xms.app.massage.model.MassageService;
 import com.xms.app.massage.paging.*;
 import com.xms.app.massage.repository.CustomerRepository;
+import com.xms.app.massage.repository.MassageServiceRepository;
+import com.xms.app.massage.vo.ServiceVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +15,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -24,8 +33,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
     private static final Comparator<Customer> EMPTY_COMPARATOR = (c1, c2) -> 0;
+    private static final DateTimeFormatter  DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private MassageServiceRepository massageServiceRepository;
 
     @Override
     public List<String> getCustomerNames(String term) {
@@ -100,5 +112,23 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(final long customerId) {
         customerRepository.deleteById(customerId);
+    }
+
+    @Override
+    public void assignCustomerToServices(final ServiceVO serviceVO) {
+        final String[] names = serviceVO.getCustomerName().split(" ");
+        final Optional<Customer> customerOpt = customerRepository.findByFirstNameLastName(names[0], names[1]);
+        if (customerOpt.isPresent()) {
+            for (ServiceTypeEnum serviceTypeEnum : serviceVO.getServiceType()) {
+                final MassageService massageService = new MassageService();
+                massageService.setCustomer(customerOpt.get());
+                massageService.setServiceDateTime(LocalDate.parse(serviceVO.getServiceDate(), DATE_TIME_FORMATTER).atTime(LocalTime.now()));
+                massageService.setServiceType(serviceTypeEnum);
+                massageService.setExpenseAmt(BigDecimal.TEN);
+                massageService.setClaimedAmt(BigDecimal.TEN);
+                massageService.setDuration(60);
+                massageServiceRepository.save(massageService);
+            }
+        }
     }
 }
