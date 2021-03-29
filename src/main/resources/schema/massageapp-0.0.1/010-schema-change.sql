@@ -44,3 +44,12 @@ CREATE TABLE Massage_Service (
    foreign key (customer) references Customer(id)
 )
 
+CREATE TABLE Staff (
+
+   id IDENTITY PRIMARY KEY,
+   first_name VARCHAR(50) NOT NULL,
+   last_name VARCHAR(50) NOT NULL,
+   active  BOOLEAN DEFAULT TRUE NOT NULL,
+   version INT DEFAULT 0 NOT NULL
+)
+

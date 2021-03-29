@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -40,10 +39,9 @@ public class CustomerServiceImpl implements CustomerService {
     private MassageServiceRepository massageServiceRepository;
 
     @Override
-    public List<String> getCustomerNames(String term) {
+    public List<Customer> getCustomers(String term) {
         return customerRepository.findAll().stream()
-                                    .map(Customer::getFullName)
-                                    .filter(name -> name.toLowerCase().contains(term.toLowerCase()))
+                                    .filter(cust -> cust.getFullName().toLowerCase().contains(term.toLowerCase()))
                                     .collect(Collectors.toList());
     }
 

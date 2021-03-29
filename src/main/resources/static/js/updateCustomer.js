@@ -6,4 +6,11 @@ $(document ).ready(function() {
         form.submit();
     });
 
+    $('#btnCancel').click(function() {
+        var form = document.getElementById('updateCustomerFrm');
+        form.action = '/listCustomers';
+        form.method = 'GET';
+        form.submit();
+    });
+
 });

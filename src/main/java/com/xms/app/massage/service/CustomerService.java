@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    List<String> getCustomerNames(String term);
+    List<Customer> getCustomers(String term);
 
     Page<Customer> getPage(PagingRequest pagingRequest);
 

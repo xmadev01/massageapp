@@ -86,9 +86,9 @@ public class CustomerController {
         return "redirect:/listCustomers";
     }
 
-    @GetMapping("/getCustomerNames")
+    @GetMapping("/getCustomers")
     @ResponseBody
-    public List<String> getAllCustomerNames(@RequestParam String term) {
-        return customerService.getCustomerNames(term);
+    public List<Customer> getAllCustomers(@RequestParam String term) {
+        return customerService.getCustomers(term);
     }
 }

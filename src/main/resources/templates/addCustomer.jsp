@@ -88,7 +88,7 @@
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('rebateRate')}" th:errors="*{rebateRate}"></div>
                                             </div>
                                             <div class="text-center mt-3">
-                                                <a id="btnCreate" href="#" class="btn btn-info">Create</a>
+                                                <a id="btnAdd" href="#" class="btn btn-info">Add</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                                 <a id="btnCancel" href="#" class="btn btn-info">Cancel</a>
                                             </div>
