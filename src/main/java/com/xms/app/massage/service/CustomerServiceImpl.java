@@ -2,10 +2,10 @@ package com.xms.app.massage.service;
 
 import com.xms.app.massage.enums.ServiceTypeEnum;
 import com.xms.app.massage.model.Customer;
-import com.xms.app.massage.model.MassageService;
+import com.xms.app.massage.model.Treatment;
 import com.xms.app.massage.paging.*;
 import com.xms.app.massage.repository.CustomerRepository;
-import com.xms.app.massage.repository.MassageServiceRepository;
+import com.xms.app.massage.repository.TreatmentRepository;
 import com.xms.app.massage.vo.ServiceVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
-    private MassageServiceRepository massageServiceRepository;
+    private TreatmentRepository treatmentRepository;
 
     @Override
     public List<Customer> getCustomers(String term) {
@@ -118,14 +118,14 @@ public class CustomerServiceImpl implements CustomerService {
         final Optional<Customer> customerOpt = customerRepository.findByFirstNameLastName(names[0], names[1]);
         if (customerOpt.isPresent()) {
             for (ServiceTypeEnum serviceTypeEnum : serviceVO.getServiceType()) {
-                final MassageService massageService = new MassageService();
-                massageService.setCustomer(customerOpt.get());
-                massageService.setServiceDateTime(LocalDate.parse(serviceVO.getServiceDate(), DATE_TIME_FORMATTER).atTime(LocalTime.now()));
-                massageService.setServiceType(serviceTypeEnum);
-                massageService.setExpenseAmt(BigDecimal.TEN);
-                massageService.setClaimedAmt(BigDecimal.TEN);
-                massageService.setDuration(60);
-                massageServiceRepository.save(massageService);
+                final Treatment treatment = new Treatment();
+                treatment.setCustomer(customerOpt.get());
+                treatment.setServiceDateTime(LocalDate.parse(serviceVO.getServiceDate(), DATE_TIME_FORMATTER).atTime(LocalTime.now()));
+                treatment.setServiceType(serviceTypeEnum);
+                treatment.setExpenseAmt(BigDecimal.TEN);
+                treatment.setClaimedAmt(BigDecimal.TEN);
+                treatment.setDuration(60);
+                treatmentRepository.save(treatment);
             }
         }
     }

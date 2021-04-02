@@ -3,7 +3,7 @@
 
 <head th:insert="fragments/head.html :: head" />
 <head>
-    <script type="text/javascript" th:src="@{/js/customer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/healthfund.js}"></script>
 </head>
 
 <body>
@@ -22,27 +22,20 @@
                         </div>
                     </div>
                     <div th:insert="fragments/messagediv.html :: messagediv" />
-                    <form id="listCustomerFrm" name="listCustomerFrm" method="post">
+                    <form id="listHealthFundFrm" name="listHealthFundFrm" method="post">
                     <div class="mt-3">
-                        <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
+                        <a id="btnAdd" href="#" class="btn btn-info">Add</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a id="btnDeactivate" href="#" class="btn btn-info">(De)activate</a>
+                        <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="btnDelete" href="#" class="btn btn-info">Delete</a>
                     </div>
                     <div class="row">
                         <div class="mt-5 mb-5">
-                            <table id="customerTbl" class="table table-bordered table-responsive display dataTable" style="width: 100%">
+                            <table id="healthFundTbl" class="table table-bordered table-responsive display dataTable" style="width: 100%">
                                 <thead>
                                 <tr>
-                                    <th>First Name</th>
-                                    <th>Middle Name</th>
-                                    <th>Last Name</th>
-                                    <th>Email</th>
-                                    <th>Phone1</th>
-                                    <th>Phone2</th>
-                                    <th>Health Fund</th>
-                                    <th>Membership Number</th>
+                                    <th>Name</th>
                                     <th>Active</th>
                                 </tr>
                                 </thead>

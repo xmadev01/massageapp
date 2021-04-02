@@ -6,7 +6,8 @@ CREATE TABLE User (
    first_name VARCHAR(50) NOT NULL,
    last_name VARCHAR(50) NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
-   version INT DEFAULT 0 NOT NULL
+   version INT DEFAULT 0 NOT NULL,
+   UNIQUE KEY user_user_code_UNIQUE (user_code)
 )
 
 
@@ -15,21 +16,27 @@ CREATE TABLE Customer (
 
    id IDENTITY PRIMARY KEY,
    first_name VARCHAR(50) NOT NULL,
+   middle_name VARCHAR(50) NOT NULL,
    last_name VARCHAR(50) NOT NULL,
+   birthday TIMESTAMP NOT NULL,
    email VARCHAR(100) NULL,
-   phone VARCHAR(50) NULL,
-   mobile VARCHAR(50) NULL,
+   phone1 VARCHAR(50) NULL,
+   phone2 VARCHAR(50) NULL,
    address VARCHAR(200) NULL,
-   health_fund INT NULL,
+   postcode VARCHAR(20) NULL,
+   health_fund INT NOT NULL,
    membership_num VARCHAR(50) NULL,
    rebate_rate DOUBLE NULL,
+   medication VARCHAR(500) NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
-   version INT DEFAULT 0 NOT NULL
+   version INT DEFAULT 0 NOT NULL,
+   UNIQUE KEY customer_email_UNIQUE (email),
+   UNIQUE KEY customer_membership_num_UNIQUE (membership_num),
+   foreign key (health_fund) references Health_Fund(id)
 )
 
 
-
-CREATE TABLE Massage_Service (
+CREATE TABLE Treatment (
 
    id IDENTITY PRIMARY KEY,
    customer INT NOT NULL,
@@ -51,5 +58,25 @@ CREATE TABLE Staff (
    last_name VARCHAR(50) NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
+)
+
+CREATE TABLE Service_Price (
+
+   id IDENTITY PRIMARY KEY,
+   service_type VARCHAR(50) NOT NULL,
+   price DOUBLE NOT NULL,
+   active  BOOLEAN DEFAULT TRUE NOT NULL,
+   version INT DEFAULT 0 NOT NULL
+)
+
+
+
+CREATE TABLE Health_Fund (
+
+   id IDENTITY PRIMARY KEY,
+   name VARCHAR(100) NOT NULL,
+   active  BOOLEAN DEFAULT TRUE NOT NULL,
+   version INT DEFAULT 0 NOT NULL,
+   UNIQUE KEY health_fund_name_UNIQUE (name)
 )
 

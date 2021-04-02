@@ -63,20 +63,21 @@ function applyCustomerDataTable() {
         },
         columns: [
             {"data": "firstName", "width": "10%"},
+            {"data": "middleName","width": "10%"},
             {"data": "lastName","width": "10%"},
             {"data": "email", "width": "20%"},
-            {"data": "phone", "width": "10%"},
-            {"data": "mobile", "width": "10%"},
+            {"data": "phone1", "width": "10%"},
+            {"data": "phone2", "width": "10%"},
             {"data": "healthFund", "width": "10%"},
-            {"data": "membershipNum", "width": "20%"},
-            {"data": "active", "width": "10%"}
+            {"data": "membershipNum", "width": "15%"},
+            {"data": "active", "width": "5%"}
         ],
         columnDefs: [
             {
                 "render": function(data, type, row) {
-                    return data;
+                    return data.name;
                 },
-                "targets": 0
+                "targets": 6
             },
             {
                 "render": function(data, type, row) {
@@ -86,7 +87,7 @@ function applyCustomerDataTable() {
                        return '<img src="/images/false.png" />';
                     }
                 },
-                "targets": 7
+                "targets": 8
             }
 
         ]

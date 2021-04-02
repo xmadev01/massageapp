@@ -29,12 +29,13 @@
                             <div class="text-center mt-4">
                                 <h1 class="h4">New Customer Profile</h1>
                             </div>
-                            <div th:insert="fragments/messagediv.html :: messagediv" />
+
 
                             <div class="card">
                                 <div class="card-body">
                                     <div class="m-sm-4">
                                         <form id="addCustomerFrm" name="addCustomerFrm" method="post" th:action="@{/createCustomer}" th:object="${customer}">
+                                            <input th:type="hidden" th:field="*{birthday}" />
                                             <div class="mb-3">
                                                 <label class="form-label">First Name</label>
                                                 <input class="form-control" type="text" th:field="*{firstName}" name="firstName" />
@@ -42,7 +43,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Middle Name</label>
-                                                <input class="form-control" type="text" name="middleName" />
+                                                <input class="form-control" type="text" th:field="*{middleName}" name="middleName" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Last Name</label>
@@ -50,31 +51,46 @@
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                                             </div>
                                             <div class="mb-3">
+                                                <label class="form-label label-lg">Birthday</label>
+                                                <select th:id="days">
+                                                    <option th:each="day : ${days}"
+                                                            th:value="${day}" th:text="${day}"></option>
+                                                </select><span class="ml-1">/</span>
+                                                <select th:id="months">
+                                                    <option th:each="month : ${months}"
+                                                            th:value="${month}" th:text="${month}"></option>
+                                                </select><span class="ml-1">/</span>
+                                                <select th:id="years">
+                                                    <option th:each="year : ${years}"
+                                                            th:value="${year}" th:text="${year}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
                                                 <label class="form-label">Email</label>
                                                 <input class="form-control" type="email" th:field="*{email}" name="email" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Phone</label>
-                                                <input class="form-control" type="text" th:field="*{phone}" name="phone" />
-                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                                                <label class="form-label">Phone1</label>
+                                                <input class="form-control" type="text" th:field="*{phone1}" name="phone1" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Mobile</label>
-                                                <input class="form-control" type="text" th:field="*{mobile}" name="mobile" />
-                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"></div>
+                                                <label class="form-label">Phone2</label>
+                                                <input class="form-control" type="text" th:field="*{phone2}" name="phone2" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('phone2')}" th:errors="*{phone2}"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Address</label>
-                                                <input class="form-control" type="text" name="address" />
+                                                <input class="form-control" type="text" th:field="*{address}" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Postcode</label>
+                                                <input class="form-control" type="text" th:field="*{postcode}" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Health Fund</label>
-                                                <select class="form-control" th:field="*{healthFund}">
-                                                    <option value="">Please select...</option>
-                                                    <option th:each="hf : ${T(com.xms.app.massage.enums.HealthFundEnum).values()}"
-                                                            th:value="${hf}" th:text="${hf.displayName}"></option>
-                                                </select>
+                                                <input class="form-control" type="text" th:field="*{healthFund}" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('healthFund')}" th:errors="*{healthFund}"></div>
                                             </div>
                                             <div class="mb-3">
@@ -86,6 +102,10 @@
                                                 <label class="form-label">Rebate Rate (%)</label>
                                                 <input class="form-control" type="text" th:field="*{rebateRate}" name="rebateRate" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('rebateRate')}" th:errors="*{rebateRate}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Current Medication</label>
+                                                <textarea class="form-control" type="text" rows="5" th:field="*{medication}" />
                                             </div>
                                             <div class="text-center mt-3">
                                                 <a id="btnAdd" href="#" class="btn btn-info">Add</a>

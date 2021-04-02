@@ -1,12 +1,10 @@
 package com.xms.app.massage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xms.app.massage.enums.HealthFundEnum;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,28 +16,35 @@ public class Customer {
     private long id;
 
     @Column(nullable = false)
-    @NotEmpty(message = "{customer.firstName.not.empty}")
     private String firstName;
 
+    @Column
+    private String middleName;
+
     @Column(nullable = false)
-    @NotEmpty(message = "{customer.lastName.not.empty}")
     private String lastName;
 
+    @Column(nullable = false)
+    private LocalDate birthday;
+
     @Column
-    @Email(message = "{customer.email.invalid}")
     private String email;
 
     @Column
-    private String phone;
+    private String phone1;
 
     @Column
-    private String mobile;
+    private String phone2;
 
     @Column
     private String address;
 
-    @Enumerated(EnumType.ORDINAL)
-    private HealthFundEnum healthFund;
+    @Column
+    private String postcode;
+
+    @ManyToOne
+    @JoinColumn(name="health_fund", nullable = false)
+    private HealthFund healthFund;
 
     @Column
     private String membershipNum;
@@ -49,7 +54,10 @@ public class Customer {
 
     @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<MassageService> massageServices;
+    private List<Treatment> treatments;
+
+    @Column
+    private String medication;
 
     private boolean active = true;
 
@@ -58,7 +66,7 @@ public class Customer {
 
     @Transient
     public String getFullName() {
-        return firstName + " " + lastName;
+        return firstName + " " + middleName + " " + lastName;
     }
 
 }

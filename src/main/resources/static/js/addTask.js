@@ -8,10 +8,7 @@ $(document ).ready(function() {
                 })
                 response(customerNames);
             });
-        },
-        select: function (e, ui) {
-            console.log(ui);
-        },
+        }
     });
 
     $("#serviceDate").datepicker({
