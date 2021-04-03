@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Data
-public class Staff {
+public class Practitioner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

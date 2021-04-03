@@ -3,7 +3,7 @@
 
 <head th:insert="fragments/head.html :: head" />
 <head>
-    <script type="text/javascript" th:src="@{/js/addStaff.js}"></script>
+    <script type="text/javascript" th:src="@{/js/addPractitioner.js}"></script>
 </head>
 
 <body>
@@ -27,14 +27,14 @@
                         <div class="d-table-cell align-middle">
 
                             <div class="text-center mt-4">
-                                <h1 class="h4">New Staff</h1>
+                                <h1 class="h4">New Practitioner</h1>
                             </div>
                             <div th:insert="fragments/messagediv.html :: messagediv" />
 
                             <div class="card">
                                 <div class="card-body">
                                     <div class="m-sm-4">
-                                        <form id="addStaffFrm" name="addStaffFrm" method="post" th:action="@{/createStaff}" th:object="${staff}">
+                                        <form id="addPractitionerFrm" name="addPractitionerFrm" method="post" th:action="@{/createPractitioner}" th:object="${practitioner}">
                                             <div class="mb-3">
                                                 <label class="form-label">First Name</label>
                                                 <input class="form-control" type="text" th:field="*{firstName}" name="firstName" />

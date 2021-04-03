@@ -3,7 +3,7 @@
 
 <head th:insert="fragments/head.html :: head" />
 <head>
-    <script type="text/javascript" th:src="@{/js/addTask.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/addTreatment.js}"></script>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
                         <div class="d-table-cell align-middle">
 
                             <div class="text-center mt-4">
-                                <h1 class="h4">Assign Task</h1>
+                                <h1 class="h4">Assign Treatment</h1>
                             </div>
                             <div class="errorMsg">
                                 <ul>
@@ -38,21 +38,21 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="m-sm-4">
-                                        <form id="assignTaskFrm" name="assignTaskFrm" method="post" th:action="@{/assignTask}">
+                                        <form id="assignTreatmentFrm" name="assignTreatmentFrm" method="post" th:action="@{/assignTreatment}">
                                             <div class="mb-3">
                                                 <label class="form-label">Customer Name</label>
                                                 <input class="form-control" type="text" id="customerName" name="customerName" />
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Service Date</label>
+                                                <label class="form-label">Treatment Date</label>
                                                 <input class="form-control" type="text" id="serviceDate" name="serviceDate" autocomplete="off" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Assignee</label>
                                                 <select class="form-control">
                                                     <option value="">Please select...</option>
-                                                    <option th:each="staff : ${allStaff}"
-                                                            th:value="${staff}" th:text="${staff}"></option>
+                                                    <option th:each="practitioner : ${allPractitioner}"
+                                                            th:value="${practitioner}" th:text="${practitioner}"></option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">

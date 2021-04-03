@@ -24,4 +24,15 @@ $(document ).ready(function() {
         }
     });
 
+    populateBirthday();
+
 });
+
+function populateBirthday() {
+    var birthday = $('#birthday').val();
+    if (birthday) {
+        $('#days').val(parseInt(birthday.substring(0, 2)));
+        $('#months').val(parseInt(birthday.substring(3, 5)));
+        $('#years').val(parseInt(birthday.substring(6, 10)));
+    }
+}

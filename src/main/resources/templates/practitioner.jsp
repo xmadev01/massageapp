@@ -3,7 +3,7 @@
 
 <head th:insert="fragments/head.html :: head" />
 <head>
-    <script type="text/javascript" th:src="@{/js/staff.js}"></script>
+    <script type="text/javascript" th:src="@{/js/practitioner.js}"></script>
 </head>
 
 <body>
@@ -21,7 +21,8 @@
                             <h3><strong>Massage Admin</strong> Dashboard</h3>
                         </div>
                     </div>
-                    <form id="listStaffFrm" name="listStaffFrm" method="post">
+                    <div th:insert="fragments/messagediv.html :: messagediv" />
+                    <form id="listPractitionerFrm" name="listPractitionerFrm" method="post">
                     <div class="mt-3">
                         <a id="btnAdd" href="#" class="btn btn-info">Add</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -33,7 +34,7 @@
                     </div>
                     <div class="row">
                         <div class="mt-5 mb-5">
-                            <table id="staffTbl" class="table table-bordered table-responsive display dataTable" style="width: 100%">
+                            <table id="practitionerTbl" class="table table-bordered table-responsive display dataTable" style="width: 100%">
                                 <thead>
                                 <tr>
                                     <th>First Name</th>

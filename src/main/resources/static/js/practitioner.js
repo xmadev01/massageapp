@@ -1,60 +1,60 @@
 var selectedStaff;
 $(document ).ready(function() {
 
-    var staffTbl = applyStaffDataTable();
+    var practitionerTbl = applyPractitionerDataTable();
 
-    $('#staffTbl tbody').on( 'click', 'tr', function () {
+    $('#practitionerTbl tbody').on( 'click', 'tr', function () {
 
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         } else {
-            staffTbl.$('tr.selected').removeClass('selected');
+            practitionerTbl.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
-        selectedStaff = staffTbl.row('.selected').data();
+        selectedStaff = practitionerTbl.row('.selected').data();
     });
 
     $('#btnAdd').click(function () {
-        var form = document.getElementById('listStaffFrm');
+        var form = document.getElementById('listPractitionerFrm');
         form.method = 'GET';
-        form.action = '/addStaff/';
+        form.action = '/addPractitioner/';
         form.submit();
     })
 
     $('#btnUpdate').click(function () {
         if (selectedStaff) {
-            var form = document.getElementById('listStaffFrm');
-            form.action = '/loadStaff/' + selectedStaff.id;
+            var form = document.getElementById('listPractitionerFrm');
+            form.action = '/loadPractitioner/' + selectedStaff.id;
             form.submit();
         }
     })
 
     $('#btnDeactivate').click(function () {
         if (selectedStaff) {
-            var form = document.getElementById('listStaffFrm');
-            form.action = '/deactivateStaff/' + selectedStaff.id;
+            var form = document.getElementById('listPractitionerFrm');
+            form.action = '/deactivatePractitioner/' + selectedStaff.id;
             form.submit();
         }
     })
 
     $('#btnDelete').click(function () {
         if (selectedStaff) {
-            var form = document.getElementById('listStaffFrm');
-            form.action = '/deleteStaff/' + selectedStaff.id;
+            var form = document.getElementById('listPractitionerFrm');
+            form.action = '/deletePractitioner/' + selectedStaff.id;
             form.submit();
         }
     })
 
 });
 
-function applyStaffDataTable() {
+function applyPractitionerDataTable() {
 
-    return $('#staffTbl').DataTable({
+    return $('#practitionerTbl').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 50,
         ajax: {
-            url: "/filterStaff",
+            url: "/filterPractitioner",
             type: "POST",
             dataType: "json",
             contentType: "application/json",

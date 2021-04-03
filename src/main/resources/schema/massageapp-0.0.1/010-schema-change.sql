@@ -51,7 +51,7 @@ CREATE TABLE Treatment (
    foreign key (customer) references Customer(id)
 )
 
-CREATE TABLE Staff (
+CREATE TABLE Practitioner (
 
    id IDENTITY PRIMARY KEY,
    first_name VARCHAR(50) NOT NULL,
