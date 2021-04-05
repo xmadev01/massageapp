@@ -55,26 +55,10 @@ function applyHealthFundDataTable() {
             }
         },
         columns: [
-            {"data": "name","width": "10%"},
-            {"data": "active", "width": "10%"}
+            {"data": "name","width": "40%"},
+            {"data": "description","width": "40%"}
         ],
         columnDefs: [
-            {
-                "render": function(data, type, row) {
-                    return data;
-                },
-                "targets": 0
-            },
-            {
-                "render": function(data, type, row) {
-                    if (data == true) {
-                       return '<img src="/images/true.png" />';
-                    } else {
-                       return '<img src="/images/false.png" />';
-                    }
-                },
-                "targets": 1
-            }
 
         ]
     });

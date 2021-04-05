@@ -18,12 +18,14 @@
                 <div class="container-fluid p-0">
                     <div class="row mb-2 mb-xl-3">
                         <div class="col-auto d-none d-sm-block">
-                            <h3><strong>Massage Admin</strong> Dashboard</h3>
+                            <h3><strong>Customers</strong></h3>
                         </div>
                     </div>
                     <div th:insert="fragments/messagediv.html :: messagediv" />
                     <form id="listCustomerFrm" name="listCustomerFrm" method="post">
                     <div class="mt-3">
+                        <a id="btnAdd" href="#" class="btn btn-info">Add</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="btnDeactivate" href="#" class="btn btn-info">(De)activate</a>

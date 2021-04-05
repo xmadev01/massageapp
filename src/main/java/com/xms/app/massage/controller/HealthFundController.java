@@ -72,7 +72,7 @@ public class HealthFundController {
     }
 
     @PostMapping("/updateHealthFund/{healthFundId}")
-    public String updateStaff(@PathVariable long healthFundId, @Valid HealthFund healthFund, BindingResult result,
+    public String updateHealthFund(@PathVariable long healthFundId, @Valid HealthFund healthFund, BindingResult result,
                               RedirectAttributes redirectAttributes, Model model) throws InvocationTargetException, IllegalAccessException {
         if (result.hasErrors()) {
             MessageUtils.addErrorMessages(model, result.getFieldErrors());
@@ -82,6 +82,7 @@ public class HealthFundController {
         HealthFund loadedHealthFund = healthFundService.loadHealthFund(healthFundId);
         BeanUtils.copyProperties(loadedHealthFund, healthFund);
         healthFundService.saveHealthFund(loadedHealthFund);
+        MessageUtils.addSuccessMessage(redirectAttributes, "The health fund has been updated successfully.");
         return "redirect:/listHealthFunds";
     }
 

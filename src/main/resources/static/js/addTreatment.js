@@ -3,10 +3,7 @@ $(document ).ready(function() {
     $("#customerName").autocomplete({
         source: function(request, response) {
             $.getJSON( "/getCustomers", request, function(data) {
-                var customerNames = $.map(data, function(element, index) {
-                    return element.fullName;
-                })
-                response(customerNames);
+                response(data);
             });
         }
     });
@@ -14,12 +11,12 @@ $(document ).ready(function() {
     $("#serviceDate").datepicker({
         showButtonPanel: true,
         showAnim: "clip",
-        dateFormat: "mm/dd/yy"
+        dateFormat: "dd/mm/yy"
     });
 
     $('#btnAssign').click(function() {
-        var form = document.getElementById('assignServiceFrm');
-        form.action = '/assignService';
+        var form = document.getElementById('assignPractitionerFrm');
+        form.action = '/assignPractitioner';
         form.submit();
     });
 

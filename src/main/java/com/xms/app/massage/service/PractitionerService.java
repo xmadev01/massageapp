@@ -18,5 +18,5 @@ public interface PractitionerService {
 
     void deletePractitioner(long staffId);
 
-    List<String> getAllPractitioners();
+    List<Practitioner> getAllPractitioners();
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class ServicePrice {
+public class Pricing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

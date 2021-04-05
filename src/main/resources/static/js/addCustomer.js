@@ -1,12 +1,16 @@
 $(document ).ready(function() {
 
     $('#btnAdd').click(function() {
-        var day = $('#days').val();
-        var month = $('#months').val();
-        var year = $('#years').val();
-        $('#birthday').val(day + '/' + month + '/' + year);
+        setBirthday();
         var form = document.getElementById('addCustomerFrm');
         form.action = '/createCustomer';
+        form.submit();
+    });
+
+    $('#btnCancel').click(function() {
+        var form = document.getElementById('addCustomerFrm');
+        form.action = '/listCustomers';
+        form.method = 'GET';
         form.submit();
     });
 
@@ -27,6 +31,13 @@ $(document ).ready(function() {
     populateBirthday();
 
 });
+
+function setBirthday() {
+    var day = $('#days').val();
+    var month = $('#months').val();
+    var year = $('#years').val();
+    $('#birthday').val(day + '/' + month + '/' + year);
+}
 
 function populateBirthday() {
     var birthday = $('#birthday').val();

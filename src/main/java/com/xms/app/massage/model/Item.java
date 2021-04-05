@@ -3,10 +3,11 @@ package com.xms.app.massage.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Data
-public class HealthFund {
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +17,13 @@ public class HealthFund {
     private String name;
 
     @Column(nullable = false)
-    private String description;
+    private int duration;
+
+    @Column(nullable = false)
+    private BigDecimal price;
 
     private boolean active = true;
 
     @Version
     private long version;
-
 }

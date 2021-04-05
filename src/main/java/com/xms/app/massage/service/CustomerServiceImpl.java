@@ -1,12 +1,8 @@
 package com.xms.app.massage.service;
 
-import com.xms.app.massage.enums.ServiceTypeEnum;
 import com.xms.app.massage.model.Customer;
-import com.xms.app.massage.model.Treatment;
 import com.xms.app.massage.paging.*;
 import com.xms.app.massage.repository.CustomerRepository;
-import com.xms.app.massage.repository.TreatmentRepository;
-import com.xms.app.massage.vo.ServiceVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -31,12 +22,8 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements CustomerService {
 
     private final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
-    private static final Comparator<Customer> EMPTY_COMPARATOR = (c1, c2) -> 0;
-    private static final DateTimeFormatter  DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     @Autowired
     private CustomerRepository customerRepository;
-    @Autowired
-    private TreatmentRepository treatmentRepository;
 
     @Override
     public List<Customer> getCustomers(String term) {
@@ -113,20 +100,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void assignCustomerToServices(final ServiceVO serviceVO) {
-        final String[] names = serviceVO.getCustomerName().split(" ");
-        final Optional<Customer> customerOpt = customerRepository.findByFirstNameLastName(names[0], names[1]);
-        if (customerOpt.isPresent()) {
-            for (ServiceTypeEnum serviceTypeEnum : serviceVO.getServiceType()) {
-                final Treatment treatment = new Treatment();
-                treatment.setCustomer(customerOpt.get());
-                treatment.setServiceDateTime(LocalDate.parse(serviceVO.getServiceDate(), DATE_TIME_FORMATTER).atTime(LocalTime.now()));
-                treatment.setServiceType(serviceTypeEnum);
-                treatment.setExpenseAmt(BigDecimal.TEN);
-                treatment.setClaimedAmt(BigDecimal.TEN);
-                treatment.setDuration(60);
-                treatmentRepository.save(treatment);
-            }
-        }
+    public Optional<Customer> findByFirstNameLastName(String firstName, String middleName, String lastName) {
+       return customerRepository.findByFirstNameLastName(firstName, middleName, lastName);
     }
+
 }

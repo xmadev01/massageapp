@@ -3,9 +3,9 @@ package com.xms.app.massage.service;
 import com.xms.app.massage.model.Customer;
 import com.xms.app.massage.paging.Page;
 import com.xms.app.massage.paging.PagingRequest;
-import com.xms.app.massage.vo.ServiceVO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
 
@@ -21,5 +21,5 @@ public interface CustomerService {
 
     void deleteCustomer(long customerId);
 
-    void assignCustomerToServices(ServiceVO serviceVO);
+    Optional<Customer> findByFirstNameLastName(String firstName, String middleName, String lastName);
 }

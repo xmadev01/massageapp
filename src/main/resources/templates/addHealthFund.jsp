@@ -18,7 +18,7 @@
 
                 <div class="row mb-2 mb-xl-3">
                     <div class="col-auto d-none d-sm-block">
-                        <h4><strong>Massage Admin</strong> Dashboard</h4>
+                        <h4><strong>Add Health Fund</strong></h4>
                     </div>
                 </div>
 
@@ -26,9 +26,6 @@
                     <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                         <div class="d-table-cell align-middle">
 
-                            <div class="text-center mt-4">
-                                <h1 class="h4">New Health Fund</h1>
-                            </div>
                             <div th:insert="fragments/messagediv.html :: messagediv" />
 
                             <div class="card">
@@ -39,6 +36,11 @@
                                                 <label class="form-label">Name</label>
                                                 <input class="form-control" type="text" th:field="*{name}" name="name" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Description</label>
+                                                <input class="form-control" type="text" th:field="*{description}" name="name" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                                             </div>
                                             <div class="text-center mt-3">
                                                 <a id="btnAdd" href="#" class="btn btn-info">Add</a>

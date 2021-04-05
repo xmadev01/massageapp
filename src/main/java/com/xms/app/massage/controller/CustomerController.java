@@ -81,6 +81,7 @@ public class CustomerController {
     public String loadCustomer(@PathVariable long customerId, Model model) {
         Customer customer = customerService.loadCustomer(customerId);
         model.addAttribute("customer", customer);
+        populateDayMonthYear(model);
         return "updateCustomer";
     }
 
@@ -89,6 +90,7 @@ public class CustomerController {
                                  RedirectAttributes redirectAttributes, Model model) throws InvocationTargetException, IllegalAccessException {
         if (result.hasErrors()) {
             MessageUtils.addErrorMessages(model, result.getFieldErrors());
+            populateDayMonthYear(model);
             return "updateCustomer";
         }
 
@@ -113,8 +115,10 @@ public class CustomerController {
 
     @GetMapping("/getCustomers")
     @ResponseBody
-    public List<Customer> getAllCustomers(@RequestParam String term) {
-        return customerService.getCustomers(term);
+    public List<String> getAllCustomers(@RequestParam String term) {
+        return customerService.getCustomers(term).stream()
+                              .map(Customer::getFullName)
+                              .collect(Collectors.toList());
     }
 
     private void populateDayMonthYear(Model model) {

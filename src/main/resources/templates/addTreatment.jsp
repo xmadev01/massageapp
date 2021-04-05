@@ -3,7 +3,7 @@
 
 <head th:insert="fragments/head.html :: head" />
 <head>
-    <script type="text/javascript" th:src="@{/static/js/addTreatment.js}"></script>
+    <script type="text/javascript" th:src="@{/js/addTreatment.js}"></script>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
 
                 <div class="row mb-2 mb-xl-3">
                     <div class="col-auto d-none d-sm-block">
-                        <h4><strong>Massage Admin</strong> Dashboard</h4>
+                        <h4><strong>New Treatment</strong></h4>
                     </div>
                 </div>
 
@@ -26,42 +26,36 @@
                     <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                         <div class="d-table-cell align-middle">
 
-                            <div class="text-center mt-4">
-                                <h1 class="h4">Assign Treatment</h1>
-                            </div>
-                            <div class="errorMsg">
-                                <ul>
-                                    <li th:each="err : ${#fields.errors('all')}" th:text="${err}" />
-                                </ul>
-                            </div>
+                            <div th:insert="fragments/messagediv.html :: messagediv" />
 
                             <div class="card">
                                 <div class="card-body">
                                     <div class="m-sm-4">
-                                        <form id="assignTreatmentFrm" name="assignTreatmentFrm" method="post" th:action="@{/assignTreatment}">
+                                        <form id="assignPractitionerFrm" name="assignPractitionerFrm" method="post" th:action="@{/assignPractitioner}">
+                                            <input th:type="hidden" th:id="customerId" />
                                             <div class="mb-3">
                                                 <label class="form-label">Customer Name</label>
                                                 <input class="form-control" type="text" id="customerName" name="customerName" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Treatment Date</label>
-                                                <input class="form-control" type="text" id="serviceDate" name="serviceDate" autocomplete="off" />
+                                                <input class="form-control" type="text" id="serviceDate" name="serviceDate" th:value="${serviceDate}" readonly autocomplete="off" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Assignee</label>
-                                                <select class="form-control">
+                                                <select class="form-control" th:name="practitionerId">
                                                     <option value="">Please select...</option>
-                                                    <option th:each="practitioner : ${allPractitioner}"
-                                                            th:value="${practitioner}" th:text="${practitioner}"></option>
+                                                    <option th:each="practitioner : ${practitioners}"
+                                                            th:value="${practitioner.id}" th:text="${practitioner.fullName}"></option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Services:</label>
+                                                <label class="form-label">Treatments</label>
                                             </div>
                                             <div>
-                                                <label class="form-check form-check-inline" th:each="service : ${T(com.xms.app.massage.enums.ServiceTypeEnum).values()}">
-                                                    <input class="form-check-input" type="checkbox" name="serviceType" th:value="${service}">
-                                                    <span class="form-check-label" th:text="${service.displayName}"></span>
+                                                <label class="form-check form-check-inline" th:each="item : ${items}">
+                                                    <input class="form-check-input" type="checkbox" name="itemIds" th:value="${item.id}" />
+                                                    <span class="form-check-label" th:text="${item.name} + ' - ' + ${item.duration} + 'min'"></span>
                                                 </label>
                                             </div>
                                             <div class="text-center mt-3">

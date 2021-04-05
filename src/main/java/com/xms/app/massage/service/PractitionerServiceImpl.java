@@ -88,9 +88,9 @@ public class PractitionerServiceImpl implements PractitionerService {
     }
 
     @Override
-    public List<String> getAllPractitioners() {
+    public List<Practitioner> getAllPractitioners() {
         return practitionerRepository.findAll().stream()
-                .map(Practitioner::getFullName)
-                .collect(Collectors.toList());
+                                               .filter(p -> p.isActive())
+                                               .collect(Collectors.toList());
     }
 }

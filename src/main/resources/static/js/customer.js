@@ -20,6 +20,13 @@ $(document ).ready(function() {
         selectedCustomer = customerTbl.row('.selected').data();
     });
 
+    $('#btnAdd').click(function () {
+        var form = document.getElementById('listCustomerFrm');
+        form.method = 'GET'
+        form.action = '/addCustomer';
+        form.submit();
+    })
+
     $('#btnUpdate').click(function () {
         if (selectedCustomer) {
             var form = document.getElementById('listCustomerFrm');

@@ -1,11 +1,12 @@
 package com.xms.app.massage.model;
 
-import com.xms.app.massage.enums.ServiceTypeEnum;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,17 +20,23 @@ public class Treatment {
     @JoinColumn(name = "customer", nullable = false)
     private Customer customer;
 
-    private LocalDateTime serviceDateTime;
+    private LocalDate serviceDate;
+
+    @ManyToMany
+    @JoinTable(
+            name="Treatment_Item",
+            joinColumns = @JoinColumn(name = "treatment_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
+    private List<Item> items;
 
     private BigDecimal expenseAmt;
 
-    private ServiceTypeEnum serviceType;
-
     private BigDecimal claimedAmt;
 
-    private int duration;
-
     private String venue;
+
+    private LocalDateTime createdDate;
 
     private boolean active = true;
 

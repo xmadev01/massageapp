@@ -11,6 +11,15 @@ CREATE TABLE User (
 )
 
 
+CREATE TABLE Health_Fund (
+
+   id IDENTITY PRIMARY KEY,
+   name VARCHAR(100) NOT NULL,
+   description VARCHAR(100) NOT NULL,
+   active  BOOLEAN DEFAULT TRUE NOT NULL,
+   version INT DEFAULT 0 NOT NULL,
+   UNIQUE KEY health_fund_name_UNIQUE (name)
+)
 
 CREATE TABLE Customer (
 
@@ -40,12 +49,11 @@ CREATE TABLE Treatment (
 
    id IDENTITY PRIMARY KEY,
    customer INT NOT NULL,
-   service_date_time TIMESTAMP NOT NULL,
+   service_date TIMESTAMP NOT NULL,
    expense_amt DECIMAL NOT NULL,
-   service_type INT NOT NULL,
    claimed_amt DECIMAL NOT NULL,
-   duration INT NOT NULL,
    venue VARCHAR(200) NULL,
+   created_date TIMESTAMP NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL,
    foreign key (customer) references Customer(id)
@@ -60,23 +68,24 @@ CREATE TABLE Practitioner (
    version INT DEFAULT 0 NOT NULL
 )
 
-CREATE TABLE Service_Price (
+CREATE TABLE Item (
 
    id IDENTITY PRIMARY KEY,
-   service_type VARCHAR(50) NOT NULL,
+   name VARCHAR(100) NOT NULL,
+   duration INT NOT NULL,
    price DOUBLE NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
 )
 
-
-
-CREATE TABLE Health_Fund (
+CREATE TABLE Treatment_Item (
 
    id IDENTITY PRIMARY KEY,
-   name VARCHAR(100) NOT NULL,
+   treatment_id INT NOT NULL,
+   item_id INT NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
-   version INT DEFAULT 0 NOT NULL,
-   UNIQUE KEY health_fund_name_UNIQUE (name)
+   version INT DEFAULT 0 NOT NULL
 )
+
+
 

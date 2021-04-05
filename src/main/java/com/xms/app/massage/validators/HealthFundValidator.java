@@ -32,6 +32,8 @@ public class HealthFundValidator implements Validator {
             final HealthFund healthFund = (HealthFund) target;
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", null,
                     messageSource.getMessage("healthFund.name.not.empty", null, Locale.getDefault()));
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", null,
+                    messageSource.getMessage("healthFund.description.not.empty", null, Locale.getDefault()));
             if (healthFundService.findByName(healthFund.getName().toLowerCase()).isPresent()) {
                 errors.rejectValue("name", null, messageSource.getMessage("healthFund.name.already.exist", null, Locale.getDefault()));
             }
