@@ -30,6 +30,10 @@ public class Treatment {
     )
     private List<Item> items;
 
+    @ManyToOne
+    @JoinColumn(name = "practitioner", nullable = false)
+    private Practitioner practitioner;
+
     private BigDecimal expenseAmt;
 
     private BigDecimal claimedAmt;

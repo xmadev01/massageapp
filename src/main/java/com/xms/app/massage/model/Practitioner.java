@@ -4,10 +4,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 @Entity
 @Data
-public class Practitioner {
+public class Practitioner implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -31,19 +31,19 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="m-sm-4">
-                                        <form id="assignPractitionerFrm" name="assignPractitionerFrm" method="post" th:action="@{/assignPractitioner}">
+                                        <form id="assignPractitionerFrm" name="assignPractitionerFrm" method="post" th:action="@{/assignPractitioner}" th:object="${treatmentVo}">
                                             <input th:type="hidden" th:id="customerId" />
                                             <div class="mb-3">
                                                 <label class="form-label">Customer Name</label>
-                                                <input class="form-control" type="text" id="customerName" name="customerName" />
+                                                <input class="form-control" type="text" th:field="*{customerName}" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Treatment Date</label>
-                                                <input class="form-control" type="text" id="serviceDate" name="serviceDate" th:value="${serviceDate}" readonly autocomplete="off" />
+                                                <input class="form-control" type="text" id="serviceDate" name="serviceDate" th:field="*{serviceDate}" readonly autocomplete="off" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Assignee</label>
-                                                <select class="form-control" th:name="practitionerId">
+                                                <select class="form-control" th:field="*{practitionerId}">
                                                     <option value="">Please select...</option>
                                                     <option th:each="practitioner : ${practitioners}"
                                                             th:value="${practitioner.id}" th:text="${practitioner.fullName}"></option>
@@ -53,7 +53,7 @@
                                                 <label class="form-label">Treatments</label>
                                             </div>
                                             <div>
-                                                <label class="form-check form-check-inline" th:each="item : ${items}">
+                                                <label class="form-check form-check-inline" th:each="item  : ${items}">
                                                     <input class="form-check-input" type="checkbox" name="itemIds" th:value="${item.id}" />
                                                     <span class="form-check-label" th:text="${item.name} + ' - ' + ${item.duration} + 'min'"></span>
                                                 </label>
