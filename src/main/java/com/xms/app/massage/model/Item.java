@@ -27,4 +27,9 @@ public class Item implements Serializable {
 
     @Version
     private long version;
+
+    @Transient
+    public String getDisplayName() {
+        return name + " - " + duration + "min";
+    }
 }

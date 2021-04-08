@@ -5,14 +5,17 @@ import com.xms.app.massage.model.Item;
 import com.xms.app.massage.model.Treatment;
 import com.xms.app.massage.paging.*;
 import com.xms.app.massage.repository.TreatmentRepository;
+import com.xms.app.massage.transformer.ConsultationTransformer;
 import com.xms.app.massage.utils.CommonUtils;
 import com.xms.app.massage.vo.ConsultationVO;
 import com.xms.app.massage.vo.TreatmentVO;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,6 +38,10 @@ public class TreatmentServiceImpl implements TreatmentService {
     private ItemService itemService;
     @Autowired
     private PractitionerService practitionerService;
+    @Autowired
+    private ConsultationTransformer consultationTransformer;
+    @Autowired
+    private EntityManager em;
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
@@ -51,6 +58,7 @@ public class TreatmentServiceImpl implements TreatmentService {
     public Page<ConsultationVO> getPage(PagingRequest pagingRequest) {
 
         List<Treatment> treatments = new ArrayList<>();
+        List<ConsultationVO> consultations = new ArrayList<>();
 
         //Sorting ...
         Order order = pagingRequest.getOrder().get(0);
@@ -61,6 +69,12 @@ public class TreatmentServiceImpl implements TreatmentService {
                 treatments = treatmentRepository.findAllOrderByCustomerNameAsc();
             } else if ("practitionerName".equals(column.getData())) {
                 treatments = treatmentRepository.findAll(Sort.by(Sort.Direction.ASC, "practitioner"));
+            } else if ("item".equals(column.getData())) {
+                consultations = findAllOrderByItemAsc();
+            } else if ("paidAmt".equals(column.getData())) {
+                consultations = findAllOrderByPaidAmtAsc();
+            } else if ("claimedAmt".equals(column.getData())) {
+                consultations = findAllOrderByClaimedAmtAsc();
             } else {
                 treatments = treatmentRepository.findAll(Sort.by(Sort.Direction.ASC, column.getData()));
             }
@@ -69,26 +83,20 @@ public class TreatmentServiceImpl implements TreatmentService {
                 treatments = treatmentRepository.findAllOrderByCustomerNameDesc();
             } else if ("practitionerName".equals(column.getData())) {
                 treatments = treatmentRepository.findAll(Sort.by(Sort.Direction.DESC, "practitioner"));
+            } else if ("item".equals(column.getData())) {
+                consultations = findAllOrderByItemDesc();
+            } else if ("paidAmt".equals(column.getData())) {
+                consultations = findAllOrderByPaidAmtDesc();
+            } else if ("claimedAmt".equals(column.getData())) {
+                consultations = findAllOrderByClaimedAmtDesc();
             } else {
                 treatments = treatmentRepository.findAll(Sort.by(Sort.Direction.DESC, column.getData()));
             }
         }
 
-        final List<ConsultationVO> consultations = new ArrayList<>();
-        treatments.forEach(treatment -> {
-            treatment.getItems().forEach(item -> {
-                ConsultationVO consultationVo = new ConsultationVO();
-                consultationVo.setServiceDate(treatment.getServiceDate().format(dtf));
-                consultationVo.setCustomerName(treatment.getCustomer().getFullName());
-                consultationVo.setItem(item);
-                consultationVo.setPaidAmt(CommonUtils.formatCurrencyData(item.getPrice()));
-                consultationVo.setClaimedAmt(CommonUtils.formatCurrencyData(item.getPrice()
-                                                        .multiply(BigDecimal.valueOf(treatment.getCustomer().getRebateRate()))
-                                                        .divide(BigDecimal.valueOf(100))));
-                consultations.add(consultationVo);
-            });
-
-        });
+        if (consultations.isEmpty()) {
+            consultations = populateConsultationVO(treatments);
+        }
 
         final List<ConsultationVO> filteredConsultations = consultations.stream()
                 .filter(filterConsultation(pagingRequest))
@@ -113,8 +121,8 @@ public class TreatmentServiceImpl implements TreatmentService {
 
         String value = pagingRequest.getSearch().getValue();
 
-        return consultationVo -> consultationVo.getCustomerName().toLowerCase().contains(value.toLowerCase())
-                || consultationVo.getServiceDate().contains(value.toLowerCase());
+        return consultationVo -> consultationVo.getCustomerName().toLowerCase().startsWith(value.toLowerCase())
+                || consultationVo.getServiceDate().startsWith(value.toLowerCase());
     }
 
     @Override
@@ -137,11 +145,106 @@ public class TreatmentServiceImpl implements TreatmentService {
         }
     }
 
+    public List<ConsultationVO> findAllOrderByItemAsc() {
+        String querySQL = new StringBuilder()
+                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
+                .append("inner join item i on ti.item_id = i.id ")
+                .append("inner join customer c on t.customer = c.id ")
+                .append("order by i.name asc")
+                .toString();
+        return em.unwrap(Session.class)
+                     .createNativeQuery(querySQL)
+                     .setResultTransformer(consultationTransformer).list();
+
+    }
+
+    public List<ConsultationVO> findAllOrderByItemDesc() {
+        String querySQL = new StringBuilder()
+                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
+                .append("inner join item i on ti.item_id = i.id ")
+                .append("inner join customer c on t.customer = c.id ")
+                .append("order by i.name desc")
+                .toString();
+        return em.unwrap(Session.class)
+                .createNativeQuery(querySQL)
+                .setResultTransformer(consultationTransformer).list();
+    }
+
+    public List<ConsultationVO> findAllOrderByPaidAmtAsc() {
+        String querySQL = new StringBuilder()
+                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
+                .append("inner join item i on ti.item_id = i.id ")
+                .append("inner join customer c on t.customer = c.id ")
+                .append("order by paidAmt asc")
+                .toString();
+        return em.unwrap(Session.class)
+                .createNativeQuery(querySQL)
+                .setResultTransformer(consultationTransformer).list();
+
+    }
+
+    public List<ConsultationVO> findAllOrderByPaidAmtDesc() {
+        String querySQL = new StringBuilder()
+                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
+                .append("inner join item i on ti.item_id = i.id ")
+                .append("inner join customer c on t.customer = c.id ")
+                .append("order by paidAmt desc")
+                .toString();
+        return em.unwrap(Session.class)
+                .createNativeQuery(querySQL)
+                .setResultTransformer(consultationTransformer).list();
+
+    }
+
+    public List<ConsultationVO> findAllOrderByClaimedAmtAsc() {
+        String querySQL = new StringBuilder()
+                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
+                .append("inner join item i on ti.item_id = i.id ")
+                .append("inner join customer c on t.customer = c.id ")
+                .append("order by claimedAmt asc")
+                .toString();
+        return em.unwrap(Session.class)
+                .createNativeQuery(querySQL)
+                .setResultTransformer(consultationTransformer).list();
+
+    }
+
+    public List<ConsultationVO> findAllOrderByClaimedAmtDesc() {
+        String querySQL = new StringBuilder()
+                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
+                .append("inner join item i on ti.item_id = i.id ")
+                .append("inner join customer c on t.customer = c.id ")
+                .append("order by claimedAmt desc")
+                .toString();
+        return em.unwrap(Session.class)
+                .createNativeQuery(querySQL)
+                .setResultTransformer(consultationTransformer).list();
+
+    }
+
     private BigDecimal getExpenseAmt(final List<Item> items) {
         return items.stream()
                 .map(Item::getPrice)
                 .reduce(BigDecimal.ZERO, (subtotal, price) -> subtotal.add(price));
 
+    }
+
+    private List<ConsultationVO> populateConsultationVO(List<Treatment> treatments) {
+        final List<ConsultationVO> consultations = new ArrayList<>();
+        treatments.forEach(treatment ->
+                treatment.getItems().forEach(item -> {
+                    ConsultationVO consultationVo = new ConsultationVO();
+                    consultationVo.setServiceDate(treatment.getServiceDate().format(dtf));
+                    consultationVo.setCustomerName(treatment.getCustomer().getFullName());
+                    consultationVo.setItem(item);
+                    consultationVo.setPractitionerName(treatment.getPractitioner().getFullName());
+                    consultationVo.setPaidAmt(CommonUtils.formatCurrencyData(item.getPrice()));
+                    consultationVo.setClaimedAmt(CommonUtils.formatCurrencyData(item.getPrice()
+                            .multiply(BigDecimal.valueOf(treatment.getCustomer().getRebateRate()))
+                            .divide(BigDecimal.valueOf(100))));
+                    consultations.add(consultationVo);
+                }));
+        return consultations;
     }
 
 }

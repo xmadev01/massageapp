@@ -1,5 +1,6 @@
 package com.xms.app.massage.repository;
 
+import com.xms.app.massage.model.Item;
 import com.xms.app.massage.model.Treatment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
