@@ -32,7 +32,7 @@
                         </div>
                         <div class="row">
                             <div class="mt-5 mb-5">
-                                <table id="treatmentTbl" class="table table-bordered table-responsive display dataTable" style="width: 100%">
+                                <table id="treatmentTbl" class="table table-bordered display dataTable" style="width: 100%">
                                     <thead>
                                     <tr>
                                         <th>Date</th>
@@ -43,6 +43,14 @@
                                         <th>Claimed Amount</th>
                                     </tr>
                                     </thead>
+                                    <tbody></tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="4" style="text-align:right">Total:</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>

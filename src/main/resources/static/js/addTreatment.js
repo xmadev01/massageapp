@@ -20,4 +20,11 @@ $(document ).ready(function() {
         form.submit();
     });
 
+    $('#btnCancel').click(function() {
+        var form = document.getElementById('assignPractitionerFrm');
+        form.method = 'GET';
+        form.action = '/listTreatments';
+        form.submit();
+    });
+
 });

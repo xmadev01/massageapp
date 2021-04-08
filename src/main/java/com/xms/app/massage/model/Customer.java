@@ -2,6 +2,7 @@ package com.xms.app.massage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -66,7 +67,11 @@ public class Customer {
 
     @Transient
     public String getFullName() {
-        return firstName + " " + middleName + " " + lastName;
+        if (StringUtils.isNotBlank(middleName)) {
+            return firstName + " " + middleName + " " + lastName;
+        } else {
+            return firstName + " " + lastName;
+        }
     }
 
 }

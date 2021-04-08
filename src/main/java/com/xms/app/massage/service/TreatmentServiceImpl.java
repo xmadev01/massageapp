@@ -5,6 +5,7 @@ import com.xms.app.massage.model.Item;
 import com.xms.app.massage.model.Treatment;
 import com.xms.app.massage.paging.*;
 import com.xms.app.massage.repository.TreatmentRepository;
+import com.xms.app.massage.utils.CommonUtils;
 import com.xms.app.massage.vo.ConsultationVO;
 import com.xms.app.massage.vo.TreatmentVO;
 import org.apache.commons.lang3.StringUtils;
@@ -80,8 +81,10 @@ public class TreatmentServiceImpl implements TreatmentService {
                 consultationVo.setServiceDate(treatment.getServiceDate().format(dtf));
                 consultationVo.setCustomerName(treatment.getCustomer().getFullName());
                 consultationVo.setItem(item);
-                consultationVo.setPaidAmt(item.getPrice());
-                consultationVo.setClaimedAmt(item.getPrice().multiply(BigDecimal.valueOf(treatment.getCustomer().getRebateRate())).divide(BigDecimal.valueOf(100)));
+                consultationVo.setPaidAmt(CommonUtils.formatCurrencyData(item.getPrice()));
+                consultationVo.setClaimedAmt(CommonUtils.formatCurrencyData(item.getPrice()
+                                                        .multiply(BigDecimal.valueOf(treatment.getCustomer().getRebateRate()))
+                                                        .divide(BigDecimal.valueOf(100))));
                 consultations.add(consultationVo);
             });
 
@@ -110,8 +113,8 @@ public class TreatmentServiceImpl implements TreatmentService {
 
         String value = pagingRequest.getSearch().getValue();
 
-        return consultationVo -> consultationVo.getCustomerName().toLowerCase().contains(value)
-                || consultationVo.getServiceDate().contains(value);
+        return consultationVo -> consultationVo.getCustomerName().toLowerCase().contains(value.toLowerCase())
+                || consultationVo.getServiceDate().contains(value.toLowerCase());
     }
 
     @Override
@@ -140,4 +143,5 @@ public class TreatmentServiceImpl implements TreatmentService {
                 .reduce(BigDecimal.ZERO, (subtotal, price) -> subtotal.add(price));
 
     }
+
 }
