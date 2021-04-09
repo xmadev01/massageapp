@@ -23,12 +23,43 @@
                     </div>
                     <div th:insert="fragments/messagediv.html :: messagediv" />
                     <form id="listTreatmentFrm" name="listTreatmentFrm" method="post">
+                        <input th:type="hidden" th:id="viewMode" th:name="viewMode" th:value="${viewMode}" />
+                        <input th:type="hidden" th:id="currentDay" th:name="currentDay" th:value="${currentDay}" />
+                        <input th:type="hidden" th:id="currentMonth" th:name="currentMonth" th:value="${currentMonth}" />
+                        <input th:type="hidden" th:id="currentYear" th:name="currentYear" th:value="${currentYear}" />
                         <div class="mt-3">
                             <a id="btnAdd" href="#" class="btn btn-info">Add</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="btnDelete" href="#" class="btn btn-info">Delete</a>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm">
+                                </div>
+                                <div class="col-sm">
+                                    <nav>
+                                        <ul class="pagination">
+                                            <li class="page-item">
+                                                <a th:id="prevView" class="calendar-nav-link" href="#" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item"><a th:id="dayView" th:classappend="${viewMode == 'day'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Day</a></li>
+                                            <li class="page-item"><a th:id="monthView" th:classappend="${viewMode == 'month'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Month</a></li>
+                                            <li class="page-item"><a th:id="yearView" th:classappend="${viewMode == 'year'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Year</a></li>
+                                            <li class="page-item">
+                                                <a th:id="nextView" class="calendar-nav-link" href="#" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="col-sm">
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="mt-5 mb-5">

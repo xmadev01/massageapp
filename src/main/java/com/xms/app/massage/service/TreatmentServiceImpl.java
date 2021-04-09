@@ -12,12 +12,12 @@ import com.xms.app.massage.vo.TreatmentVO;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,6 +43,7 @@ public class TreatmentServiceImpl implements TreatmentService {
     @Autowired
     private EntityManager em;
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public Optional<Treatment> findById(long id) {
@@ -64,33 +65,56 @@ public class TreatmentServiceImpl implements TreatmentService {
         Order order = pagingRequest.getOrder().get(0);
         int columnIndex = order.getColumn();
         Column column = pagingRequest.getColumns().get(columnIndex);
+        LocalDate startDate = null, endDate = null;
+        String startDateStr = null, endDateStr = null;
+
+        if ("day".equals(pagingRequest.getViewMode())) {
+            LocalDate currentDay = pagingRequest.getCurrentDay();
+            startDate = endDate = currentDay;
+            startDateStr = endDateStr = currentDay.format(dtf1);
+        } else if ("month".equals(pagingRequest.getViewMode())) {
+            int currentMonth = Integer.parseInt(pagingRequest.getCurrentMonth());
+            int currentYear = Integer.parseInt(pagingRequest.getCurrentYear());
+            startDate = LocalDate.of(currentYear, currentMonth, 1);
+            endDate = LocalDate.of(currentYear, currentMonth, 1).plusMonths(1).minusDays(1);
+            startDateStr = startDate.format(dtf1);
+            endDateStr = endDate.format(dtf1);
+        } else if ("year".equals(pagingRequest.getViewMode())) {
+            int currentYear = Integer.parseInt(pagingRequest.getCurrentYear());
+            startDate = LocalDate.of(currentYear, 1, 1);
+            endDate = LocalDate.of(currentYear,12, 31);
+            startDateStr = startDate.format(dtf1);
+            endDateStr = endDate.format(dtf1);
+        }
+
         if (pagingRequest.getOrder().get(0).getDir() == Direction.asc) {
             if ("customerName".equals(column.getData())) {
-                treatments = treatmentRepository.findAllOrderByCustomerNameAsc();
+                treatments = treatmentRepository.findAllOrderByCustomerNameAsc(startDate, endDate);
             } else if ("practitionerName".equals(column.getData())) {
-                treatments = treatmentRepository.findAll(Sort.by(Sort.Direction.ASC, "practitioner"));
+                treatments = treatmentRepository.findAllOrderByPractitionerAsc(startDate, endDate);
             } else if ("item".equals(column.getData())) {
-                consultations = findAllOrderByItemAsc();
+                consultations = findAllOrderByItemAsc(startDateStr, endDateStr);
             } else if ("paidAmt".equals(column.getData())) {
-                consultations = findAllOrderByPaidAmtAsc();
+                consultations = findAllOrderByPaidAmtAsc(startDateStr, endDateStr);
             } else if ("claimedAmt".equals(column.getData())) {
-                consultations = findAllOrderByClaimedAmtAsc();
-            } else {
-                treatments = treatmentRepository.findAll(Sort.by(Sort.Direction.ASC, column.getData()));
+                consultations = findAllOrderByClaimedAmtAsc(startDateStr, endDateStr);
+            } else if ("serviceDate".equals(column.getData())) {
+                treatments = treatmentRepository.findAllOrderByServiceDateAsc(startDate, endDate);
             }
         } else if (pagingRequest.getOrder().get(0).getDir() == Direction.desc) {
             if ("customerName".equals(column.getData())) {
-                treatments = treatmentRepository.findAllOrderByCustomerNameDesc();
+                treatments = treatmentRepository.findAllOrderByCustomerNameDesc(startDate, endDate);
             } else if ("practitionerName".equals(column.getData())) {
-                treatments = treatmentRepository.findAll(Sort.by(Sort.Direction.DESC, "practitioner"));
+                treatments = treatmentRepository.findAllOrderByPractitionerDesc(startDate, endDate);
             } else if ("item".equals(column.getData())) {
-                consultations = findAllOrderByItemDesc();
+                consultations = findAllOrderByItemDesc(startDateStr, endDateStr);
             } else if ("paidAmt".equals(column.getData())) {
-                consultations = findAllOrderByPaidAmtDesc();
+                consultations = findAllOrderByPaidAmtDesc(startDateStr, endDateStr);
             } else if ("claimedAmt".equals(column.getData())) {
-                consultations = findAllOrderByClaimedAmtDesc();
-            } else {
-                treatments = treatmentRepository.findAll(Sort.by(Sort.Direction.DESC, column.getData()));
+                consultations = findAllOrderByClaimedAmtDesc(startDateStr, endDateStr);
+            } else if ("serviceDate".equals(column.getData())) {
+                final LocalDate currentDay = pagingRequest.getCurrentDay();
+                treatments = treatmentRepository.findAllOrderByServiceDateDesc(startDate, endDate);
             }
         }
 
@@ -128,7 +152,12 @@ public class TreatmentServiceImpl implements TreatmentService {
     @Override
     public void assignCustomerToPractitioner(final TreatmentVO treatmentVO) {
         final String[] names = treatmentVO.getCustomerName().split(" ");
-        final Optional<Customer> customerOpt = customerService.findByFirstNameLastName(names[0], names[1], names[2]);
+        Optional<Customer> customerOpt;
+        if (names.length == 3) {
+            customerOpt = customerService.findByFirstNameLastName(names[0], names[1], names[2]);
+        } else {
+            customerOpt = customerService.findByFirstNameLastName(names[0], "", names[1]);
+        }
         if (customerOpt.isPresent()) {
             final List<Item> items = new ArrayList<>();
             treatmentVO.getItemIds().forEach(itemId -> items.add(itemService.findById(itemId).get()));
@@ -145,11 +174,12 @@ public class TreatmentServiceImpl implements TreatmentService {
         }
     }
 
-    public List<ConsultationVO> findAllOrderByItemAsc() {
+    public List<ConsultationVO> findAllOrderByItemAsc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
                 .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
                 .append("inner join item i on ti.item_id = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
+                .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
                 .append("order by i.name asc")
                 .toString();
         return em.unwrap(Session.class)
@@ -158,11 +188,12 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     }
 
-    public List<ConsultationVO> findAllOrderByItemDesc() {
+    public List<ConsultationVO> findAllOrderByItemDesc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
                 .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
                 .append("inner join item i on ti.item_id = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
+                .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
                 .append("order by i.name desc")
                 .toString();
         return em.unwrap(Session.class)
@@ -170,11 +201,12 @@ public class TreatmentServiceImpl implements TreatmentService {
                 .setResultTransformer(consultationTransformer).list();
     }
 
-    public List<ConsultationVO> findAllOrderByPaidAmtAsc() {
+    public List<ConsultationVO> findAllOrderByPaidAmtAsc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
                 .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
                 .append("inner join item i on ti.item_id = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
+                .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
                 .append("order by paidAmt asc")
                 .toString();
         return em.unwrap(Session.class)
@@ -183,11 +215,12 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     }
 
-    public List<ConsultationVO> findAllOrderByPaidAmtDesc() {
+    public List<ConsultationVO> findAllOrderByPaidAmtDesc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
                 .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
                 .append("inner join item i on ti.item_id = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
+                .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
                 .append("order by paidAmt desc")
                 .toString();
         return em.unwrap(Session.class)
@@ -196,11 +229,12 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     }
 
-    public List<ConsultationVO> findAllOrderByClaimedAmtAsc() {
+    public List<ConsultationVO> findAllOrderByClaimedAmtAsc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
                 .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
                 .append("inner join item i on ti.item_id = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
+                .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
                 .append("order by claimedAmt asc")
                 .toString();
         return em.unwrap(Session.class)
@@ -209,11 +243,12 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     }
 
-    public List<ConsultationVO> findAllOrderByClaimedAmtDesc() {
+    public List<ConsultationVO> findAllOrderByClaimedAmtDesc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
                 .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
                 .append("inner join item i on ti.item_id = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
+                .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
                 .append("order by claimedAmt desc")
                 .toString();
         return em.unwrap(Session.class)

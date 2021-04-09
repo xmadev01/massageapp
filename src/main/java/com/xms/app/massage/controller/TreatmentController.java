@@ -68,7 +68,9 @@ public class TreatmentController {
     }
 
     @GetMapping("/listTreatments")
-    public String list() {
+    public String list(Model model) {
+        model.addAttribute("viewMode", "day");
+        model.addAttribute("currentDay", LocalDate.now());
         return "treatments";
     }
 
