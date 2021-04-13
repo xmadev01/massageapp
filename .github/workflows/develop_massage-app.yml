@@ -51,3 +51,4 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_686bf7ec64144fadb4e8bf9144a74f7e }}
         package: '*.jar'
+        startup-command: java -jar massage-0.0.1-SNAPSHOT.jar
