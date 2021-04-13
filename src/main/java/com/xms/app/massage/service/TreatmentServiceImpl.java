@@ -9,7 +9,6 @@ import com.xms.app.massage.transformer.ConsultationTransformer;
 import com.xms.app.massage.utils.CommonUtils;
 import com.xms.app.massage.vo.ConsultationVO;
 import com.xms.app.massage.vo.TreatmentVO;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,8 +88,8 @@ public class TreatmentServiceImpl implements TreatmentService {
         if (pagingRequest.getOrder().get(0).getDir() == Direction.asc) {
             if ("customerName".equals(column.getData())) {
                 treatments = treatmentRepository.findAllOrderByCustomerNameAsc(startDate, endDate);
-            } else if ("practitionerName".equals(column.getData())) {
-                treatments = treatmentRepository.findAllOrderByPractitionerAsc(startDate, endDate);
+            } else if ("healthFund".equals(column.getData())) {
+                treatments = treatmentRepository.findAllOrderByHealthFundAsc(startDate, endDate);
             } else if ("item".equals(column.getData())) {
                 consultations = findAllOrderByItemAsc(startDateStr, endDateStr);
             } else if ("paidAmt".equals(column.getData())) {
@@ -104,8 +102,8 @@ public class TreatmentServiceImpl implements TreatmentService {
         } else if (pagingRequest.getOrder().get(0).getDir() == Direction.desc) {
             if ("customerName".equals(column.getData())) {
                 treatments = treatmentRepository.findAllOrderByCustomerNameDesc(startDate, endDate);
-            } else if ("practitionerName".equals(column.getData())) {
-                treatments = treatmentRepository.findAllOrderByPractitionerDesc(startDate, endDate);
+            } else if ("healthFund".equals(column.getData())) {
+                treatments = treatmentRepository.findAllOrderByHealthFundDesc(startDate, endDate);
             } else if ("item".equals(column.getData())) {
                 consultations = findAllOrderByItemDesc(startDateStr, endDateStr);
             } else if ("paidAmt".equals(column.getData())) {
@@ -113,40 +111,29 @@ public class TreatmentServiceImpl implements TreatmentService {
             } else if ("claimedAmt".equals(column.getData())) {
                 consultations = findAllOrderByClaimedAmtDesc(startDateStr, endDateStr);
             } else if ("serviceDate".equals(column.getData())) {
-                final LocalDate currentDay = pagingRequest.getCurrentDay();
                 treatments = treatmentRepository.findAllOrderByServiceDateDesc(startDate, endDate);
             }
         }
 
         if (consultations.isEmpty()) {
-            consultations = populateConsultationVO(treatments);
+            consultations = populateConsultationVO(
+                    treatments.stream()
+                              .filter(treatment -> treatment.getCustomer().getFullName().toLowerCase().startsWith(pagingRequest.getSearch().getValue()))
+                              .collect(Collectors.toList())
+            );
         }
 
         final List<ConsultationVO> filteredConsultations = consultations.stream()
-                .filter(filterConsultation(pagingRequest))
                 .skip(pagingRequest.getStart())
                 .limit(pagingRequest.getLength())
                 .collect(Collectors.toList());
         long count = consultations.stream()
-                .filter(filterConsultation(pagingRequest))
                 .count();
         Page<ConsultationVO> page = new Page<>(filteredConsultations);
         page.setRecordsFiltered((int) count);
         page.setRecordsTotal((int) count);
         page.setDraw(pagingRequest.getDraw());
         return page;
-    }
-
-    private Predicate<ConsultationVO> filterConsultation(PagingRequest pagingRequest) {
-        if (pagingRequest.getSearch() == null || StringUtils.isEmpty(pagingRequest.getSearch()
-                .getValue())) {
-            return consultationVo -> true;
-        }
-
-        String value = pagingRequest.getSearch().getValue();
-
-        return consultationVo -> consultationVo.getCustomerName().toLowerCase().startsWith(value.toLowerCase())
-                || consultationVo.getServiceDate().startsWith(value.toLowerCase());
     }
 
     @Override
@@ -159,25 +146,26 @@ public class TreatmentServiceImpl implements TreatmentService {
             customerOpt = customerService.findByFirstNameLastName(names[0], "", names[1]);
         }
         if (customerOpt.isPresent()) {
-            final List<Item> items = new ArrayList<>();
-            treatmentVO.getItemIds().forEach(itemId -> items.add(itemService.findById(itemId).get()));
-            final Treatment treatment = new Treatment();
-            treatment.setCustomer(customerOpt.get());
-            treatment.setServiceDate(treatmentVO.getServiceDate());
-            treatment.setPractitioner(practitionerService.loadPractitioner(Long.parseLong(treatmentVO.getPractitionerId())));
-            treatment.setItems(items);
-            treatment.setExpenseAmt(getExpenseAmt(items));
-            treatment.setClaimedAmt(getExpenseAmt(items).multiply(BigDecimal.valueOf(customerOpt.get().getRebateRate().doubleValue()))
-                    .divide(BigDecimal.valueOf(100)));
-            treatment.setCreatedDate(LocalDateTime.now());
-            treatmentRepository.save(treatment);
+            treatmentVO.getItemIds().forEach(itemId -> {
+                final Treatment treatment = new Treatment();
+                final Item item = itemService.findById(itemId).get();
+                treatment.setCustomer(customerOpt.get());
+                treatment.setServiceDate(treatmentVO.getServiceDate());
+                treatment.setPractitioner(practitionerService.loadPractitioner(Long.parseLong(treatmentVO.getPractitionerId())));
+                treatment.setItem(item);
+                treatment.setExpenseAmt(item.getPrice());
+                treatment.setClaimedAmt(item.getPrice().multiply(BigDecimal.valueOf(customerOpt.get().getRebateRate().doubleValue()))
+                        .divide(BigDecimal.valueOf(100)));
+                treatment.setCreatedDate(LocalDateTime.now());
+                treatmentRepository.save(treatment);
+            });
         }
     }
 
     public List<ConsultationVO> findAllOrderByItemAsc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
-                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
-                .append("inner join item i on ti.item_id = i.id ")
+                .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
+                .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
                 .append("order by i.name asc")
@@ -190,8 +178,8 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     public List<ConsultationVO> findAllOrderByItemDesc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
-                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
-                .append("inner join item i on ti.item_id = i.id ")
+                .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
+                .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
                 .append("order by i.name desc")
@@ -203,11 +191,11 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     public List<ConsultationVO> findAllOrderByPaidAmtAsc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
-                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
-                .append("inner join item i on ti.item_id = i.id ")
+                .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
+                .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
-                .append("order by paidAmt asc")
+                .append("order by t.expense_amt asc")
                 .toString();
         return em.unwrap(Session.class)
                 .createNativeQuery(querySQL)
@@ -217,11 +205,11 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     public List<ConsultationVO> findAllOrderByPaidAmtDesc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
-                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
-                .append("inner join item i on ti.item_id = i.id ")
+                .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
+                .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
-                .append("order by paidAmt desc")
+                .append("order by t.expense_amt desc")
                 .toString();
         return em.unwrap(Session.class)
                 .createNativeQuery(querySQL)
@@ -231,11 +219,11 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     public List<ConsultationVO> findAllOrderByClaimedAmtAsc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
-                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
-                .append("inner join item i on ti.item_id = i.id ")
+                .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
+                .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
-                .append("order by claimedAmt asc")
+                .append("order by t.claimed_amt asc")
                 .toString();
         return em.unwrap(Session.class)
                 .createNativeQuery(querySQL)
@@ -245,11 +233,11 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     public List<ConsultationVO> findAllOrderByClaimedAmtDesc(String startDateStr, String endDateStr) {
         String querySQL = new StringBuilder()
-                .append("select t.service_date, t.customer, i.id, t.practitioner, i.price as paidAmt, (i.price * c.rebate_rate / 100) as claimedAmt from treatment t inner join treatment_item ti on t.id = ti.treatment_id ")
-                .append("inner join item i on ti.item_id = i.id ")
+                .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
+                .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
-                .append("order by claimedAmt desc")
+                .append("order by t.claimed_amt desc")
                 .toString();
         return em.unwrap(Session.class)
                 .createNativeQuery(querySQL)
@@ -265,21 +253,95 @@ public class TreatmentServiceImpl implements TreatmentService {
     }
 
     private List<ConsultationVO> populateConsultationVO(List<Treatment> treatments) {
-        final List<ConsultationVO> consultations = new ArrayList<>();
-        treatments.forEach(treatment ->
-                treatment.getItems().forEach(item -> {
-                    ConsultationVO consultationVo = new ConsultationVO();
-                    consultationVo.setServiceDate(treatment.getServiceDate().format(dtf));
-                    consultationVo.setCustomerName(treatment.getCustomer().getFullName());
-                    consultationVo.setItem(item);
-                    consultationVo.setPractitionerName(treatment.getPractitioner().getFullName());
-                    consultationVo.setPaidAmt(CommonUtils.formatCurrencyData(item.getPrice()));
-                    consultationVo.setClaimedAmt(CommonUtils.formatCurrencyData(item.getPrice()
-                            .multiply(BigDecimal.valueOf(treatment.getCustomer().getRebateRate()))
-                            .divide(BigDecimal.valueOf(100))));
-                    consultations.add(consultationVo);
-                }));
+            final List<ConsultationVO> consultations = new ArrayList<>();
+            String customer = null;
+            String healthFund = null;
+            String type = null;
+            int countOfSameInsuranceItem = 0;
+            int countOfAllInsuranceItem = 0;
+            BigDecimal paidAmtCust = BigDecimal.ZERO;
+            BigDecimal claimedAmtCust = BigDecimal.ZERO;
+            BigDecimal paidAmt = BigDecimal.ZERO;
+            BigDecimal claimedAmt = BigDecimal.ZERO;
+
+            for (int i = 0; i < treatments.size(); i ++) {
+
+                final Treatment treatment = treatments.get(i);
+                final Item item = treatment.getItem();
+                final BigDecimal pAmt = treatment.getExpenseAmt();
+                final BigDecimal cAmt = treatment.getClaimedAmt();
+                customer = treatment.getCustomer().getFullName();
+                healthFund = treatment.getCustomer().getHealthFund().getName();
+                type = treatment.getItem().getType().getDisplayName();
+
+                //check if it is the end of group
+                final Treatment nextTreatment = i < treatments.size() - 1 ? treatments.get(i + 1) : null;
+                final String nextCustomer = nextTreatment != null ? nextTreatment.getCustomer().getFullName() : null;
+                final String nextHealthFund = nextTreatment != null ? nextTreatment.getCustomer().getHealthFund().getName() : null;
+                final String nextType = nextTreatment != null ? nextTreatment.getItem().getType().getDisplayName() : null;
+
+                ConsultationVO consultationVo = new ConsultationVO();
+                consultationVo.setServiceDate(treatment.getServiceDate().format(dtf));
+                consultationVo.setCustomerName(customer);
+                consultationVo.setItem(item);
+                consultationVo.setType(type);
+                consultationVo.setHealthFund(healthFund);
+                consultationVo.setPaidAmt(CommonUtils.formatCurrencyData(pAmt));
+                consultationVo.setClaimedAmt(CommonUtils.formatCurrencyData(cAmt));
+
+                paidAmt = paidAmt.add(pAmt);
+                claimedAmt = claimedAmt.add(cAmt);
+                paidAmtCust = paidAmtCust.add(pAmt);
+                claimedAmtCust = claimedAmtCust.add(cAmt);
+                consultations.add(consultationVo);
+                countOfSameInsuranceItem ++;
+                countOfAllInsuranceItem ++;
+
+                if (nextTreatment == null) {
+                    addSubTotalIndividualInsurance(consultations, healthFund, countOfSameInsuranceItem, paidAmt, claimedAmt);
+                    addSubTotalAllInsurance(consultations, countOfAllInsuranceItem, paidAmtCust, claimedAmtCust);
+                    paidAmt = claimedAmt = BigDecimal.ZERO;
+                    paidAmtCust = claimedAmtCust = BigDecimal.ZERO;
+                    countOfSameInsuranceItem = countOfAllInsuranceItem = 0;
+
+                } else if (!nextCustomer.equals(customer)) {
+                    addSubTotalIndividualInsurance(consultations, healthFund, countOfSameInsuranceItem, paidAmt, claimedAmt);
+                    addSubTotalAllInsurance(consultations, countOfAllInsuranceItem, paidAmtCust, claimedAmtCust);
+                    paidAmt = claimedAmt = BigDecimal.ZERO;
+                    paidAmtCust = claimedAmtCust = BigDecimal.ZERO;
+                    countOfSameInsuranceItem = countOfAllInsuranceItem = 0;
+
+                } else if (!nextHealthFund.equals(healthFund)) {
+                    addSubTotalIndividualInsurance(consultations, healthFund, countOfSameInsuranceItem, paidAmt, claimedAmt);
+                    paidAmt = claimedAmt = BigDecimal.ZERO;
+                    countOfSameInsuranceItem = 0;
+
+                } else if (!nextType.equals(type)) {
+                    addSubTotalIndividualInsurance(consultations, healthFund, countOfSameInsuranceItem, paidAmt, claimedAmt);
+                    paidAmt = claimedAmt = BigDecimal.ZERO;
+                    countOfSameInsuranceItem = 0;
+
+                }
+        }
         return consultations;
+    }
+
+    private void addSubTotalIndividualInsurance(List<ConsultationVO> consultations, String healthFund,
+                                                int countOfItem, BigDecimal paidAmt, BigDecimal claimedAmt) {
+        ConsultationVO subtotalVo = new ConsultationVO();
+        subtotalVo.setHealthFund(healthFund + " Total(" + countOfItem + "):");
+        subtotalVo.setPaidAmt(CommonUtils.formatCurrencyData(paidAmt));
+        subtotalVo.setClaimedAmt(CommonUtils.formatCurrencyData(claimedAmt));
+        consultations.add(subtotalVo);
+    }
+
+    private void addSubTotalAllInsurance(List<ConsultationVO> consultations, int countOfItem,
+                                         BigDecimal paidAmtCust, BigDecimal claimedAmtCust) {
+        ConsultationVO subtotalVo = new ConsultationVO();
+        subtotalVo.setHealthFund("All Insurance Total(" + countOfItem + "):");
+        subtotalVo.setPaidAmt(CommonUtils.formatCurrencyData(paidAmtCust));
+        subtotalVo.setClaimedAmt(CommonUtils.formatCurrencyData(claimedAmtCust));
+        consultations.add(subtotalVo);
     }
 
 }

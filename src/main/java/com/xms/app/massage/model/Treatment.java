@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
@@ -22,13 +21,9 @@ public class Treatment {
 
     private LocalDate serviceDate;
 
-    @ManyToMany
-    @JoinTable(
-            name="Treatment_Item",
-            joinColumns = @JoinColumn(name = "treatment_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
-    private List<Item> items;
+    @OneToOne
+    @JoinColumn(name = "item")
+    private Item item;
 
     @ManyToOne
     @JoinColumn(name = "practitioner", nullable = false)

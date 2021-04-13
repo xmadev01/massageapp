@@ -50,6 +50,7 @@ CREATE TABLE Treatment (
    id IDENTITY PRIMARY KEY,
    customer INT NOT NULL,
    service_date TIMESTAMP NOT NULL,
+   item INT NOT NULL,
    practitioner INT NOT NULL,
    expense_amt DECIMAL NOT NULL,
    claimed_amt DECIMAL NOT NULL,
@@ -58,7 +59,8 @@ CREATE TABLE Treatment (
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL,
    foreign key (customer) references Customer(id),
-   foreign key (practitioner) references Practitioner(id)
+   foreign key (practitioner) references Practitioner(id),
+   foreign key (item) references Item(id)
 )
 
 CREATE TABLE Practitioner (
@@ -75,19 +77,20 @@ CREATE TABLE Item (
    id IDENTITY PRIMARY KEY,
    name VARCHAR(100) NOT NULL,
    duration INT NOT NULL,
+   type VARCHAR(100) NOT NULL,
    price DOUBLE NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
 )
 
-CREATE TABLE Treatment_Item (
+/*CREATE TABLE Treatment_Item (
 
    id IDENTITY PRIMARY KEY,
    treatment_id INT NOT NULL,
    item_id INT NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
-)
+)*/
 
 
 

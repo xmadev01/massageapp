@@ -1,5 +1,6 @@
 package com.xms.app.massage.model;
 
+import com.xms.app.massage.enums.ServiceTypeEnum;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,6 +20,10 @@ public class Item implements Serializable {
 
     @Column(nullable = false)
     private int duration;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ServiceTypeEnum type;
 
     @Column(nullable = false)
     private BigDecimal price;

@@ -4,14 +4,7 @@ var months = [ "January", "February", "March", "April", "May", "June",
 
 $(document ).ready(function() {
 
-    var treatmentTbl = applyTreatmentDataTable();
-
-    $('#btnAdd').click(function () {
-        var form = document.getElementById('listTreatmentFrm');
-        form.method = 'GET';
-        form.action = '/addTreatment/';
-        form.submit();
-    })
+    applyTreatmentDataTable();
 
     $('#dayView').click(function () {
         selectView('day');
@@ -50,8 +43,8 @@ function applyTreatmentDataTable() {
         processing: true,
         serverSide: true,
         pageLength: 50,
-        dom: 'Bfrtip',
-        order: [[1, 'asc'], [3, 'asc'], [2, 'asc'], [0, 'asc']],
+        dom: 'Blfrtip',
+        order: [[0, 'asc'], [1, 'asc'], [3, 'asc'], [2, 'asc']],
         ajax: {
             url: "/filterTreatments",
             type: "POST",
@@ -79,13 +72,26 @@ function applyTreatmentDataTable() {
         ],
         columnDefs: [
             {
+                "sortable": false,
+                "targets": 0
+            },
+            {
+                "sortable": false,
+                "targets": 1
+            },
+            {
                 "render": function(data, type, row) {
                     if (data) {
                         return data.name + ' - ' + data.duration + 'min';
                     }
                     return '';
                 },
+                "sortable": false,
                 "targets": 2
+            },
+            {
+                "sortable": false,
+                "targets": 3
             },
             {
                 "render": function(data, type, row) {
@@ -95,8 +101,17 @@ function applyTreatmentDataTable() {
                        return data;
                    }
                 },
+                "sortable": false,
                 "targets": 4
-            }
+            },
+            {
+                "sortable": false,
+                "targets": 5
+            },
+            {
+                "sortable": false,
+                "targets": 6
+            },
         ],
         footerCallback: function (row, data, start, end, display) {
             var api = this.api(), data;

@@ -9,7 +9,8 @@ public class ConsultationVO {
     private String serviceDate;
     private String customerName;
     private Item item;
-    private String practitionerName;
+    private String type;
+    private String healthFund;
     private String paidAmt;
     private String claimedAmt;
 }

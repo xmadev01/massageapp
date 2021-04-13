@@ -41,19 +41,20 @@
                                 <div class="col-sm">
                                     <nav>
                                         <ul class="pagination">
-                                            <li class="page-item">
+                                            <li>
                                                 <a th:id="prevView" class="calendar-nav-link" href="#" aria-label="Previous">
                                                     <span aria-hidden="true">&laquo;</span>
                                                 </a>
                                             </li>
-                                            <li class="page-item"><a th:id="dayView" th:classappend="${viewMode == 'day'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Day</a></li>
-                                            <li class="page-item"><a th:id="monthView" th:classappend="${viewMode == 'month'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Month</a></li>
-                                            <li class="page-item"><a th:id="yearView" th:classappend="${viewMode == 'year'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Year</a></li>
-                                            <li class="page-item">
+                                            <li><a th:id="dayView" th:classappend="${viewMode == 'day'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Day</a></li>
+                                            <li><a th:id="monthView" th:classappend="${viewMode == 'month'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Month</a></li>
+                                            <li><a th:id="yearView" th:classappend="${viewMode == 'year'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Year</a></li>
+                                            <li>
                                                 <a th:id="nextView" class="calendar-nav-link" href="#" aria-label="Next">
                                                     <span aria-hidden="true">&raquo;</span>
                                                 </a>
                                             </li>
+                                            <li th:id="dmy" class="calendar-nav-item" th:text="${currentDay}"></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -69,7 +70,8 @@
                                         <th>Date</th>
                                         <th>Name</th>
                                         <th>Item</th>
-                                        <th>Practitioner</th>
+                                        <th>Type</th>
+                                        <th>Health Fund</th>
                                         <th>Paid Amount</th>
                                         <th>Claimed Amount</th>
                                     </tr>
@@ -77,7 +79,7 @@
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="4" style="text-align:right">Total:</th>
+                                            <th colspan="5" style="text-align:right">Total:</th>
                                             <th></th>
                                             <th></th>
                                         </tr>

@@ -1,9 +1,8 @@
 package com.xms.app.massage.enums;
 
 public enum ServiceTypeEnum {
-    HEAD("Head"),
-    FOOT("Foot"),
-    FULL_BODY("Full Body"),
+
+    MASSAGE("Massage"),
     ACUPUNCTURE("Acupuncture");
 
     private String displayName;
