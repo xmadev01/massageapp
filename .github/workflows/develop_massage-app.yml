@@ -46,4 +46,4 @@ jobs:
 
     - name: Display structure of downloaded files
       run: ls -R
-      working-directory: D:\home\site\wwwroot\webapps
+      working-directory: ${{ github.workspace }}/target
