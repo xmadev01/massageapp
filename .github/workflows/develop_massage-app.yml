@@ -42,8 +42,11 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: massage-app
-        path: D:\home\site\wwwroot\webapps
 
-    - name: Display structure of downloaded files
-      run: ls -R
-      working-directory: '${{ github.workspace }}/target'
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'massage-app'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e4f40c1df95344c4ac27a800c2b6f40a }}
