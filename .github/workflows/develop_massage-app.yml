@@ -50,5 +50,4 @@ jobs:
         app-name: 'massage-app'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_e4f40c1df95344c4ac27a800c2b6f40a }}
-        package: '*.jar'
-        startup-command: java -jar massage-0.0.1-SNAPSHOT.jar
+        package: '${{ github.workspace }}/target/*.jar'
