@@ -1,11 +1,11 @@
 package com.xms.app.massage.transformer;
 
+import com.xms.app.massage.dto.ConsultationDto;
 import com.xms.app.massage.model.Item;
 import com.xms.app.massage.service.CustomerService;
 import com.xms.app.massage.service.HealthFundService;
 import com.xms.app.massage.service.ItemService;
 import com.xms.app.massage.utils.CommonUtils;
-import com.xms.app.massage.vo.ConsultationVO;
 import org.hibernate.transform.ResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,16 +27,16 @@ public class ConsultationTransformer implements ResultTransformer {
 
     @Override
     public Object transformTuple(Object[] objects, String[] strings) {
-        ConsultationVO consultationVo = new ConsultationVO();
-        consultationVo.setServiceDate(formatDateStr(objects[0]));
-        consultationVo.setCustomerName(customerService.loadCustomer(((Integer) objects[1]).longValue()).getFullName());
+        ConsultationDto consultationDto = new ConsultationDto();
+        consultationDto.setServiceDate(formatDateStr(objects[0]));
+        consultationDto.setCustomerName(customerService.loadCustomer(((Integer) objects[1]).longValue()).getFullName());
         final Item item = itemService.findById(((BigInteger) objects[2]).longValue()).get();
-        consultationVo.setItem(item);
-        consultationVo.setType(item.getType().getDisplayName());
-        consultationVo.setHealthFund(healthFundService.loadHealthFund(((Integer) objects[3]).longValue()).getName());
-        consultationVo.setPaidAmt(CommonUtils.formatCurrencyData((BigDecimal) objects[4]));
-        consultationVo.setClaimedAmt(CommonUtils.formatCurrencyData((BigDecimal) objects[5]));
-        return consultationVo;
+        consultationDto.setItem(item);
+        consultationDto.setType(item.getType().getDisplayName());
+        consultationDto.setHealthFund(healthFundService.loadHealthFund(((Integer) objects[3]).longValue()).getName());
+        consultationDto.setPaidAmt((BigDecimal) objects[4]);
+        consultationDto.setClaimedAmt((BigDecimal) objects[5]);
+        return consultationDto;
     }
 
     @Override

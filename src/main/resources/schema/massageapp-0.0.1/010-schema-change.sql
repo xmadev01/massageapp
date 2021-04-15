@@ -45,24 +45,6 @@ CREATE TABLE Customer (
 )
 
 
-CREATE TABLE Treatment (
-
-   id IDENTITY PRIMARY KEY,
-   customer INT NOT NULL,
-   service_date TIMESTAMP NOT NULL,
-   item INT NOT NULL,
-   practitioner INT NOT NULL,
-   expense_amt DECIMAL NOT NULL,
-   claimed_amt DECIMAL NOT NULL,
-   venue VARCHAR(200) NULL,
-   created_date TIMESTAMP NOT NULL,
-   active  BOOLEAN DEFAULT TRUE NOT NULL,
-   version INT DEFAULT 0 NOT NULL,
-   foreign key (customer) references Customer(id),
-   foreign key (practitioner) references Practitioner(id),
-   foreign key (item) references Item(id)
-)
-
 CREATE TABLE Practitioner (
 
    id IDENTITY PRIMARY KEY,
@@ -81,6 +63,24 @@ CREATE TABLE Item (
    price DOUBLE NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
+)
+
+CREATE TABLE Treatment (
+
+   id IDENTITY PRIMARY KEY,
+   customer INT NOT NULL,
+   service_date TIMESTAMP NOT NULL,
+   item INT NOT NULL,
+   practitioner INT NOT NULL,
+   expense_amt DECIMAL NOT NULL,
+   claimed_amt DECIMAL NOT NULL,
+   venue VARCHAR(200) NULL,
+   created_date TIMESTAMP NOT NULL,
+   active  BOOLEAN DEFAULT TRUE NOT NULL,
+   version INT DEFAULT 0 NOT NULL,
+   foreign key (customer) references Customer(id),
+   foreign key (practitioner) references Practitioner(id),
+   foreign key (item) references Item(id)
 )
 
 /*CREATE TABLE Treatment_Item (
