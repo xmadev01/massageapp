@@ -17,13 +17,15 @@ import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 
 @Controller
+@SessionAttributes("activeItem")
 public class PractitionerController {
 
     @Autowired
     private PractitionerService practitionerService;
 
     @GetMapping("/listPractitioner")
-    public String list() {
+    public String list(Model model) {
+        model.addAttribute("activeItem", "settings");
         return "practitioner";
     }
 

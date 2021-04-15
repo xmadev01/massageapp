@@ -24,7 +24,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-@SessionAttributes({"practitioners", "items"})
+@SessionAttributes({"activeItem", "practitioners", "items"})
 public class TreatmentController {
 
     @Autowired
@@ -69,6 +69,7 @@ public class TreatmentController {
 
     @GetMapping("/listTreatments")
     public String list(Model model) {
+        model.addAttribute("activeItem", "treatment");
         model.addAttribute("viewMode", "day");
         model.addAttribute("currentDay", LocalDate.now());
         return "treatments";

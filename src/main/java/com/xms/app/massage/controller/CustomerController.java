@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
+@SessionAttributes("activeItem")
 public class CustomerController {
 
     @Autowired
@@ -39,7 +40,7 @@ public class CustomerController {
     @Autowired
     private LocalDateEditor localDateEditor;
 
-    @InitBinder
+    @InitBinder("customer")
     public void bindValidator(final WebDataBinder binder) {
         binder.setValidator(new CustomerValidator(messageSource, customerService));
         binder.registerCustomEditor(HealthFund.class, healthFundEditor);
@@ -47,7 +48,8 @@ public class CustomerController {
     }
 
     @GetMapping("/listCustomers")
-    public String list() {
+    public String list(Model model) {
+        model.addAttribute("activeItem", "customer");
         return "customers";
     }
 
@@ -65,7 +67,7 @@ public class CustomerController {
     }
 
     @PostMapping("/createCustomer")
-    public String createCustomer(@Valid Customer customer, BindingResult result,
+    public String createCustomer(@ModelAttribute("customer") @Valid Customer customer, BindingResult result,
                                  RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
             populateDayMonthYear(model);

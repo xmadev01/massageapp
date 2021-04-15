@@ -10,11 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
+@SessionAttributes("activeItem")
 public class ItemController {
 
     @Autowired
@@ -25,6 +27,7 @@ public class ItemController {
         ItemsDto itemsForm = new ItemsDto();
         final List<Item> items = itemService.getAllItems();
         items.forEach(item -> itemsForm.addItem(item));
+        model.addAttribute("activeItem", "settings");
         model.addAttribute("itemsForm", itemsForm);
         return "items";
     }

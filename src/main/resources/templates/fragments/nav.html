@@ -10,14 +10,14 @@
 
                 </li>
 
-                <li class="sidebar-item active">
+                <li class="sidebar-item" th:classappend = "${activeItem == 'home'} ? 'active' : ''">
                     <a class="sidebar-link" href="/home">
                         <i class="align-middle" data-feather="sliders"></i> <span
                             class="align-middle">Dashboard</span>
                     </a>
                 </li>
 
-                <li class="sidebar-item">
+                <li class="sidebar-item" th:classappend = "${activeItem == 'customer'} ? 'active' : ''">
                     <a href="#customer" data-bs-toggle="collapse" class="sidebar-link collapsed">
                         <i class="align-middle" data-feather="users"></i> <span class="align-middle">Customer</span>
                     </a>
@@ -26,7 +26,7 @@
                     </ul>
                 </li>
 
-                <li class="sidebar-item">
+                <li class="sidebar-item" th:classappend = "${activeItem == 'treatment'} ? 'active' : ''">
                     <a href="#task" data-bs-toggle="collapse" class="sidebar-link collapsed">
                         <i class="align-middle" data-feather="pie-chart"></i> <span class="align-middle">Treatment</span>
                     </a>
@@ -35,7 +35,7 @@
                     </ul>
                 </li>
 
-                <li class="sidebar-item">
+                <li class="sidebar-item" th:classappend = "${activeItem == 'settings'} ? 'active' : ''">
                     <a href="#settings" data-bs-toggle="collapse" class="sidebar-link collapsed">
                         <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
                     </a>

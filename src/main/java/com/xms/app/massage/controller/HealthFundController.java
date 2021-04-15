@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @Controller
+@SessionAttributes("activeItem")
 public class HealthFundController {
 
     @Autowired
@@ -29,14 +30,15 @@ public class HealthFundController {
     @Autowired
     private MessageSource messageSource;
 
-    @InitBinder
+    @InitBinder("healthFund")
     public void bindValidator(final WebDataBinder binder) {
         binder.setValidator(new HealthFundValidator(messageSource, healthFundService));
         binder.registerCustomEditor(HealthFund.class, new HealthFundEditor());
     }
 
     @GetMapping("/listHealthFunds")
-    public String list() {
+    public String list(Model model) {
+        model.addAttribute("activeItem", "settings");
         return "healthfund";
     }
 
@@ -53,7 +55,7 @@ public class HealthFundController {
     }
 
     @PostMapping("/createHealthFund")
-    public String createHealthFund(@Valid HealthFund healthFund, BindingResult result,
+    public String createHealthFund(@ModelAttribute("healthFund") @Valid HealthFund healthFund, BindingResult result,
                                    RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
             MessageUtils.addErrorMessages(model, result.getFieldErrors());
