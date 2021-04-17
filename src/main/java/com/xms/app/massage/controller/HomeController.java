@@ -16,12 +16,7 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
-    public String getIndexPage(Model model) {
-        return "redirect:/home";
-    }
-
-    @GetMapping("/home")
+    @GetMapping({"/", "/home"})
     public String home(Model model) {
         model.addAttribute("activeItem", "home");
         model.addAttribute("viewMode", "day");

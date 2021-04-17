@@ -4,7 +4,7 @@
             <i class="hamburger align-self-center"></i>
         </a>
 
-        <form class="d-none d-sm-inline-block">
+        <form class="d-none d-sm-inline-block" id="logoutFrm" name="logoutFrm" th:action="@{/logout}">
             <div class="input-group input-group-navbar">
                 <input type="text" class="form-control" placeholder="Search…" aria-label="Search">
                 <button class="btn" type="button">
@@ -20,10 +20,10 @@
                         <i class="align-middle" data-feather="settings"></i>
                     </a>
                     <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                        <img src="/images/avatar.jpg" class="avatar img-fluid rounded me-1"alt="Charles Hall" /> <span class="text-dark">Tom Wong</span>
+                        <img src="/images/avatar.png" class="avatar img-fluid rounded me-1"alt="Charles Hall" /> <span class="text-dark">[[${#httpServletRequest.remoteUser}]]</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="log-out"></i>Log out</a>
+                        <a id="logoutLink" class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="log-out"></i>Log out</a>
                     </div>
                 </li>
             </ul>
