@@ -20,4 +20,6 @@ public class PagingRequest {
     private LocalDate currentDay;
     private String currentMonth;
     private String currentYear;
+    private String fromDate;
+    private String toDate;
 }
