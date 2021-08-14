@@ -49,4 +49,4 @@ jobs:
       with:
         app-name: 'massage-app'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e4f40c1df95344c4ac27a800c2b6f40a }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e147187a6ec9477fb13f4bcf18e4431e }}
