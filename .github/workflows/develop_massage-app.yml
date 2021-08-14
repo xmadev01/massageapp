@@ -27,8 +27,8 @@ jobs:
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
-        name: massage-app
-        path: '${{ github.workspace }}/target/*.jar'
+        name: java-app
+        path: '${{ github.workspace }}/target/*.war'
 
   deploy:
     runs-on: windows-latest
@@ -41,7 +41,7 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v2
       with:
-        name: massage-app
+        name: java-app
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
@@ -50,3 +50,4 @@ jobs:
         app-name: 'massage-app'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_e147187a6ec9477fb13f4bcf18e4431e }}
+        package: '*.war'
