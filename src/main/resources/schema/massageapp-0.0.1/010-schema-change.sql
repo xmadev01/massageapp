@@ -10,6 +10,7 @@ CREATE TABLE User (
    UNIQUE KEY user_user_code_UNIQUE (user_code)
 )
 
+GO
 
 CREATE TABLE Health_Fund (
 
@@ -20,6 +21,8 @@ CREATE TABLE Health_Fund (
    version INT DEFAULT 0 NOT NULL,
    UNIQUE KEY health_fund_name_UNIQUE (name)
 )
+
+GO
 
 CREATE TABLE Customer (
 
@@ -44,6 +47,7 @@ CREATE TABLE Customer (
    foreign key (health_fund) references Health_Fund(id)
 )
 
+GO
 
 CREATE TABLE Practitioner (
 
@@ -53,6 +57,8 @@ CREATE TABLE Practitioner (
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
 )
+
+GO
 
 CREATE TABLE Item (
 
@@ -64,6 +70,8 @@ CREATE TABLE Item (
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
 )
+
+GO
 
 CREATE TABLE Treatment (
 

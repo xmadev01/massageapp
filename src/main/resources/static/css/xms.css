@@ -45,3 +45,11 @@ a:hover {
     background-color: #ddd;
     border: 1px solid #dee2e6;
 }
+
+.login-bg {
+    background-color: #495057;
+}
+
+.login-title {
+    color: #ffffff;
+}

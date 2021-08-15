@@ -7,14 +7,14 @@
 </head>
 
 <body>
-<main class="d-flex w-100">
+<main class="d-flex w-100 login-bg">
     <div class="container d-flex flex-column">
         <div class="row vh-100">
             <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                 <div class="d-table-cell align-middle">
 
                     <div class="text-center mt-4">
-                        <h1 class="h2">Welcome back</h1>
+                        <h1 class="h2 login-title">Massage App Hurstville</h1>
                         <p class="lead">
                             <div class="alert alert-danger" role="alert" th:if="${param.error}">
                                 Invalid username and password.
