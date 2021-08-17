@@ -14,7 +14,6 @@
                 <div class="d-table-cell align-middle">
 
                     <div class="text-center mt-4">
-                        <h1 class="h2 login-title">Massage App Hurstville</h1>
                         <p class="lead">
                             <div class="alert alert-danger" role="alert" th:if="${param.error}">
                                 Invalid username and password.
