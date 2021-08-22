@@ -1,6 +1,5 @@
 package com.xms.app.massage.config;
 
-import com.xms.app.massage.converter.StringToHealthFundEnumConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -10,6 +9,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToHealthFundEnumConverter());
+        //registry.addConverter(new StringToHealthFundEnumConverter());
     }
 }

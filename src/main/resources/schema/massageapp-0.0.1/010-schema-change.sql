@@ -28,8 +28,8 @@ CREATE TABLE Customer (
 
    id IDENTITY PRIMARY KEY,
    first_name VARCHAR(50) NOT NULL,
-   middle_name VARCHAR(50) NOT NULL,
-   last_name VARCHAR(50) NOT NULL,
+   middle_name VARCHAR(50) NULL,
+   last_name VARCHAR(50) NULL,
    birthday TIMESTAMP NOT NULL,
    email VARCHAR(100) NULL,
    phone1 VARCHAR(50) NULL,

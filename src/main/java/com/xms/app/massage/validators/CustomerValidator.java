@@ -34,8 +34,6 @@ public class CustomerValidator implements Validator {
             final Customer customer = (Customer) target;
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", null,
                     messageSource.getMessage("customer.firstName.not.empty", null, Locale.getDefault()));
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", null,
-                    messageSource.getMessage("customer.lastName.not.empty", null, Locale.getDefault()));
 
             if (!EmailValidator.getInstance().isValid(customer.getEmail())) {
                 errors.rejectValue("email", null, messageSource.getMessage("customer.email.invalid", null, Locale.getDefault()));
