@@ -36,7 +36,7 @@ CREATE TABLE Customer (
    phone2 VARCHAR(50) NULL,
    address VARCHAR(200) NULL,
    postcode VARCHAR(20) NULL,
-   health_fund INT NOT NULL,
+   health_fund INT NULL,
    membership_num VARCHAR(50) NULL,
    rebate_rate DOUBLE NULL,
    medication VARCHAR(500) NULL,

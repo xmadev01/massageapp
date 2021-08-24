@@ -38,8 +38,6 @@ public class CustomerValidator implements Validator {
             if (!EmailValidator.getInstance().isValid(customer.getEmail())) {
                 errors.rejectValue("email", null, messageSource.getMessage("customer.email.invalid", null, Locale.getDefault()));
             }
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "healthFund", null,
-                    messageSource.getMessage("customer.healthFund.not.selected", null, Locale.getDefault()));
             if (customer.getHealthFund() != null && StringUtils.isBlank(customer.getMembershipNum())) {
                 errors.rejectValue("membershipNum", null, messageSource.getMessage("customer.membershipNum.not.empty", null, Locale.getDefault()));
             }

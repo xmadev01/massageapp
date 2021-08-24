@@ -22,10 +22,10 @@ public class Customer {
     @Column
     private String middleName;
 
-    @Column(nullable = false)
+    @Column
     private String lastName;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate birthday;
 
     @Column
@@ -44,7 +44,7 @@ public class Customer {
     private String postcode;
 
     @ManyToOne
-    @JoinColumn(name="health_fund", nullable = false)
+    @JoinColumn(name="health_fund")
     private HealthFund healthFund;
 
     @Column

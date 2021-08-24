@@ -82,7 +82,11 @@ function applyCustomerDataTable() {
         columnDefs: [
             {
                 "render": function(data, type, row) {
-                    return data.name;
+                    if (data) {
+                        return data.name;
+                    } else {
+                        return "";
+                    }
                 },
                 "targets": 6
             },
