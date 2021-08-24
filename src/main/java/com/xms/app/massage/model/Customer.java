@@ -48,9 +48,6 @@ public class Customer {
     private HealthFund healthFund;
 
     @Column
-    private String membershipNum;
-
-    @Column
     private Double rebateRate;
 
     @JsonIgnore

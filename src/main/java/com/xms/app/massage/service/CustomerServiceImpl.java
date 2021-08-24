@@ -70,8 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
         String value = pagingRequest.getSearch().getValue();
 
         return customer -> customer.getFirstName().toLowerCase().contains(value)
-                || customer.getLastName().toLowerCase().contains(value)
-                || customer.getMembershipNum().toLowerCase().contains(value);
+                || customer.getLastName().toLowerCase().contains(value);
     }
 
     @Override

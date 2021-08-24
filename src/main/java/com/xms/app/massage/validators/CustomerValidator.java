@@ -3,7 +3,6 @@ package com.xms.app.massage.validators;
 import com.xms.app.massage.model.Customer;
 import com.xms.app.massage.paging.PagingRequest;
 import com.xms.app.massage.service.CustomerService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
@@ -37,9 +36,6 @@ public class CustomerValidator implements Validator {
 
             if (!EmailValidator.getInstance().isValid(customer.getEmail())) {
                 errors.rejectValue("email", null, messageSource.getMessage("customer.email.invalid", null, Locale.getDefault()));
-            }
-            if (customer.getHealthFund() != null && StringUtils.isBlank(customer.getMembershipNum())) {
-                errors.rejectValue("membershipNum", null, messageSource.getMessage("customer.membershipNum.not.empty", null, Locale.getDefault()));
             }
             if (customer.getHealthFund() != null && customer.getRebateRate() == null) {
                 errors.rejectValue("rebateRate", null, messageSource.getMessage("customer.rebateRate.not.empty", null, Locale.getDefault()));

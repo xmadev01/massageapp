@@ -89,10 +89,12 @@ function applyTreatmentDataTable() {
             },
             {
                 "render": function(data, type, row) {
-                   if (data.indexOf('Total') >= 0) {
+                   if (data && data.indexOf('Total') >= 0) {
                        return '<span style="float: right"><strong>' + data + '</strong></span>';
-                   } else {
+                   } else if (data && data.indexOf('Total') < 0) {
                        return data;
+                   } else {
+                       return "";
                    }
                 },
                 "targets": 4
@@ -132,7 +134,7 @@ function applyTreatmentDataTable() {
             //skip individual insurance total and all insurance total row
             for (var i = 0; i < hfColData.length; i++) {
                 var hfText = hfColData[i];
-                if (hfText.indexOf('Total') < 0) {
+                if (hfText && hfText.indexOf('Total') < 0) {
                     idxList[idxList.length] = i;
                 }
             }

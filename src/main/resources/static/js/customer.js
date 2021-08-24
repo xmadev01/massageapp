@@ -76,7 +76,6 @@ function applyCustomerDataTable() {
             {"data": "phone1", "width": "10%"},
             {"data": "phone2", "width": "10%"},
             {"data": "healthFund", "width": "10%"},
-            {"data": "membershipNum", "width": "15%"},
             {"data": "active", "width": "5%"}
         ],
         columnDefs: [
@@ -98,7 +97,7 @@ function applyCustomerDataTable() {
                        return '<img src="/images/false.png" />';
                     }
                 },
-                "targets": 8
+                "targets": 7
             }
 
         ]

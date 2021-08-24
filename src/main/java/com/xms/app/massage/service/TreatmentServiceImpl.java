@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -204,7 +205,7 @@ public class TreatmentServiceImpl implements TreatmentService {
                     paidAmtCust = claimedAmtCust = BigDecimal.ZERO;
                     countOfSameInsuranceItem = countOfAllInsuranceItem = 0;
 
-                } else if (!nextHealthFund.equals(healthFund)) {
+                } else if (!ObjectUtils.nullSafeEquals(nextHealthFund, healthFund)) {
                     addSubTotalIndividualInsurance(consultations, healthFund, countOfSameInsuranceItem, paidAmt, claimedAmt);
                     paidAmt = claimedAmt = BigDecimal.ZERO;
                     countOfSameInsuranceItem = 0;
@@ -222,7 +223,7 @@ public class TreatmentServiceImpl implements TreatmentService {
     private void addSubTotalIndividualInsurance(List<ConsultationVO> consultations, String healthFund,
                                                 int countOfItem, BigDecimal paidAmt, BigDecimal claimedAmt) {
         ConsultationVO subtotalVo = new ConsultationVO();
-        subtotalVo.setHealthFund(healthFund + " Total(" + countOfItem + "):");
+        subtotalVo.setHealthFund(Optional.ofNullable(healthFund).orElse("") + " Total(" + countOfItem + "):");
         subtotalVo.setPaidAmt(CommonUtils.formatCurrencyData(paidAmt));
         subtotalVo.setClaimedAmt(CommonUtils.formatCurrencyData(claimedAmt));
         consultations.add(subtotalVo);

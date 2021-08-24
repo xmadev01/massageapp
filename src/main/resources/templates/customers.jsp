@@ -44,7 +44,6 @@
                                     <th>Phone1</th>
                                     <th>Phone2</th>
                                     <th>Health Fund</th>
-                                    <th>Membership Number</th>
                                     <th>Active</th>
                                 </tr>
                                 </thead>

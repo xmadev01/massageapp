@@ -37,13 +37,11 @@ CREATE TABLE Customer (
    address VARCHAR(200) NULL,
    postcode VARCHAR(20) NULL,
    health_fund INT NULL,
-   membership_num VARCHAR(50) NULL,
    rebate_rate DOUBLE NULL,
    medication VARCHAR(500) NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL,
    UNIQUE KEY customer_email_UNIQUE (email),
-   UNIQUE KEY customer_membership_num_UNIQUE (membership_num),
    foreign key (health_fund) references Health_Fund(id)
 )
 

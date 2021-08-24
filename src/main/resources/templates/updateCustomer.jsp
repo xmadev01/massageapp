@@ -90,11 +90,6 @@
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('healthFund')}" th:errors="*{healthFund}"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Membership Number</label>
-                                                <input class="form-control" type="text" th:field="*{membershipNum}" name="membershipNum" />
-                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('membershipNum')}" th:errors="*{membershipNum}"></div>
-                                            </div>
-                                            <div class="mb-3">
                                                 <label class="form-label">Rebate Rate (%)</label>
                                                 <input class="form-control" type="text" th:field="*{rebateRate}" name="rebateRate" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('rebateRate')}" th:errors="*{rebateRate}"></div>

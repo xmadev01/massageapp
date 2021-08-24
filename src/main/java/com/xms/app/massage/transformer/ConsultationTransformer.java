@@ -33,7 +33,9 @@ public class ConsultationTransformer implements ResultTransformer {
         final Item item = itemService.findById(((BigInteger) objects[2]).longValue()).get();
         consultationDto.setItem(item);
         consultationDto.setType(item.getType().getDisplayName());
-        consultationDto.setHealthFund(healthFundService.loadHealthFund(((Integer) objects[3]).longValue()).getName());
+        if (objects[3] != null) {
+            consultationDto.setHealthFund(healthFundService.loadHealthFund(((Integer) objects[3]).longValue()).getName());
+        }
         consultationDto.setPaidAmt((BigDecimal) objects[4]);
         consultationDto.setClaimedAmt((BigDecimal) objects[5]);
         return consultationDto;
