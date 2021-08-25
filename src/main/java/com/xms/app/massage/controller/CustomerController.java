@@ -102,16 +102,9 @@ public class CustomerController {
         return "redirect:/listCustomers";
     }
 
-    @PostMapping("/deactivateCustomer/{customerId}")
-    public String deactivateCustomer(@PathVariable long customerId, Model model) {
-        customerService.deactivateCustomer(customerId);
-        return "redirect:/listCustomers";
-    }
-
-
     @PostMapping("/deleteCustomer/{customerId}")
     public String deleteCustomer(@PathVariable long customerId, Model model) {
-        customerService.deleteCustomer(customerId);
+        customerService.deactivateCustomer(customerId);
         return "redirect:/listCustomers";
     }
 

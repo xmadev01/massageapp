@@ -28,13 +28,13 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a id="btnDeactivate" href="#" class="btn btn-info">(De)activate</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="btnDelete" href="#" class="btn btn-info">Delete</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a id="btnViewTreatment" href="#" class="btn btn-info">View Treatment</a>
                     </div>
                     <div class="row">
                         <div class="mt-5 mb-5">
-                            <table id="customerTbl" class="table table-bordered table-responsive display dataTable" style="width: 100%">
+                            <table id="customerTbl" class="table table-bordered display dataTable" style="width: 100%">
                                 <thead>
                                 <tr>
                                     <th>First Name</th>
@@ -44,7 +44,6 @@
                                     <th>Phone1</th>
                                     <th>Phone2</th>
                                     <th>Health Fund</th>
-                                    <th>Active</th>
                                 </tr>
                                 </thead>
                             </table>

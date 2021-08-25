@@ -47,11 +47,12 @@ public class CustomerServiceImpl implements CustomerService {
             customers = customerRepository.findAll(Sort.by(Sort.Direction.DESC, column.getData()));
         }
         final List<Customer> filteredCustomers = customers.stream()
+                                                          .filter(customer -> customer.isActive())
                                                           .filter(filterCustomers(pagingRequest))
                                                           .skip(pagingRequest.getStart())
                                                           .limit(pagingRequest.getLength())
                                                           .collect(Collectors.toList());
-        long count = customers.stream()
+        long count = customers.stream().filter(customer -> customer.isActive())
                               .filter(filterCustomers(pagingRequest))
                               .count();
         Page<Customer> page = new Page<>(filteredCustomers);

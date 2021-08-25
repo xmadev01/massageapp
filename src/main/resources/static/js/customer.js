@@ -9,7 +9,7 @@ $(document ).ready(function() {
 
     var customerTbl = applyCustomerDataTable();
 
-    $('#customerTbl tbody').on( 'click', 'tr', function () {
+    $('#customerTbl tbody').on('click', 'tr', function () {
 
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
@@ -73,10 +73,9 @@ function applyCustomerDataTable() {
             {"data": "middleName","width": "10%"},
             {"data": "lastName","width": "10%"},
             {"data": "email", "width": "20%"},
-            {"data": "phone1", "width": "10%"},
-            {"data": "phone2", "width": "10%"},
-            {"data": "healthFund", "width": "10%"},
-            {"data": "active", "width": "5%"}
+            {"data": "phone1", "width": "15%"},
+            {"data": "phone2", "width": "15%"},
+            {"data": "healthFund", "width": "20%"}
         ],
         columnDefs: [
             {
@@ -88,16 +87,6 @@ function applyCustomerDataTable() {
                     }
                 },
                 "targets": 6
-            },
-            {
-                "render": function(data, type, row) {
-                    if (data == true) {
-                       return '<img src="/images/true.png" />';
-                    } else {
-                       return '<img src="/images/false.png" />';
-                    }
-                },
-                "targets": 7
             }
 
         ]

@@ -18,12 +18,10 @@
                 </li>
 
                 <li class="sidebar-item" th:classappend = "${activeItem == 'customer'} ? 'active' : ''">
-                    <a href="#customer" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                        <i class="align-middle" data-feather="users"></i> <span class="align-middle">Customer</span>
+                    <a class="sidebar-link" href="/listCustomers">
+                        <i class="align-middle" data-feather="users"></i> <span
+                            class="align-middle">Customer</span>
                     </a>
-                    <ul id="customer" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                        <li class="sidebar-item"><a class="sidebar-link" href="/listCustomers">All Customers</a></li>
-                    </ul>
                 </li>
 
                 <li class="sidebar-item" th:classappend = "${activeItem == 'treatment'} ? 'active' : ''">
