@@ -30,7 +30,7 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="btnDelete" href="#" class="btn btn-info">Delete</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a id="btnViewTreatment" href="#" class="btn btn-info">View Treatment</a>
+                        <a id="btnViewTreatments" href="#" class="btn btn-info">View Treatments</a>
                     </div>
                     <div class="row">
                         <div class="mt-5 mb-5">

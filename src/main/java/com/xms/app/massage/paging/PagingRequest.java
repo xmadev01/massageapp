@@ -22,4 +22,5 @@ public class PagingRequest {
     private String currentYear;
     private String fromDate;
     private String toDate;
+    private long customerId;
 }

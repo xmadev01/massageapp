@@ -9,6 +9,7 @@ import com.xms.app.massage.paging.PagingRequest;
 import com.xms.app.massage.service.CustomerService;
 import com.xms.app.massage.utils.MessageUtils;
 import com.xms.app.massage.validators.CustomerValidator;
+import com.xms.app.massage.vo.ConsultationVO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -106,6 +107,22 @@ public class CustomerController {
     public String deleteCustomer(@PathVariable long customerId, Model model) {
         customerService.deactivateCustomer(customerId);
         return "redirect:/listCustomers";
+    }
+
+    @PostMapping("/viewTreatments/{customerId}")
+    public String viewTreatments(@PathVariable long customerId, Model model) {
+        model.addAttribute("activeItem", "customer");
+        model.addAttribute("viewMode", "day");
+        model.addAttribute("currentDay", LocalDate.now());
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("customerName", customerService.loadCustomer(customerId).getFullName());
+        return "viewTreatments";
+    }
+
+    @PostMapping("/loadCustomerTreatments")
+    @ResponseBody
+    public Page<ConsultationVO> loadCustomerTreatments(@RequestBody PagingRequest pagingRequest) {
+        return customerService.loadCustomerTreatments(pagingRequest);
     }
 
     @GetMapping("/getCustomers")

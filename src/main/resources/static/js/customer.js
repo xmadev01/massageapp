@@ -35,18 +35,18 @@ $(document ).ready(function() {
         }
     })
 
-    $('#btnDeactivate').click(function () {
-        if (selectedCustomer) {
-            var form = document.getElementById('listCustomerFrm');
-            form.action = '/deactivateCustomer/' + selectedCustomer.id;
-            form.submit();
-        }
-    })
-
     $('#btnDelete').click(function () {
         if (selectedCustomer) {
             var form = document.getElementById('listCustomerFrm');
             form.action = '/deleteCustomer/' + selectedCustomer.id;
+            form.submit();
+        }
+    })
+
+    $('#btnViewTreatments').click(function () {
+        if (selectedCustomer) {
+            var form = document.getElementById('listCustomerFrm');
+            form.action = '/viewTreatments/' + selectedCustomer.id;
             form.submit();
         }
     })

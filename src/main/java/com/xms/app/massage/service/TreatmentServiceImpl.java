@@ -43,8 +43,7 @@ public class TreatmentServiceImpl implements TreatmentService {
     private ConsultationTransformer consultationTransformer;
     @Autowired
     private EntityManager em;
-    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public Optional<Treatment> findById(long id) {
@@ -68,20 +67,20 @@ public class TreatmentServiceImpl implements TreatmentService {
 
         if ("day".equals(pagingRequest.getViewMode())) {
             LocalDate currentDay = pagingRequest.getCurrentDay();
-            startDateStr = endDateStr = currentDay.format(dtf1);
+            startDateStr = endDateStr = currentDay.format(dtf);
         } else if ("month".equals(pagingRequest.getViewMode())) {
             int currentMonth = Integer.parseInt(pagingRequest.getCurrentMonth());
             int currentYear = Integer.parseInt(pagingRequest.getCurrentYear());
             startDate = LocalDate.of(currentYear, currentMonth, 1);
             endDate = LocalDate.of(currentYear, currentMonth, 1).plusMonths(1).minusDays(1);
-            startDateStr = startDate.format(dtf1);
-            endDateStr = endDate.format(dtf1);
+            startDateStr = startDate.format(dtf);
+            endDateStr = endDate.format(dtf);
         } else if ("year".equals(pagingRequest.getViewMode())) {
             int currentYear = Integer.parseInt(pagingRequest.getCurrentYear());
             startDate = LocalDate.of(currentYear, 1, 1);
             endDate = LocalDate.of(currentYear,12, 31);
-            startDateStr = startDate.format(dtf1);
-            endDateStr = endDate.format(dtf1);
+            startDateStr = startDate.format(dtf);
+            endDateStr = endDate.format(dtf);
         }
 
         List<ConsultationDto> consultationDtos = findAllOrderByCustomer(startDateStr, endDateStr, pagingRequest.getSearch().getValue());
