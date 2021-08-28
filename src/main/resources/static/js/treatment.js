@@ -42,6 +42,22 @@ $(document ).ready(function() {
         $('#treatmentTbl').DataTable().ajax.reload();
     })
 
+    $("#fromDate").datepicker({
+        showButtonPanel: true,
+        showAnim: "clip",
+        dateFormat: "dd/mm/yy"
+    });
+
+    $("#toDate").datepicker({
+        showButtonPanel: true,
+        showAnim: "clip",
+        dateFormat: "dd/mm/yy"
+    });
+
+    $("#btnSearch").click(function() {
+        $('#treatmentTbl').DataTable().ajax.reload();
+    });
+
 });
 
 function applyTreatmentDataTable() {
@@ -58,10 +74,8 @@ function applyTreatmentDataTable() {
             dataType: "json",
             contentType: "application/json",
             data: function (d) {
-                d.viewMode = $('#viewMode').val();
-                d.currentDay = $('#currentDay').val();
-                d.currentMonth = $('#currentMonth').val();
-                d.currentYear = $('#currentYear').val();
+                d.fromDate = $('#fromDate').val();
+                d.toDate = $('#toDate').val();
                 return JSON.stringify(d);
             }
         },

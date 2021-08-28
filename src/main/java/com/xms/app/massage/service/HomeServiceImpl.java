@@ -4,7 +4,8 @@ import com.xms.app.massage.dto.ConsultationDto;
 import com.xms.app.massage.model.Customer;
 import com.xms.app.massage.model.Item;
 import com.xms.app.massage.model.Treatment;
-import com.xms.app.massage.paging.*;
+import com.xms.app.massage.paging.Page;
+import com.xms.app.massage.paging.PagingRequest;
 import com.xms.app.massage.repository.TreatmentRepository;
 import com.xms.app.massage.transformer.ConsultationTransformer;
 import com.xms.app.massage.vo.ConsultationVO;
@@ -18,7 +19,6 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class TreatmentServiceImpl extends AbstractXMSService implements TreatmentService {
+public class HomeServiceImpl extends AbstractXMSService implements HomeService {
 
     @Autowired
     private TreatmentRepository treatmentRepository;
@@ -52,7 +52,28 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
     @Override
     public Page<ConsultationVO> getPage(PagingRequest pagingRequest) {
 
-        List<ConsultationDto> consultationDtos = findAllOrderByCustomer(pagingRequest);
+        LocalDate startDate = null, endDate = null;
+        String startDateStr = null, endDateStr = null;
+
+        if ("day".equals(pagingRequest.getViewMode())) {
+            LocalDate currentDay = pagingRequest.getCurrentDay();
+            startDateStr = endDateStr = currentDay.format(dtf);
+        } else if ("month".equals(pagingRequest.getViewMode())) {
+            int currentMonth = Integer.parseInt(pagingRequest.getCurrentMonth());
+            int currentYear = Integer.parseInt(pagingRequest.getCurrentYear());
+            startDate = LocalDate.of(currentYear, currentMonth, 1);
+            endDate = LocalDate.of(currentYear, currentMonth, 1).plusMonths(1).minusDays(1);
+            startDateStr = startDate.format(dtf);
+            endDateStr = endDate.format(dtf);
+        } else if ("year".equals(pagingRequest.getViewMode())) {
+            int currentYear = Integer.parseInt(pagingRequest.getCurrentYear());
+            startDate = LocalDate.of(currentYear, 1, 1);
+            endDate = LocalDate.of(currentYear,12, 31);
+            startDateStr = startDate.format(dtf);
+            endDateStr = endDate.format(dtf);
+        }
+
+        List<ConsultationDto> consultationDtos = findAllOrderByCustomer(startDateStr, endDateStr, pagingRequest.getSearch().getValue());
         List<ConsultationVO> consultations = new ArrayList<>();
 
         if (!consultationDtos.isEmpty()) {
@@ -98,25 +119,14 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         }
     }
 
-    public List<ConsultationDto> findAllOrderByCustomer(PagingRequest pagingRequest) {
+    public List<ConsultationDto> findAllOrderByCustomer(String startDateStr, String endDateStr, String searchVal) {
         StringBuilder querySQLBuilder = new StringBuilder()
                 .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
                 .append("inner join item i on t.item = i.id ")
-                .append("inner join customer c on t.customer = c.id ");
-        if (StringUtils.isNotBlank(pagingRequest.getFromDate()) && StringUtils.isNotBlank(pagingRequest.getToDate())) {
-            LocalDate startDate = LocalDate.parse(pagingRequest.getFromDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            LocalDate endDate = LocalDate.parse(pagingRequest.getToDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).plusDays(1);
-            querySQLBuilder.append("where t.service_date >= '").append(startDate.format(dtf)).append("' ");
-            querySQLBuilder.append("and t.service_date < '").append(endDate.format(dtf)).append("' ");
-        } else if (StringUtils.isNotBlank(pagingRequest.getFromDate())) {
-            LocalDate startDate = LocalDate.parse(pagingRequest.getFromDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            querySQLBuilder.append("where t.service_date >= '").append(startDate.format(dtf)).append("' ");
-        } else if (StringUtils.isNotBlank(pagingRequest.getToDate())) {
-            LocalDate endDate = LocalDate.parse(pagingRequest.getToDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).plusDays(1);
-            querySQLBuilder.append("where t.service_date < '").append(endDate.format(dtf)).append("' ");
-        }
-        if (StringUtils.isNotBlank(pagingRequest.getSearch().getValue())) {
-            querySQLBuilder.append("and LOWER(CONCAT(c.first_name, c.middle_name, c.last_name)) like '%" + pagingRequest.getSearch().getValue().toLowerCase() + "%' ");
+                .append("inner join customer c on t.customer = c.id ")
+                .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ");
+        if (StringUtils.isNotBlank(searchVal)) {
+            querySQLBuilder.append("and LOWER(CONCAT(c.first_name, c.middle_name, c.last_name)) like '%" + searchVal.toLowerCase() + "%' ");
         }
         querySQLBuilder.append("order by c.first_name asc, c.middle_name asc, c.last_name asc, i.type asc, t.service_date asc, i.name asc");
 

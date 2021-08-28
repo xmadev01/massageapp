@@ -46,7 +46,7 @@ function applyTreatmentDataTable() {
         dom: 'Blfrtip',
         order: [[0, 'asc'], [1, 'asc'], [3, 'asc'], [2, 'asc']],
         ajax: {
-            url: "/filterTreatments",
+            url: "/filterHomeTreatments",
             type: "POST",
             dataType: "json",
             contentType: "application/json",

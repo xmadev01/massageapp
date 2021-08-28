@@ -34,34 +34,25 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="btnDelete" href="#" class="btn btn-info">Delete</a>
                         </div>
-                        <div class="container">
+                        <div class="mt-4 mb-4">
                             <div class="row">
                                 <div class="col-sm">
+                                    <label class="form-label">From Date:</label>
+                                    <input class="" type="text" id="fromDate" name="fromDate" autocomplete="off" />
                                 </div>
                                 <div class="col-sm">
-                                    <nav>
-                                        <ul class="pagination">
-                                            <li>
-                                                <a th:id="prevView" class="calendar-nav-link" href="#" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </a>
-                                            </li>
-                                            <li><a th:id="dayView" th:classappend="${viewMode == 'day'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Day</a></li>
-                                            <li><a th:id="monthView" th:classappend="${viewMode == 'month'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Month</a></li>
-                                            <li><a th:id="yearView" th:classappend="${viewMode == 'year'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Year</a></li>
-                                            <li>
-                                                <a th:id="nextView" class="calendar-nav-link" href="#" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </a>
-                                            </li>
-                                            <li th:id="dmy" class="calendar-nav-item" th:text="${currentDay}"></li>
-                                        </ul>
-                                    </nav>
+                                    <label class="form-label">To Date:</label>
+                                    <input class="" type="text" id="toDate" name="toDate" autocomplete="off" />
                                 </div>
                                 <div class="col-sm">
+                                    <input type="button" class="btn btn-info" id="btnSearch" value="Search" />
+                                </div>
+                                <div class="col-sm">
+
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="mt-5 mb-5">
                                 <table id="treatmentTbl" class="table table-bordered display dataTable" style="width: 100%">

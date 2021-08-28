@@ -14,18 +14,16 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class ProviderReportServiceImpl implements ProviderReportService {
+public class ProviderReportServiceImpl extends AbstractXMSService implements ProviderReportService {
 
     @Autowired
     private TreatmentRepository treatmentRepository;
-    private static final DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
     public Page<ProviderReportVO> getPage(PagingRequest pagingRequest) {

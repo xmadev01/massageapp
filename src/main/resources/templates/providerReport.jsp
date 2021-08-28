@@ -23,7 +23,7 @@
                     </div>
                     <div th:insert="fragments/messagediv.html :: messagediv" />
                     <form id="providerRptFrm" name="providerRptFrm" method="post">
-                        <div class="container">
+                        <div class="container-fluid">
                             <div class="row">
                                 <div class="col-sm">
                                     <label class="form-label">From Date:</label>

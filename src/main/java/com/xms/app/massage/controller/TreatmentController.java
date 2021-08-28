@@ -3,6 +3,7 @@ package com.xms.app.massage.controller;
 import com.xms.app.massage.editor.LocalDateEditor;
 import com.xms.app.massage.paging.Page;
 import com.xms.app.massage.paging.PagingRequest;
+import com.xms.app.massage.service.HomeService;
 import com.xms.app.massage.service.ItemService;
 import com.xms.app.massage.service.PractitionerService;
 import com.xms.app.massage.service.TreatmentService;
@@ -31,6 +32,8 @@ public class TreatmentController {
     private ItemService itemService;
     @Autowired
     private TreatmentService treatmentService;
+    @Autowired
+    private HomeService homeService;
     @Autowired
     private PractitionerService practitionerService;
     @Autowired
@@ -80,4 +83,10 @@ public class TreatmentController {
     public Page<ConsultationVO> filterTreatments(@RequestBody PagingRequest pagingRequest) {
         return treatmentService.getPage(pagingRequest);
     }
+    @PostMapping("/filterHomeTreatments")
+    @ResponseBody
+    public Page<ConsultationVO> filterHomeTreatments(@RequestBody PagingRequest pagingRequest) {
+        return homeService.getPage(pagingRequest);
+    }
+
 }
