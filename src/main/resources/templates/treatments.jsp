@@ -36,18 +36,18 @@
                         </div>
                         <div class="mt-4 mb-4">
                             <div class="row">
-                                <div class="col-sm">
+                                <div class="col-3">
                                     <label class="form-label">From Date:</label>
                                     <input class="" type="text" id="fromDate" name="fromDate" autocomplete="off" />
                                 </div>
-                                <div class="col-sm">
+                                <div class="col-2">
                                     <label class="form-label">To Date:</label>
                                     <input class="" type="text" id="toDate" name="toDate" autocomplete="off" />
                                 </div>
-                                <div class="col-sm">
+                                <div class="col-1">
                                     <input type="button" class="btn btn-info" id="btnSearch" value="Search" />
                                 </div>
-                                <div class="col-sm">
+                                <div class="col-1">
 
                                 </div>
                             </div>

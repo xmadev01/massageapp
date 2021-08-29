@@ -148,10 +148,11 @@ function applyTreatmentDataTable() {
             //skip individual insurance total and all insurance total row
             for (var i = 0; i < hfColData.length; i++) {
                 var hfText = hfColData[i];
-                if (hfText && hfText.indexOf('Total') < 0) {
+                if (!hfText || (hfText && hfText.indexOf('Total') < 0)) {
                     idxList[idxList.length] = i;
                 }
             }
+            console.log(idxList)
             // Total over this page
             pageTotal_col5 = api
                 .column(5, { page: 'current'} )
