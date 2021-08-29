@@ -28,31 +28,21 @@
                         <input th:type="hidden" th:id="currentDay" th:name="currentDay" th:value="${currentDay}" />
                         <input th:type="hidden" th:id="currentMonth" th:name="currentMonth" th:value="${currentMonth}" />
                         <input th:type="hidden" th:id="currentYear" th:name="currentYear" th:value="${currentYear}" />
-                        <div class="container">
+                        <div class="mt-4 mb-4">
                             <div class="row">
-                                <div class="col-sm">
+                                <div class="col-3">
+                                    <label class="form-label">From Date:</label>
+                                    <input class="" type="text" id="fromDate" name="fromDate" autocomplete="off" />
                                 </div>
-                                <div class="col-sm">
-                                    <nav>
-                                        <ul class="pagination">
-                                            <li>
-                                                <a th:id="prevView" class="calendar-nav-link" href="#" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </a>
-                                            </li>
-                                            <li><a th:id="dayView" th:classappend="${viewMode == 'day'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Day</a></li>
-                                            <li><a th:id="monthView" th:classappend="${viewMode == 'month'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Month</a></li>
-                                            <li><a th:id="yearView" th:classappend="${viewMode == 'year'} ? calendar-nav-item-selected : calendar-nav-item" href="#">Year</a></li>
-                                            <li>
-                                                <a th:id="nextView" class="calendar-nav-link" href="#" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </a>
-                                            </li>
-                                            <li th:id="dmy" class="calendar-nav-item" th:text="${currentDay}"></li>
-                                        </ul>
-                                    </nav>
+                                <div class="col-2">
+                                    <label class="form-label">To Date:</label>
+                                    <input class="" type="text" id="toDate" name="toDate" autocomplete="off" />
                                 </div>
-                                <div class="col-sm">
+                                <div class="col-1">
+                                    <input type="button" class="btn btn-info" id="btnSearch" value="Search" />
+                                </div>
+                                <div class="col-1">
+
                                 </div>
                             </div>
                         </div>

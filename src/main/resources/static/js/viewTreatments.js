@@ -6,7 +6,7 @@ $(document ).ready(function() {
 
     var treatmentTbl = applyTreatmentDataTable();
 
-    $('#dayView').click(function () {
+    /*$('#dayView').click(function () {
         selectView('day');
         setCurrentDay();
         $('#treatmentTbl').DataTable().ajax.reload();
@@ -33,7 +33,23 @@ $(document ).ready(function() {
     $('#nextView').click(function () {
         calAndSetCurrentView(true);
         $('#treatmentTbl').DataTable().ajax.reload();
-    })
+    })*/
+
+    $("#fromDate").datepicker({
+        showButtonPanel: true,
+        showAnim: "clip",
+        dateFormat: "dd/mm/yy"
+    });
+
+    $("#toDate").datepicker({
+        showButtonPanel: true,
+        showAnim: "clip",
+        dateFormat: "dd/mm/yy"
+    });
+
+    $("#btnSearch").click(function() {
+        $('#treatmentTbl').DataTable().ajax.reload();
+    });
 
 });
 
@@ -43,6 +59,7 @@ function applyTreatmentDataTable() {
         processing: true,
         serverSide: true,
         pageLength: 50,
+        dom: 'Blfrtip',
         searching: false,
         dom: 'Bfrtip',
         order: [[1, 'asc'], [3, 'asc'], [2, 'asc'], [0, 'asc']],
@@ -57,12 +74,19 @@ function applyTreatmentDataTable() {
                 d.currentMonth = $('#currentMonth').val();
                 d.currentYear = $('#currentYear').val();
                 d.customerId = $('#customerId').val();
-                console.log(JSON.stringify(d))
+                d.fromDate = $('#fromDate').val();
+                d.toDate = $('#toDate').val();
                 return JSON.stringify(d);
             }
         },
         buttons: [
-            'print'
+            {
+                text: 'Export as PDF',
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            }
         ],
         columns: [
             {"data": "serviceDate","width": "15%"},

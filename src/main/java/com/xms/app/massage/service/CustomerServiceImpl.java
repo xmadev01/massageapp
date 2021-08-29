@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -117,32 +118,8 @@ public class CustomerServiceImpl extends AbstractXMSService implements CustomerS
 
     @Override
     public Page<ConsultationVO> loadCustomerTreatments(PagingRequest pagingRequest) {
-        //Sorting ...
-        Order order = pagingRequest.getOrder().get(0);
-        int columnIndex = order.getColumn();
-        Column column = pagingRequest.getColumns().get(columnIndex);
-        LocalDate startDate = null, endDate = null;
-        String startDateStr = null, endDateStr = null;
 
-        if ("day".equals(pagingRequest.getViewMode())) {
-            LocalDate currentDay = pagingRequest.getCurrentDay();
-            startDateStr = endDateStr = currentDay.format(dtf);
-        } else if ("month".equals(pagingRequest.getViewMode())) {
-            int currentMonth = Integer.parseInt(pagingRequest.getCurrentMonth());
-            int currentYear = Integer.parseInt(pagingRequest.getCurrentYear());
-            startDate = LocalDate.of(currentYear, currentMonth, 1);
-            endDate = LocalDate.of(currentYear, currentMonth, 1).plusMonths(1).minusDays(1);
-            startDateStr = startDate.format(dtf);
-            endDateStr = endDate.format(dtf);
-        } else if ("year".equals(pagingRequest.getViewMode())) {
-            int currentYear = Integer.parseInt(pagingRequest.getCurrentYear());
-            startDate = LocalDate.of(currentYear, 1, 1);
-            endDate = LocalDate.of(currentYear,12, 31);
-            startDateStr = startDate.format(dtf);
-            endDateStr = endDate.format(dtf);
-        }
-
-        List<ConsultationDto> consultationDtos = findAllTreatments(startDateStr, endDateStr, pagingRequest.getCustomerId());
+        List<ConsultationDto> consultationDtos = findAllTreatments(pagingRequest);
         List<ConsultationVO> consultations = new ArrayList<>();
 
         if (!consultationDtos.isEmpty()) {
@@ -162,14 +139,25 @@ public class CustomerServiceImpl extends AbstractXMSService implements CustomerS
         return page;
     }
 
-    public List<ConsultationDto> findAllTreatments(String startDateStr, String endDateStr, long customerId) {
+    public List<ConsultationDto> findAllTreatments(PagingRequest pagingRequest) {
         StringBuilder querySQLBuilder = new StringBuilder()
                 .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
                 .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
-                .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ")
-                .append("and c.id = " + customerId + " ")
-                .append("order by c.first_name asc, c.middle_name asc, c.last_name asc, i.type asc, t.service_date asc, i.name asc");
+                .append("where c.id = " + pagingRequest.getCustomerId() + " ");
+        if (StringUtils.isNotBlank(pagingRequest.getFromDate()) && StringUtils.isNotBlank(pagingRequest.getToDate())) {
+            LocalDate startDate = LocalDate.parse(pagingRequest.getFromDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            LocalDate endDate = LocalDate.parse(pagingRequest.getToDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).plusDays(1);
+            querySQLBuilder.append("and t.service_date >= '").append(startDate.format(dtf)).append("' ");
+            querySQLBuilder.append("and t.service_date < '").append(endDate.format(dtf)).append("' ");
+        } else if (StringUtils.isNotBlank(pagingRequest.getFromDate())) {
+            LocalDate startDate = LocalDate.parse(pagingRequest.getFromDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            querySQLBuilder.append("and t.service_date >= '").append(startDate.format(dtf)).append("' ");
+        } else if (StringUtils.isNotBlank(pagingRequest.getToDate())) {
+            LocalDate endDate = LocalDate.parse(pagingRequest.getToDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).plusDays(1);
+            querySQLBuilder.append("and t.service_date < '").append(endDate.format(dtf)).append("' ");
+        }
+        querySQLBuilder.append("order by c.first_name asc, c.middle_name asc, c.last_name asc, i.type asc, t.service_date asc, i.name asc");
 
         return em.unwrap(Session.class)
                 .createNativeQuery(querySQLBuilder.toString())

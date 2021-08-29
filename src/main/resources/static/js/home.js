@@ -59,7 +59,13 @@ function applyTreatmentDataTable() {
             }
         },
         buttons: [
-            'print'
+            {
+                text: 'Export as PDF',
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                }
+            }
         ],
         columns: [
             {"data": "serviceDate","width": "15%"},
