@@ -53,3 +53,7 @@ a:hover {
 .login-title {
     color: #ffffff;
 }
+
+.ui-dialog-titlebar-close {
+    background-image: url("../images/ui-icons_777777_256x240.png");
+}

@@ -3,13 +3,14 @@ package com.xms.app.massage.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Treatment {
+public class Treatment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,8 @@ public class Treatment {
     private BigDecimal claimedAmt;
 
     private String venue;
+
+    private String medicalCaseRecord;
 
     private LocalDateTime createdDate;
 

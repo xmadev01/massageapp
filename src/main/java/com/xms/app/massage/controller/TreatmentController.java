@@ -3,13 +3,11 @@ package com.xms.app.massage.controller;
 import com.xms.app.massage.editor.LocalDateEditor;
 import com.xms.app.massage.paging.Page;
 import com.xms.app.massage.paging.PagingRequest;
-import com.xms.app.massage.service.HomeService;
-import com.xms.app.massage.service.ItemService;
-import com.xms.app.massage.service.PractitionerService;
-import com.xms.app.massage.service.TreatmentService;
+import com.xms.app.massage.service.*;
 import com.xms.app.massage.utils.MessageUtils;
 import com.xms.app.massage.validators.TreatmentValidator;
 import com.xms.app.massage.vo.ConsultationVO;
+import com.xms.app.massage.vo.SingleTreatmentVO;
 import com.xms.app.massage.vo.TreatmentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -25,7 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-@SessionAttributes({"activeItem", "practitioners", "items"})
+@SessionAttributes({"activeItem", "practitioners", "items", "templates"})
 public class TreatmentController {
 
     @Autowired
@@ -36,6 +34,8 @@ public class TreatmentController {
     private HomeService homeService;
     @Autowired
     private PractitionerService practitionerService;
+    @Autowired
+    private TemplateService templateService;
     @Autowired
     private LocalDateEditor localDateEditor;
     @Autowired
@@ -55,6 +55,7 @@ public class TreatmentController {
         model.addAttribute("treatmentVo", treatmentVO);
         model.addAttribute("practitioners", practitionerService.getAllPractitioners());
         model.addAttribute("items", itemService.getAllItems());
+        model.addAttribute("templates", templateService.getAllTemplates());
         return "addTreatment";
     }
 
@@ -66,6 +67,18 @@ public class TreatmentController {
             return "addTreatment";
         }
         treatmentService.assignCustomerToPractitioner(treatmentVO);
+        MessageUtils.addSuccessMessage(redirectAttributes, "The treatment has been assigned successfully.");
+        return "redirect:/listTreatments";
+    }
+
+    @PostMapping("/assignPractitionerForUpdate")
+    public String assignServiceForUpdate(@ModelAttribute("singleTreatmentVo") @Valid SingleTreatmentVO singleTreatmentVo, BindingResult result,
+                                RedirectAttributes redirectAttributes, Model model) {
+        if (result.hasErrors()) {
+            MessageUtils.addErrorMessages(model, result.getFieldErrors());
+            return "addTreatment";
+        }
+        treatmentService.assignCustomerToPractitionerForUpdate(singleTreatmentVo);
         MessageUtils.addSuccessMessage(redirectAttributes, "The treatment has been assigned successfully.");
         return "redirect:/listTreatments";
     }
@@ -87,6 +100,22 @@ public class TreatmentController {
     @ResponseBody
     public Page<ConsultationVO> filterHomeTreatments(@RequestBody PagingRequest pagingRequest) {
         return homeService.getPage(pagingRequest);
+    }
+
+    @GetMapping("/loadTreatment/{treatmentId}")
+    public String loadTreatment(@PathVariable long treatmentId, Model model) {
+        SingleTreatmentVO singleTreatmentVo = treatmentService.loadSingleTreatment(treatmentId);
+        model.addAttribute("singleTreatmentVo", singleTreatmentVo);
+        model.addAttribute("practitioners", practitionerService.getAllPractitioners());
+        model.addAttribute("items", itemService.getAllItems());
+        model.addAttribute("templates", templateService.getAllTemplates());
+        return "updateTreatment";
+    }
+
+    @PostMapping("/deleteTreatment")
+    public String deleteTreatment(@RequestParam long treatmentId, Model model) {
+        treatmentService.deactivateTreatment(treatmentId);
+        return "redirect:/listTreatments";
     }
 
 }

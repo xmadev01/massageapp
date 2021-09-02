@@ -49,6 +49,7 @@ public abstract class AbstractXMSService {
             final String nextType = nextConsultation != null ? nextConsultation.getType() : null;
 
             ConsultationVO consultationVo = new ConsultationVO();
+            consultationVo.setTreatmentId(consultationDto.getTreatmentId());
             consultationVo.setServiceDate(consultationDto.getServiceDate());
             consultationVo.setCustomerName(customer);
             consultationVo.setItem(item);
@@ -56,6 +57,7 @@ public abstract class AbstractXMSService {
             consultationVo.setHealthFund(healthFund);
             consultationVo.setPaidAmt(CommonUtils.formatCurrencyData(pAmt));
             consultationVo.setClaimedAmt(CommonUtils.formatCurrencyData(cAmt));
+            consultationVo.setMedicalCaseRecord(consultationDto.getMedicalCaseRecord());
 
             paidAmt = paidAmt.add(pAmt);
             claimedAmt = claimedAmt.add(cAmt);

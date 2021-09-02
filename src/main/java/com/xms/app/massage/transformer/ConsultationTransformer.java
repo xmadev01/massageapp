@@ -28,16 +28,18 @@ public class ConsultationTransformer implements ResultTransformer {
     @Override
     public Object transformTuple(Object[] objects, String[] strings) {
         ConsultationDto consultationDto = new ConsultationDto();
-        consultationDto.setServiceDate(formatDateStr(objects[0]));
-        consultationDto.setCustomerName(customerService.loadCustomer(((Integer) objects[1]).longValue()).getFullName());
-        final Item item = itemService.findById(((BigInteger) objects[2]).longValue()).get();
+        consultationDto.setTreatmentId(((BigInteger) objects[0]).longValue());
+        consultationDto.setServiceDate(formatDateStr(objects[1]));
+        consultationDto.setCustomerName(customerService.loadCustomer(((Integer) objects[2]).longValue()).getFullName());
+        final Item item = itemService.findById(((BigInteger) objects[3]).longValue()).get();
         consultationDto.setItem(item);
         consultationDto.setType(item.getType().getDisplayName());
-        if (objects[3] != null) {
-            consultationDto.setHealthFund(healthFundService.loadHealthFund(((Integer) objects[3]).longValue()).getName());
+        if (objects[4] != null) {
+            consultationDto.setHealthFund(healthFundService.loadHealthFund(((Integer) objects[4]).longValue()).getName());
         }
-        consultationDto.setPaidAmt((BigDecimal) objects[4]);
-        consultationDto.setClaimedAmt((BigDecimal) objects[5]);
+        consultationDto.setPaidAmt((BigDecimal) objects[5]);
+        consultationDto.setClaimedAmt((BigDecimal) objects[6]);
+        consultationDto.setMedicalCaseRecord((String) objects[7]);
         return consultationDto;
     }
 

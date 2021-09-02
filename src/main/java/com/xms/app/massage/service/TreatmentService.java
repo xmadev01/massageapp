@@ -4,6 +4,7 @@ import com.xms.app.massage.model.Treatment;
 import com.xms.app.massage.paging.Page;
 import com.xms.app.massage.paging.PagingRequest;
 import com.xms.app.massage.vo.ConsultationVO;
+import com.xms.app.massage.vo.SingleTreatmentVO;
 import com.xms.app.massage.vo.TreatmentVO;
 
 import java.util.Optional;
@@ -17,4 +18,9 @@ public interface TreatmentService {
 
     void assignCustomerToPractitioner(TreatmentVO treatmentVO);
 
+    void assignCustomerToPractitionerForUpdate(SingleTreatmentVO singleTreatmentVo);
+
+    SingleTreatmentVO loadSingleTreatment(long treatmentId);
+
+    void deactivateTreatment(long treatmentId);
 }

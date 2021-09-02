@@ -27,6 +27,7 @@
                         <input th:type="hidden" th:id="currentDay" th:name="currentDay" th:value="${currentDay}" />
                         <input th:type="hidden" th:id="currentMonth" th:name="currentMonth" th:value="${currentMonth}" />
                         <input th:type="hidden" th:id="currentYear" th:name="currentYear" th:value="${currentYear}" />
+                        <input th:type="hidden" th:id="treatmentId" th:name="treatmentId" />
                         <div class="mt-3">
                             <a id="btnAdd" href="#" class="btn btn-info">Add</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -65,6 +66,7 @@
                                         <th>Health Fund</th>
                                         <th>Paid Amount</th>
                                         <th>Claimed Amount</th>
+                                        <th>Medical Case Record</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -87,6 +89,8 @@
     </div>
 </div>
 
+<div id="mcrDialog" title="Medical Case Record">
+</div>
 
 </body>
 

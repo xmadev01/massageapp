@@ -67,6 +67,7 @@
                                         <th>Health Fund</th>
                                         <th>Paid Amount</th>
                                         <th>Claimed Amount</th>
+                                        <th>Medical Case Record</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -88,7 +89,8 @@
         <div th:insert="fragments/footer.html :: footer" xmlns:th="http://www.w3.org/1999/xhtml" />
     </div>
 </div>
-
+<div id="mcrDialog" title="Medical Case Record">
+</div>
 
 </body>
 

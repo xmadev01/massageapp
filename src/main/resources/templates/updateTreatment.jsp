@@ -3,7 +3,7 @@
 
 <head th:insert="fragments/head.html :: head" />
 <head>
-    <script type="text/javascript" th:src="@{/js/addTreatment.js}"></script>
+    <script type="text/javascript" th:src="@{/js/updateTreatment.js}"></script>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
 
                 <div class="row mb-2 mb-xl-3">
                     <div class="col-auto d-none d-sm-block">
-                        <h4><strong>New Treatment</strong></h4>
+                        <h4><strong>Update Treatment</strong></h4>
                     </div>
                 </div>
 
@@ -31,8 +31,9 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="m-sm-4">
-                                        <form id="assignPractitionerFrm" name="assignPractitionerFrm" method="post" th:action="@{/assignPractitioner}" th:object="${treatmentVo}">
+                                        <form id="assignPractitionerFrm" name="assignPractitionerFrm" method="post" th:action="@{/assignPractitioner}" th:object="${singleTreatmentVo}">
                                             <input th:type="hidden" th:id="customerId" />
+                                            <input th:type="hidden" th:field="*{treatmentId}" />
                                             <div class="mb-3">
                                                 <label class="form-label">Customer Name</label>
                                                 <input class="form-control" type="text" th:field="*{customerName}" />
@@ -63,13 +64,10 @@
                                                           th:field="*{medicalCaseRecord}" autocomplete="off"></textarea>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Treatments</label>
+                                                <label class="form-label">Treatment</label>
                                             </div>
                                             <div>
-                                                <label class="form-check form-check-inline" th:each="item  : ${items}">
-                                                    <input class="form-check-input" type="checkbox" name="itemIds" th:value="${item.id}" />
-                                                    <span class="form-check-label" th:text="${item.name} + ' - ' + ${item.duration} + 'min'"></span>
-                                                </label>
+                                                <span th:text="*{itemName}"></span>
                                             </div>
                                             <div class="text-center mt-3">
                                                 <a id="btnAssign" href="#" class="btn btn-info">Assign</a>

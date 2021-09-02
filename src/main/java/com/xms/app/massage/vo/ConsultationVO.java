@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class ConsultationVO {
 
+    private long treatmentId;
     private String serviceDate;
     private String customerName;
     private Item item;
@@ -13,4 +14,5 @@ public class ConsultationVO {
     private String healthFund;
     private String paidAmt;
     private String claimedAmt;
+    private String medicalCaseRecord;
 }

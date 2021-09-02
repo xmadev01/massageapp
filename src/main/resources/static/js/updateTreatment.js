@@ -16,7 +16,7 @@ $(document ).ready(function() {
 
     $('#btnAssign').click(function() {
         var form = document.getElementById('assignPractitionerFrm');
-        form.action = '/assignPractitioner';
+        form.action = '/assignPractitionerForUpdate';
         form.submit();
     });
 

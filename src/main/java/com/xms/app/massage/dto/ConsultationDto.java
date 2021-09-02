@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class ConsultationDto {
 
+    private long treatmentId;
     private String serviceDate;
     private String customerName;
     private Item item;
@@ -15,4 +16,5 @@ public class ConsultationDto {
     private String healthFund;
     private BigDecimal paidAmt;
     private BigDecimal claimedAmt;
+    private String medicalCaseRecord;
 }
