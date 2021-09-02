@@ -51,7 +51,20 @@ $(document ).ready(function() {
         $('#treatmentTbl').DataTable().ajax.reload();
     });
 
+    setupMedicalCaseRecordDialog();
+
 });
+
+function setupMedicalCaseRecordDialog() {
+    $('#mcrDialog').dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 600,
+        width: 1000,
+        modal: true,
+        closeOnEscape: true
+    });
+}
 
 function applyTreatmentDataTable() {
 
@@ -93,9 +106,10 @@ function applyTreatmentDataTable() {
             {"data": "customerName","width": "15%"},
             {"data": "item","width": "15%"},
             {"data": "type","width": "10%"},
-            {"data": "healthFund","width": "25%"},
+            {"data": "healthFund","width": "15%"},
             {"data": "paidAmt","width": "10%"},
-            {"data": "claimedAmt","width": "10%"}
+            {"data": "claimedAmt","width": "10%"},
+            {"data": "medicalCaseRecord","width": "10%"}
         ],
         columnDefs: [
             {
@@ -118,6 +132,16 @@ function applyTreatmentDataTable() {
                    }
                 },
                 "targets": 4
+            },
+            {
+                "render": function(data, type, row) {
+                    if (row.item && row.medicalCaseRecord) {
+                        return "<input name='btnMedicalCaseRecord' class=\"btn btn-info\" type=\"button\" value=\"Medical Case Record\" onclick=\"$('#mcrDialog').html(this.title).dialog('open');\" title='" + row.medicalCaseRecord + "'/>";
+                    } else {
+                        return "";
+                    }
+                },
+                "targets": 7
             }
         ],
         footerCallback: function (row, data, start, end, display) {

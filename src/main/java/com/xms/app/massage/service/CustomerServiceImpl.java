@@ -141,7 +141,7 @@ public class CustomerServiceImpl extends AbstractXMSService implements CustomerS
 
     public List<ConsultationDto> findAllTreatments(PagingRequest pagingRequest) {
         StringBuilder querySQLBuilder = new StringBuilder()
-                .append("select t.service_date, t.customer, i.id, c.health_fund, t.expense_amt, t.claimed_amt from treatment t ")
+                .append("select t.id as treatmentId, t.service_date, t.customer, i.id as itemId, c.health_fund, t.expense_amt, t.claimed_amt, t.medical_case_record from treatment t ")
                 .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where c.id = " + pagingRequest.getCustomerId() + " ");
@@ -157,6 +157,7 @@ public class CustomerServiceImpl extends AbstractXMSService implements CustomerS
             LocalDate endDate = LocalDate.parse(pagingRequest.getToDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).plusDays(1);
             querySQLBuilder.append("and t.service_date < '").append(endDate.format(dtf)).append("' ");
         }
+        querySQLBuilder.append("and t.active = 1 ");
         querySQLBuilder.append("order by c.first_name asc, c.middle_name asc, c.last_name asc, i.type asc, t.service_date asc, i.name asc");
 
         return em.unwrap(Session.class)
