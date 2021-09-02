@@ -163,12 +163,9 @@ function applyTreatmentDataTable() {
                 "targets": 4
             },
             {
-                    "render": function(data, type, row) {
-                    $("input[name='btnMedicalCaseRecord']").click(function() {
-                        $('#mcrDialog').html(this.title).dialog("open");
-                    });
+                "render": function(data, type, row) {
                     if (row.item && row.medicalCaseRecord) {
-                        return "<input name='btnMedicalCaseRecord' class=\"btn btn-info\" type=\"button\" value=\"Medical Case Record\" title='" + row.medicalCaseRecord + "'/>";
+                        return "<input name='btnMedicalCaseRecord' class=\"btn btn-info\" type=\"button\" value=\"Medical Case Record\" onclick=\"$('#mcrDialog').html(this.title).dialog('open');\" title='" + row.medicalCaseRecord + "'/>";
                     } else {
                         return "";
                     }
