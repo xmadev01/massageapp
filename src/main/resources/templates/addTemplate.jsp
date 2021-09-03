@@ -28,13 +28,13 @@
                             <div class="row">
                                 <div class="col-md-8 mt-5">
                                         <div class="form-group">
-                                            <label for="title">Template Name:</label>
+                                            <label for="title"><strong>Template Name:</strong></label>
                                             <input type="text" id="title" autocomplete="off" class="form-control"
                                                    th:field="*{name}"/>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="content">Content:</label>
+                                            <label for="content"><strong>Content:</strong></label>
                                             <textarea type="text" rows="4" id="content" class="form-control"
                                                       th:field="*{content}" autocomplete="off"></textarea>
                                         </div>
