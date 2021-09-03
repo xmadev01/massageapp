@@ -34,7 +34,7 @@ public class ProviderReportServiceImpl extends AbstractXMSService implements Pro
             fromDate = LocalDate.parse(pagingRequest.getFromDate(), dtf1);
             toDate = LocalDate.parse(pagingRequest.getToDate(), dtf1);
         }
-        List<ProviderReportVO> reports = populateProviderReportVO(fromDate, toDate);
+        List<ProviderReportVO> reports = populateProviderReportVO(fromDate, toDate, pagingRequest.getProviderName(), pagingRequest.getHealthFund());
         reports = reports.stream().filter(re -> re.getNumberOfAcupunctureClient() != 0 || re.getNumberOfMassageClient() != 0).collect(Collectors.toList());
 
         final List<ProviderReportVO> filteredConsultations = reports.stream()
@@ -51,37 +51,70 @@ public class ProviderReportServiceImpl extends AbstractXMSService implements Pro
         return page;
     }
 
-    private List<ProviderReportVO> populateProviderReportVO(LocalDate startDate, LocalDate endDate) {
+    private List<ProviderReportVO> populateProviderReportVO(LocalDate startDate, LocalDate endDate, String providerName, String healthFundName) {
         List<ProviderReportVO> reportVos = new ArrayList<>();
 
         if (startDate != null && endDate != null) {
             for (LocalDate sDate = startDate; sDate.isBefore(endDate.plusDays(1)); sDate = sDate.plusDays(1)) {
-                for (Practitioner practitioner : treatmentRepository.findAllProviders(sDate)) {
-                    for (HealthFund healthFund : treatmentRepository.findAllHealthFunds(sDate)) {
+                List<Practitioner> filteredPractitioners = treatmentRepository.findAllProviders(sDate).stream()
+                                            .filter(practitioner -> StringUtils.isBlank(providerName) || practitioner.getFullName().toLowerCase().contains(providerName.toLowerCase()))
+                                            .collect(Collectors.toList());
+                for (Practitioner practitioner : filteredPractitioners) {
+                    List<HealthFund> filteredHealthFunds = treatmentRepository.findAllHealthFunds(sDate).stream()
+                                            .filter(healthFund -> StringUtils.isBlank(healthFundName) || (healthFund != null && healthFund.getName().toLowerCase().contains(healthFundName.toLowerCase())))
+                                            .collect(Collectors.toList());
+                    for (HealthFund healthFund : filteredHealthFunds) {
                         final ProviderReportVO reportVo = new ProviderReportVO();
+                        List<Customer> customers;
+                        BigDecimal expenseAmtSum;
+                        BigDecimal claimedAmtSum;
                         reportVo.setServiceDate(sDate.format(dtf1));
                         reportVo.setPractitioner(practitioner.getFullName());
-                        reportVo.setHealthFund(healthFund.getName());
-                        List<Customer> customers = treatmentRepository.findAllCustomers(sDate, practitioner, healthFund, ServiceTypeEnum.ACUPUNCTURE);
+                        if (healthFund != null) {
+                            reportVo.setHealthFund(healthFund.getName());
+                            customers = treatmentRepository.findAllCustomers(sDate, practitioner, healthFund, ServiceTypeEnum.ACUPUNCTURE);
+                        } else {
+                            customers = treatmentRepository.findAllCustomers(sDate, practitioner, ServiceTypeEnum.ACUPUNCTURE);
+                        }
                         reportVo.setNumberOfAcupunctureClient(customers.size());
-                        customers = treatmentRepository.findAllCustomers(sDate, practitioner, healthFund, ServiceTypeEnum.MASSAGE);
+                        if (healthFund != null) {
+                            customers = treatmentRepository.findAllCustomers(sDate, practitioner, healthFund, ServiceTypeEnum.MASSAGE);
+                        } else {
+                            customers = treatmentRepository.findAllCustomers(sDate, practitioner, ServiceTypeEnum.MASSAGE);
+                        }
                         reportVo.setNumberOfMassageClient(customers.size());
-                        BigDecimal expenseAmtSum = treatmentRepository.getExpenseAmtSum(sDate, practitioner, healthFund, ServiceTypeEnum.ACUPUNCTURE);
+                        if (healthFund != null) {
+                            expenseAmtSum = treatmentRepository.getExpenseAmtSum(sDate, practitioner, healthFund, ServiceTypeEnum.ACUPUNCTURE);
+                        } else {
+                            expenseAmtSum = treatmentRepository.getExpenseAmtSum(sDate, practitioner, ServiceTypeEnum.ACUPUNCTURE);
+                        }
                         if (expenseAmtSum == null) {
                             expenseAmtSum = BigDecimal.ZERO;
                         }
                         reportVo.setChargedAcupunctureAmt(CommonUtils.formatCurrencyData(expenseAmtSum));
-                        BigDecimal claimedAmtSum = treatmentRepository.getClaimedAmtSum(sDate, practitioner, healthFund, ServiceTypeEnum.ACUPUNCTURE);
+                        if (healthFund != null) {
+                            claimedAmtSum = treatmentRepository.getClaimedAmtSum(sDate, practitioner, healthFund, ServiceTypeEnum.ACUPUNCTURE);
+                        } else {
+                            claimedAmtSum = treatmentRepository.getClaimedAmtSum(sDate, practitioner, ServiceTypeEnum.ACUPUNCTURE);
+                        }
                         if (claimedAmtSum == null) {
                             claimedAmtSum = BigDecimal.ZERO;
                         }
                         reportVo.setClaimedAcupunctureAmt(CommonUtils.formatCurrencyData(claimedAmtSum));
-                        expenseAmtSum = treatmentRepository.getExpenseAmtSum(sDate, practitioner, healthFund, ServiceTypeEnum.MASSAGE);
+                        if (healthFund != null) {
+                            expenseAmtSum = treatmentRepository.getExpenseAmtSum(sDate, practitioner, healthFund, ServiceTypeEnum.MASSAGE);
+                        } else {
+                            expenseAmtSum = treatmentRepository.getExpenseAmtSum(sDate, practitioner, ServiceTypeEnum.MASSAGE);
+                        }
                         if (expenseAmtSum == null) {
                             expenseAmtSum = BigDecimal.ZERO;
                         }
                         reportVo.setChargedMassageAmt(CommonUtils.formatCurrencyData(expenseAmtSum));
-                        claimedAmtSum = treatmentRepository.getClaimedAmtSum(sDate, practitioner, healthFund, ServiceTypeEnum.MASSAGE);
+                        if (healthFund != null) {
+                            claimedAmtSum = treatmentRepository.getClaimedAmtSum(sDate, practitioner, healthFund, ServiceTypeEnum.MASSAGE);
+                        } else {
+                            claimedAmtSum = treatmentRepository.getClaimedAmtSum(sDate, practitioner, ServiceTypeEnum.MASSAGE);
+                        }
                         if (claimedAmtSum == null) {
                             claimedAmtSum = BigDecimal.ZERO;
                         }

@@ -25,20 +25,34 @@
                     <form id="providerRptFrm" name="providerRptFrm" method="post">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-sm">
+                                <div class="col-3 mb-2">
                                     <label class="form-label">From Date:</label>
                                     <input class="" type="text" id="fromDate" name="fromDate" autocomplete="off" />
                                 </div>
-                                <div class="col-sm">
+                                <div class="col-3 mb-2">
                                     <label class="form-label">To Date:</label>
                                     <input class="" type="text" id="toDate" name="toDate" autocomplete="off" />
                                 </div>
-                                <div class="col-sm">
+                                <div class="col"></div>
+                                <div class="col"></div>
+                                <div class="col"></div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label class="form-label">Provider Name:</label>
+                                    <input class="" type="text" id="providerName" name="providerName" autocomplete="off" />
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label">Health Fund:</label>
+                                    <input class="" type="text" id="healthFund" name="healthFund" autocomplete="off" />
+                                </div>
+                                <div class="col">
                                     <input type="button" class="btn btn-info" id="btnSearch" value="Search" />
                                 </div>
-                                <div class="col-sm">
-
-                                </div>
+                                <div class="col"></div>
+                                <div class="col"></div>
+                                <div class="col"></div>
                             </div>
                         </div>
                         <div class="row">

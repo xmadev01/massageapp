@@ -44,6 +44,10 @@ public interface TreatmentRepository extends JpaRepository<Treatment, Long> {
     List<Customer> findAllCustomers(@Param("sDate") LocalDate sDate, @Param("practitioner") Practitioner practitioner,
                                     @Param("healthFund") HealthFund healthFund, @Param("type") ServiceTypeEnum type);
 
+    @Query("select distinct c from Treatment t join t.customer c join t.item itm where t.serviceDate between :sDate and :sDate and t.practitioner = :practitioner " +
+            "and itm.type = :type")
+    List<Customer> findAllCustomers(@Param("sDate") LocalDate sDate, @Param("practitioner") Practitioner practitioner, @Param("type") ServiceTypeEnum type);
+
     @Query("select distinct t.practitioner from Treatment t where t.serviceDate between :sDate and :sDate")
     List<Practitioner> findAllProviders(@Param("sDate") LocalDate sDate);
 
@@ -55,9 +59,19 @@ public interface TreatmentRepository extends JpaRepository<Treatment, Long> {
     BigDecimal getExpenseAmtSum(@Param("sDate") LocalDate sDate, @Param("practitioner") Practitioner practitioner,
                                 @Param("healthFund") HealthFund healthFund, @Param("type") ServiceTypeEnum type);
 
+    @Query("select sum(t.expenseAmt) from Treatment t join t.customer c join t.item itm where t.serviceDate between :sDate and :sDate and t.practitioner = :practitioner " +
+            "and itm.type = :type")
+    BigDecimal getExpenseAmtSum(@Param("sDate") LocalDate sDate, @Param("practitioner") Practitioner practitioner,
+                                @Param("type") ServiceTypeEnum type);
+
     @Query("select sum(t.claimedAmt) from Treatment t join t.customer c join c.healthFund hf join t.item itm where t.serviceDate between :sDate and :sDate and t.practitioner = :practitioner " +
             "and hf = :healthFund and itm.type = :type")
     BigDecimal getClaimedAmtSum(@Param("sDate") LocalDate sDate, @Param("practitioner") Practitioner practitioner,
                                 @Param("healthFund") HealthFund healthFund, @Param("type") ServiceTypeEnum type);
+
+    @Query("select sum(t.claimedAmt) from Treatment t join t.customer c join t.item itm where t.serviceDate between :sDate and :sDate and t.practitioner = :practitioner " +
+            "and itm.type = :type")
+    BigDecimal getClaimedAmtSum(@Param("sDate") LocalDate sDate, @Param("practitioner") Practitioner practitioner,
+                                @Param("type") ServiceTypeEnum type);
 
 }

@@ -89,6 +89,8 @@ function applyTreatmentDataTable() {
                 d.customerId = $('#customerId').val();
                 d.fromDate = $('#fromDate').val();
                 d.toDate = $('#toDate').val();
+                d.providerName = $('#providerName').val();
+                d.healthFund = $('#healthFund').val();
                 return JSON.stringify(d);
             }
         },

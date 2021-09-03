@@ -26,6 +26,7 @@ function applyProviderRptDataTable() {
     return $('#providerRptTbl').DataTable({
         processing: true,
         serverSide: true,
+        searching: false,
         pageLength: 50,
         dom: 'Blfrtip',
         order: [[0, 'asc'], [1, 'asc'], [2, 'asc']],
@@ -37,6 +38,8 @@ function applyProviderRptDataTable() {
             data: function (d) {
                 d.fromDate = $('#fromDate').val();
                 d.toDate = $('#toDate').val();
+                d.providerName = $('#providerName').val();
+                d.healthFund = $('#healthFund').val();
                 return JSON.stringify(d);
             }
         },
