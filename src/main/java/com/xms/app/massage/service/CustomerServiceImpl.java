@@ -117,6 +117,11 @@ public class CustomerServiceImpl extends AbstractXMSService implements CustomerS
     }
 
     @Override
+    public Optional<Customer> findByFirstName(String firstName) {
+        return customerRepository.findByFirstName(firstName);
+    }
+
+    @Override
     public Page<ConsultationVO> loadCustomerTreatments(PagingRequest pagingRequest) {
 
         List<ConsultationDto> consultationDtos = findAllTreatments(pagingRequest);

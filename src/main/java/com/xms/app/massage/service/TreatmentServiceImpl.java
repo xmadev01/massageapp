@@ -80,8 +80,10 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         Optional<Customer> customerOpt;
         if (names.length == 3) {
             customerOpt = customerService.findByFirstNameLastName(names[0], names[1], names[2]);
-        } else {
+        } else if (names.length == 2) {
             customerOpt = customerService.findByFirstNameLastName(names[0], "", names[1]);
+        } else {
+            customerOpt = customerService.findByFirstName(names[0]);
         }
         if (customerOpt.isPresent()) {
             treatmentVO.getItemIds().forEach(itemId -> {

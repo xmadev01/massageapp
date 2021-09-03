@@ -24,5 +24,7 @@ public interface CustomerService {
 
     Optional<Customer> findByFirstNameLastName(String firstName, String middleName, String lastName);
 
+    Optional<Customer> findByFirstName(String firstName);
+
     Page<ConsultationVO> loadCustomerTreatments(PagingRequest pagingRequest);
 }
