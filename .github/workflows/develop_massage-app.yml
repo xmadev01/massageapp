@@ -50,4 +50,4 @@ jobs:
         app-name: 'massage-app'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_8b364e66ec3b4739bb6fba8717b127ae }}
-        package: '*.war'
+        package: '*.jar'
