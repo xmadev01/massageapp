@@ -53,11 +53,13 @@ public class HealthFundServiceImpl implements HealthFundService {
             healthFunds = healthFundRepository.findAll(Sort.by(Sort.Direction.DESC, column.getData()));
         }
         final List<HealthFund> filteredHealthFunds = healthFunds.stream()
+                .filter(healthFund -> healthFund.isActive())
                 .filter(filterHealthFund(pagingRequest))
                 .skip(pagingRequest.getStart())
                 .limit(pagingRequest.getLength())
                 .collect(Collectors.toList());
         long count = healthFunds.stream()
+                .filter(healthFund -> healthFund.isActive())
                 .filter(filterHealthFund(pagingRequest))
                 .count();
         Page<HealthFund> page = new Page<>(filteredHealthFunds);

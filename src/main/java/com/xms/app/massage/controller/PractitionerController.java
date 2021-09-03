@@ -75,16 +75,9 @@ public class PractitionerController {
         return "updatePractitioner";
     }
 
-    @PostMapping("/deactivatePractitioner/{staffId}")
-    public String deactivatePractitioner(@PathVariable long staffId, Model model) {
-        practitionerService.deactivatePractitioner(staffId);
-        return "redirect:/listPractitioner";
-    }
-
-
     @PostMapping("/deletePractitioner/{staffId}")
-    public String deletePractitioner(@PathVariable long staffId, RedirectAttributes redirectAttributes, Model model) {
-        practitionerService.deletePractitioner(staffId);
+    public String deactivatePractitioner(@PathVariable long staffId, RedirectAttributes redirectAttributes, Model model) {
+        practitionerService.deactivatePractitioner(staffId);
         MessageUtils.addSuccessMessage(redirectAttributes, "The practitioner has been deleted successfully.");
         return "redirect:/listPractitioner";
     }

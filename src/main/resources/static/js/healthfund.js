@@ -55,8 +55,10 @@ function applyHealthFundDataTable() {
             }
         },
         columns: [
-            {"data": "name","width": "40%"},
-            {"data": "description","width": "40%"}
+            {"data": "name","width": "30%"},
+            {"data": "description","width": "30%"},
+            {"data": "providerNumA","width": "20%"},
+            {"data": "providerNumM","width": "20%"}
         ],
         columnDefs: [
 

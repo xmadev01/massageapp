@@ -64,8 +64,7 @@ function applyPractitionerDataTable() {
         },
         columns: [
             {"data": "firstName", "width": "10%"},
-            {"data": "lastName","width": "10%"},
-            {"data": "active", "width": "10%"}
+            {"data": "lastName","width": "10%"}
         ],
         columnDefs: [
             {
@@ -73,16 +72,6 @@ function applyPractitionerDataTable() {
                     return data;
                 },
                 "targets": 0
-            },
-            {
-                "render": function(data, type, row) {
-                    if (data == true) {
-                       return '<img src="/images/true.png" />';
-                    } else {
-                       return '<img src="/images/false.png" />';
-                    }
-                },
-                "targets": 2
             }
 
         ]

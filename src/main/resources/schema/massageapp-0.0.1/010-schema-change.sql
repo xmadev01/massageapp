@@ -17,6 +17,8 @@ CREATE TABLE Health_Fund (
    id IDENTITY PRIMARY KEY,
    name VARCHAR(100) NOT NULL,
    description VARCHAR(100) NOT NULL,
+   providerNumA VARCHAR(100) NULL,
+   providerNumM VARCHAR(100) NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL,
    UNIQUE KEY health_fund_name_UNIQUE (name)
@@ -81,6 +83,7 @@ CREATE TABLE Treatment (
    expense_amt DECIMAL NOT NULL,
    claimed_amt DECIMAL NOT NULL,
    venue VARCHAR(200) NULL,
+   medical_case_record VARCHAR(5000) NULL,
    created_date TIMESTAMP NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL,

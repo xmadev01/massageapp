@@ -42,6 +42,16 @@
                                                 <input class="form-control" type="text" th:field="*{description}" name="name" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                                             </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Provider No (Accupuncture)</label>
+                                                <input class="form-control" type="text" th:field="*{providerNumA}" name="providerNumA" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('providerNumA')}" th:errors="*{providerNumA}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Provider No (Massage)</label>
+                                                <input class="form-control" type="text" th:field="*{providerNumM}" name="providerNumM" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('providerNumM')}" th:errors="*{providerNumM}"></div>
+                                            </div>
                                             <div class="text-center mt-3">
                                                 <a id="btnAdd" href="#" class="btn btn-info">Add</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;

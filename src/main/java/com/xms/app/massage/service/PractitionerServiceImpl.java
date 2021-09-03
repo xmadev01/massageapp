@@ -42,11 +42,13 @@ public class PractitionerServiceImpl implements PractitionerService {
             practitioners = practitionerRepository.findAll(Sort.by(Sort.Direction.DESC, column.getData()));
         }
         final List<Practitioner> filteredPractitioner = practitioners.stream()
+                                               .filter(practitioner -> practitioner.isActive())
                                                .filter(filterPractitioner(pagingRequest))
                                                .skip(pagingRequest.getStart())
                                                .limit(pagingRequest.getLength())
                                                .collect(Collectors.toList());
         long count = practitioners.stream()
+                          .filter(practitioner -> practitioner.isActive())
                           .filter(filterPractitioner(pagingRequest))
                           .count();
         Page<Practitioner> page = new Page<>(filteredPractitioner);

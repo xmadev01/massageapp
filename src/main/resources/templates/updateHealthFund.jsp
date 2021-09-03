@@ -35,13 +35,21 @@
                                             <input th:type="hidden" th:field="*{id}" />
                                             <div class="mb-3">
                                                 <label class="form-label">Name</label>
-                                                <input class="form-control" type="text" th:field="*{name}" name="name" />
-                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                                <input class="form-control" type="text" th:field="*{name}" name="name" th:readonly="true" />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Description</label>
-                                                <input class="form-control" type="text" th:field="*{description}" name="name" />
-                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                                                <input class="form-control" type="text" th:field="*{description}" name="name" th:readonly="true" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Provider No (Accupuncture)</label>
+                                                <input class="form-control" type="text" th:field="*{providerNumA}" name="providerNumA" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('providerNumA')}" th:errors="*{providerNumA}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Provider No (Massage)</label>
+                                                <input class="form-control" type="text" th:field="*{providerNumM}" name="providerNumM" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('providerNumM')}" th:errors="*{providerNumM}"></div>
                                             </div>
                                             <div class="text-center mt-3">
                                                 <a id="btnUpdate" href="#" class="btn btn-info">Update</a>

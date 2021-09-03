@@ -18,6 +18,12 @@ public class HealthFund {
     @Column(nullable = false)
     private String description;
 
+    @Column
+    private String providerNumA;
+
+    @Column
+    private String providerNumM;
+
     private boolean active = true;
 
     @Version

@@ -37,6 +37,8 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Description</th>
+                                    <th>Provider No (Accupuncture)</th>
+                                    <th>Provider No (Massage)</th>
                                 </tr>
                                 </thead>
                             </table>

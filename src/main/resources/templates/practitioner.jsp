@@ -28,8 +28,6 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a id="btnDeactivate" href="#" class="btn btn-info">(De)activate</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <a id="btnDelete" href="#" class="btn btn-info">Delete</a>
                     </div>
                     <div class="row">
@@ -39,7 +37,6 @@
                                 <tr>
                                     <th>First Name</th>
                                     <th>Last Name</th>
-                                    <th>Active</th>
                                 </tr>
                                 </thead>
                             </table>

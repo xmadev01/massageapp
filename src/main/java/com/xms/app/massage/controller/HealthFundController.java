@@ -7,7 +7,7 @@ import com.xms.app.massage.paging.PagingRequest;
 import com.xms.app.massage.service.HealthFundService;
 import com.xms.app.massage.utils.MessageUtils;
 import com.xms.app.massage.validators.HealthFundValidator;
-import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -74,7 +74,7 @@ public class HealthFundController {
     }
 
     @PostMapping("/updateHealthFund/{healthFundId}")
-    public String updateHealthFund(@PathVariable long healthFundId, @Valid HealthFund healthFund, BindingResult result,
+    public String updateHealthFund(@PathVariable long healthFundId, @ModelAttribute HealthFund healthFund, BindingResult result,
                               RedirectAttributes redirectAttributes, Model model) throws InvocationTargetException, IllegalAccessException {
         if (result.hasErrors()) {
             MessageUtils.addErrorMessages(model, result.getFieldErrors());
@@ -82,7 +82,7 @@ public class HealthFundController {
         }
 
         HealthFund loadedHealthFund = healthFundService.loadHealthFund(healthFundId);
-        BeanUtils.copyProperties(loadedHealthFund, healthFund);
+        BeanUtils.copyProperties(healthFund, loadedHealthFund, "name", "description");
         healthFundService.saveHealthFund(loadedHealthFund);
         MessageUtils.addSuccessMessage(redirectAttributes, "The health fund has been updated successfully.");
         return "redirect:/listHealthFunds";
