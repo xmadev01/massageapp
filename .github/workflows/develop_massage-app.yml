@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy WAR app to Azure Web App - massage-app
+name: Build and deploy JAR app to Azure Web App - massage-app
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -27,11 +27,11 @@ jobs:
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
-        name: massage-app
+        name: java-app
         path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'production'
@@ -41,7 +41,7 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v2
       with:
-        name: massage-app
+        name: java-app
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
@@ -49,5 +49,5 @@ jobs:
       with:
         app-name: 'massage-app'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e147187a6ec9477fb13f4bcf18e4431e }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_ea4eac0f500141aa894ec5deae72e2f8 }}
         package: '*.jar'
