@@ -23,7 +23,7 @@
                     </div>
                     <div th:insert="fragments/messagediv.html :: messagediv" />
                     <form id="listTemplateFrm" name="listTemplateFrm" method="post" th:action="@{/saveTemplate}" th:object="${template}">
-
+                        <input type="hidden" th:field="*{id}" />
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-8 mt-5">
