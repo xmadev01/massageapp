@@ -43,7 +43,7 @@
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Tel: (02)9585 8867        A.B.N: 53 600 415 290]]></text>
+				<text><![CDATA[Tel: (02) 9585 8867        A.B.N: 53 600 415 290]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="108" width="95" height="20" uuid="429d967b-9e58-49fe-8b99-d386d522df39"/>
@@ -64,26 +64,32 @@
 	<columnHeader>
 		<band height="50">
 			<staticText>
-				<reportElement x="1" y="10" width="100" height="30" uuid="fd953bf2-0a73-4e5f-804d-061571ab94a8"/>
+				<reportElement x="1" y="10" width="100" height="20" uuid="fd953bf2-0a73-4e5f-804d-061571ab94a8"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Treatment Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="10" width="101" height="31" uuid="e319e29b-bb2c-4788-ac7f-a0615a679d1d"/>
+				<reportElement x="180" y="10" width="101" height="20" uuid="e319e29b-bb2c-4788-ac7f-a0615a679d1d"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Treatment]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="360" y="10" width="131" height="31" uuid="b2fc7701-042a-4e90-b481-64847985f3e1"/>
+				<reportElement x="360" y="10" width="131" height="20" uuid="b2fc7701-042a-4e90-b481-64847985f3e1"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Price]]></text>
 			</staticText>
+			<line>
+				<reportElement x="1" y="30" width="490" height="3" uuid="93a3eab0-a13d-4703-8f19-ded5649f1f69">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
@@ -114,75 +120,81 @@
 	<summary>
 		<band height="180">
 			<staticText>
-				<reportElement x="0" y="33" width="101" height="21" uuid="0ebb3d42-f634-4bd6-83c6-9044954201fe"/>
+				<reportElement x="0" y="38" width="101" height="21" uuid="0ebb3d42-f634-4bd6-83c6-9044954201fe"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Provider:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="101" y="33" width="450" height="21" uuid="67e72632-eaf3-40de-ac49-a4abcb839414"/>
+				<reportElement x="101" y="38" width="450" height="21" uuid="67e72632-eaf3-40de-ac49-a4abcb839414"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{providerName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="307" y="5" width="47" height="22" uuid="6f4a9a8a-a33e-4594-bb54-0469d48029cb"/>
+				<reportElement x="307" y="16" width="47" height="22" uuid="6f4a9a8a-a33e-4594-bb54-0469d48029cb"/>
 				<textElement textAlignment="Right">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="357" y="5" width="133" height="21" uuid="4699b00e-bf3f-4130-a829-a39f0bb9a8c9"/>
+				<reportElement x="357" y="16" width="133" height="21" uuid="4699b00e-bf3f-4130-a829-a39f0bb9a8c9"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalAmt}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="55" width="101" height="21" uuid="1b9f1f60-1938-4616-8bf8-f4c9df1055fb"/>
+				<reportElement x="0" y="60" width="101" height="21" uuid="1b9f1f60-1938-4616-8bf8-f4c9df1055fb"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Association number:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="102" y="54" width="450" height="21" uuid="9ccecd04-f4b6-4c62-afe4-752f5c563b84"/>
+				<reportElement x="102" y="59" width="450" height="21" uuid="9ccecd04-f4b6-4c62-afe4-752f5c563b84"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{associationNum}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="76" width="101" height="21" uuid="78de8992-3665-449e-86f6-7c7a3e2ca3a0"/>
+				<reportElement x="0" y="81" width="101" height="21" uuid="78de8992-3665-449e-86f6-7c7a3e2ca3a0"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[ARHG number:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="102" y="75" width="450" height="21" uuid="d8620cfa-6887-4e4a-9bf4-a20d55525183"/>
+				<reportElement x="102" y="80" width="450" height="21" uuid="d8620cfa-6887-4e4a-9bf4-a20d55525183"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{ARHGNum}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1" y="97" width="101" height="21" uuid="e189fa0c-5a33-4907-a7f2-4bcb6124efe2"/>
+				<reportElement x="1" y="102" width="101" height="21" uuid="e189fa0c-5a33-4907-a7f2-4bcb6124efe2"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{healthFundName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="102" y="98" width="450" height="21" uuid="f13a32a0-6d86-486b-b3d2-c20c24106c8f"/>
+				<reportElement x="102" y="103" width="450" height="21" uuid="f13a32a0-6d86-486b-b3d2-c20c24106c8f"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{insuranceProviderNum}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="2" y="11" width="488" height="1" uuid="a16f04a5-fd9b-405a-ba8e-7c1b7f774c41">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
 		</band>
 	</summary>
 </jasperReport>
