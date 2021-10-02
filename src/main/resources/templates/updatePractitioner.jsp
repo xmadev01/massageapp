@@ -27,7 +27,7 @@
                         <div class="d-table-cell align-middle">
 
                             <div class="text-center mt-4">
-                                <h1 class="h4">Update Practitioner</h1>
+                                <h1 class="h4">Update Provider</h1>
                             </div>
                             <div th:insert="fragments/messagediv.html :: messagediv" />
 
@@ -49,6 +49,16 @@
                                                 <label class="form-label">Last Name</label>
                                                 <input class="form-control" type="text" th:field="*{lastName}" name="lastName" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Association Number</label>
+                                                <input class="form-control" type="text" th:field="*{associationNum}" name="associationNum" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('associationNum')}" th:errors="*{associationNum}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">ARHG Number</label>
+                                                <input class="form-control" type="text" th:field="*{arhgNum}" name="arhgNum" />
+                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('arhgNum')}" th:errors="*{arhgNum}"></div>
                                             </div>
                                             <div class="text-center mt-3">
                                                 <a id="btnUpdate" href="#" class="btn btn-info">Update</a>

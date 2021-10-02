@@ -8,9 +8,7 @@ CREATE TABLE User (
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL,
    UNIQUE KEY user_user_code_UNIQUE (user_code)
-)
-
-GO
+);
 
 CREATE TABLE Health_Fund (
 
@@ -22,9 +20,7 @@ CREATE TABLE Health_Fund (
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL,
    UNIQUE KEY health_fund_name_UNIQUE (name)
-)
-
-GO
+);
 
 CREATE TABLE Customer (
 
@@ -46,20 +42,18 @@ CREATE TABLE Customer (
    version INT DEFAULT 0 NOT NULL,
    UNIQUE KEY customer_email_UNIQUE (email),
    foreign key (health_fund) references Health_Fund(id)
-)
-
-GO
+);
 
 CREATE TABLE Practitioner (
 
    id IDENTITY PRIMARY KEY,
    first_name VARCHAR(50) NOT NULL,
    last_name VARCHAR(50) NOT NULL,
+   association_num VARCHAR(100) NULL,
+   arhg_num VARCHAR(100) NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
-)
-
-GO
+);
 
 CREATE TABLE Item (
 
@@ -70,9 +64,8 @@ CREATE TABLE Item (
    price DOUBLE NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
-)
+);
 
-GO
 
 CREATE TABLE Treatment (
 
@@ -91,7 +84,7 @@ CREATE TABLE Treatment (
    foreign key (customer) references Customer(id),
    foreign key (practitioner) references Practitioner(id),
    foreign key (item) references Item(id)
-)
+);
 
 CREATE TABLE Template (
 
@@ -100,7 +93,7 @@ CREATE TABLE Template (
    content VARCHAR(5000) NOT NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL
-)
+);
 
 
 

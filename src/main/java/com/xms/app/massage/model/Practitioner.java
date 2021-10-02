@@ -22,6 +22,10 @@ public class Practitioner implements Serializable {
     @NotEmpty(message = "{staff.lastName.not.empty}")
     private String lastName;
 
+    private String associationNum;
+
+    private String arhgNum;
+
     private boolean active = true;
 
     @Version

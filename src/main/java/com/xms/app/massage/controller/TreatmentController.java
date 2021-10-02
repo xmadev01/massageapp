@@ -9,6 +9,7 @@ import com.xms.app.massage.validators.TreatmentValidator;
 import com.xms.app.massage.vo.ConsultationVO;
 import com.xms.app.massage.vo.SingleTreatmentVO;
 import com.xms.app.massage.vo.TreatmentVO;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,14 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @SessionAttributes({"activeItem", "practitioners", "items", "templates"})
@@ -113,9 +119,17 @@ public class TreatmentController {
     }
 
     @PostMapping("/deleteTreatment")
-    public String deleteTreatment(@RequestParam long treatmentId, Model model) {
-        treatmentService.deactivateTreatment(treatmentId);
+    public String deleteTreatment(@RequestParam List<Integer> treatmentIds, Model model) {
+        treatmentIds.forEach(treatmentId -> {
+            treatmentService.deactivateTreatment(treatmentId);
+        });
         return "redirect:/listTreatments";
+    }
+
+    @PostMapping("/downloadInvoice")
+    public void downloadInvoice(HttpServletRequest request, HttpServletResponse response, @RequestParam List<Long> treatmentIds, Model model) throws JRException, IOException {
+        treatmentService.downloadInvoice(treatmentIds, response);
+        final ServletOutputStream outputStream = response.getOutputStream();
     }
 
 }

@@ -39,6 +39,9 @@ public interface TreatmentRepository extends JpaRepository<Treatment, Long> {
     @Query("select t from Treatment t join t.customer c join c.healthFund h where t.serviceDate between :startDate and :endDate order by h.name desc")
     List<Treatment> findAllOrderByHealthFundDesc(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
+    @Query("select t from Treatment t where t.id in :treatmentIds and t.active = true")
+    List<Treatment> findAllByTreatmentIds(@Param("treatmentIds") List<Long> treatmentIds);
+
     @Query("select distinct c from Treatment t join t.customer c join c.healthFund hf join t.item itm where t.serviceDate between :sDate and :sDate and t.practitioner = :practitioner " +
             "and hf = :healthFund and itm.type = :type")
     List<Customer> findAllCustomers(@Param("sDate") LocalDate sDate, @Param("practitioner") Practitioner practitioner,

@@ -28,12 +28,16 @@
                         <input th:type="hidden" th:id="currentMonth" th:name="currentMonth" th:value="${currentMonth}" />
                         <input th:type="hidden" th:id="currentYear" th:name="currentYear" th:value="${currentYear}" />
                         <input th:type="hidden" th:id="treatmentId" th:name="treatmentId" />
+                        <input th:type="hidden" th:id="treatmentIds" th:name="treatmentIds" />
+
                         <div class="mt-3">
                             <a id="btnAdd" href="#" class="btn btn-info">Add</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="btnUpdate" href="#" class="btn btn-info">Update</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="btnDelete" href="#" class="btn btn-info">Delete</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a id="btnInvoice" href="#" class="btn btn-info">Invoice</a>
                         </div>
                         <div class="mt-4 mb-4">
                             <div class="row">

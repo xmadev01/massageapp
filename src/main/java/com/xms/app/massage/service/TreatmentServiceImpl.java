@@ -1,29 +1,35 @@
 package com.xms.app.massage.service;
 
 import com.xms.app.massage.dto.ConsultationDto;
+import com.xms.app.massage.enums.ServiceTypeEnum;
 import com.xms.app.massage.model.Customer;
 import com.xms.app.massage.model.Item;
-import com.xms.app.massage.model.Template;
 import com.xms.app.massage.model.Treatment;
 import com.xms.app.massage.paging.*;
 import com.xms.app.massage.repository.TreatmentRepository;
 import com.xms.app.massage.transformer.ConsultationTransformer;
 import com.xms.app.massage.vo.ConsultationVO;
 import com.xms.app.massage.vo.SingleTreatmentVO;
+import com.xms.app.massage.vo.TreatmentInvoiceVO;
 import com.xms.app.massage.vo.TreatmentVO;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -180,6 +186,43 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         if (treatment.isPresent()) {
             treatment.get().setActive(false);
         }
+    }
+
+    @Override
+    public void downloadInvoice(List<Long> treatmentIds, HttpServletResponse response) throws JRException, IOException {
+        final String fileName = "Invoice.pdf";
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(ResourceUtils.getFile("classpath:report/Invoice.jasper"));
+
+        final Treatment treatment = treatmentRepository.findById(new Long(treatmentIds.get(0))).get();
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("patientName", treatment.getCustomer().getFullName());
+        parameters.put("providerName", treatment.getPractitioner().getFullName());
+        List<Treatment> treatments = treatmentRepository.findAllByTreatmentIds(treatmentIds);
+        final double totalAmt = treatments.stream().mapToDouble(t -> t.getExpenseAmt().doubleValue())
+                .reduce(0, (a, b) -> a + b);
+        parameters.put("totalAmt", "$" + NumberFormat.getCurrencyInstance().format(totalAmt));
+        parameters.put("associationNum", treatment.getPractitioner().getAssociationNum());
+        parameters.put("ARHGNum", treatment.getPractitioner().getArhgNum());
+        parameters.put("healthFundName", treatment.getCustomer().getHealthFund().getDescription() + ":");
+        if (treatment.getItem().getType() == ServiceTypeEnum.ACUPUNCTURE) {
+            parameters.put("insuranceProviderNum", treatment.getCustomer().getHealthFund().getProviderNumA());
+        } else if (treatment.getItem().getType() == ServiceTypeEnum.MASSAGE) {
+            parameters.put("insuranceProviderNum", treatment.getCustomer().getHealthFund().getProviderNumM());
+        }
+        parameters.put("insuranceProviderNum", treatment.getPractitioner().getArhgNum());
+        List<TreatmentInvoiceVO> invoices = new ArrayList<>();
+        treatments.stream().forEach(t -> {
+            TreatmentInvoiceVO tiVo = new TreatmentInvoiceVO();
+            tiVo.setServiceDate(t.getServiceDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            tiVo.setItemName(t.getItem().getDisplayName());
+            tiVo.setPrice("$" + NumberFormat.getCurrencyInstance().format(t.getExpenseAmt()));
+            invoices.add(tiVo);
+        });
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRBeanCollectionDataSource(invoices));
+        response.setContentType("application/x-pdf");
+        response.setHeader("Content-disposition", "inline; filename=" + fileName);
+        JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
     }
 
 }

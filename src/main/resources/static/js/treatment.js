@@ -1,20 +1,14 @@
 var months = [ "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December" ];
 
+var treatmentTbl
 
 $(document ).ready(function() {
 
-    var treatmentTbl = applyTreatmentDataTable();
+    treatmentTbl = applyTreatmentDataTable();
 
     $('#treatmentTbl tbody').on('click', 'tr', function () {
-
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        } else {
-            treatmentTbl.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-        selectedTreatment = treatmentTbl.row('.selected').data();
+        $(this).toggleClass('selected');
     });
 
     $('#btnAdd').click(function () {
@@ -25,20 +19,30 @@ $(document ).ready(function() {
     })
 
     $('#btnUpdate').click(function () {
-        if (selectedTreatment) {
+        if (getSelectedTreatmentIds().length == 1) {
             var form = document.getElementById('listTreatmentFrm');
             form.method = 'GET';
-            form.action = '/loadTreatment/' + selectedTreatment.treatmentId;
+            form.action = '/loadTreatment/' + selectedTreatments.treatmentId;
             form.submit();
         }
     })
 
     $('#btnDelete').click(function () {
-        if (selectedTreatment) {
+        if (getSelectedTreatmentIds().length > 0) {
             var form = document.getElementById('listTreatmentFrm');
-            $('#treatmentId').val(selectedTreatment.treatmentId);
+            $('#treatmentIds').val(getSelectedTreatmentIds().join(","));
             form.method = 'POST';
             form.action = '/deleteTreatment';
+            form.submit();
+        }
+    })
+
+    $('#btnInvoice').click(function () {
+        if (getSelectedTreatmentIds().length > 0) {
+            var form = document.getElementById('listTreatmentFrm');
+            $('#treatmentIds').val(getSelectedTreatmentIds().join(","));
+            form.method = 'POST';
+            form.action = '/downloadInvoice';
             form.submit();
         }
     })
@@ -90,6 +94,15 @@ $(document ).ready(function() {
 
     setupMedicalCaseRecordDialog();
 });
+
+function getSelectedTreatmentIds() {
+    var selectedTreatmentIds = [];
+    var selectedTreatments = treatmentTbl.rows('.selected').data();
+    for (var i = 0; i < selectedTreatments.length; i++) {
+        selectedTreatmentIds.push(selectedTreatments[i].treatmentId);
+    }
+    return selectedTreatmentIds;
+}
 
 function setupMedicalCaseRecordDialog() {
     $('#mcrDialog').dialog({

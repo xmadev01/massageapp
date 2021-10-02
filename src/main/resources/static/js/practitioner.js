@@ -63,8 +63,10 @@ function applyPractitionerDataTable() {
             }
         },
         columns: [
-            {"data": "firstName", "width": "10%"},
-            {"data": "lastName","width": "10%"}
+            {"data": "firstName", "width": "25%"},
+            {"data": "lastName","width": "25%"},
+            {"data": "associationNum","width": "25%"},
+            {"data": "arhgNum","width": "25%"}
         ],
         columnDefs: [
             {
