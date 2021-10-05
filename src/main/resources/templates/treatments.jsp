@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div th:insert="fragments/messagediv.html :: messagediv" />
-                    <form id="listTreatmentFrm" name="listTreatmentFrm" method="post">
+                    <form id="listTreatmentFrm" name="listTreatmentFrm" method="post" >
                         <input th:type="hidden" th:id="viewMode" th:name="viewMode" th:value="${viewMode}" />
                         <input th:type="hidden" th:id="currentDay" th:name="currentDay" th:value="${currentDay}" />
                         <input th:type="hidden" th:id="currentMonth" th:name="currentMonth" th:value="${currentMonth}" />

@@ -3,7 +3,8 @@ package com.xms.app.massage.enums;
 public enum ServiceTypeEnum {
 
     MASSAGE("Massage"),
-    ACUPUNCTURE("Acupuncture");
+    ACUPUNCTURE("Acupuncture"),
+    CONSULTATION("Consultation");
 
     private String displayName;
     ServiceTypeEnum(String displayName) {

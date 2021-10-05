@@ -15,6 +15,7 @@ $(document ).ready(function() {
         var form = document.getElementById('listTreatmentFrm');
         form.method = 'GET';
         form.action = '/addTreatment/';
+        form.target = '_self';
         form.submit();
     })
 
@@ -22,7 +23,8 @@ $(document ).ready(function() {
         if (getSelectedTreatmentIds().length == 1) {
             var form = document.getElementById('listTreatmentFrm');
             form.method = 'GET';
-            form.action = '/loadTreatment/' + selectedTreatments.treatmentId;
+            form.action = '/loadTreatment/' + getSelectedTreatmentIds()[0];
+            form.target = '_self';
             form.submit();
         }
     })
@@ -33,6 +35,7 @@ $(document ).ready(function() {
             $('#treatmentIds').val(getSelectedTreatmentIds().join(","));
             form.method = 'POST';
             form.action = '/deleteTreatment';
+            form.target = '_self';
             form.submit();
         }
     })
@@ -43,6 +46,7 @@ $(document ).ready(function() {
             $('#treatmentIds').val(getSelectedTreatmentIds().join(","));
             form.method = 'POST';
             form.action = '/downloadInvoice';
+            form.target = '_blank';
             form.submit();
         }
     })

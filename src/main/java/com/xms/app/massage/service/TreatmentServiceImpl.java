@@ -203,13 +203,14 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         parameters.put("totalAmt", "$" + NumberFormat.getCurrencyInstance().format(totalAmt));
         parameters.put("associationNum", treatment.getPractitioner().getAssociationNum());
         parameters.put("ARHGNum", treatment.getPractitioner().getArhgNum());
-        parameters.put("healthFundName", treatment.getCustomer().getHealthFund().getDescription() + ":");
-        if (treatment.getItem().getType() == ServiceTypeEnum.ACUPUNCTURE) {
+
+        if (treatment.getItem().getType() == ServiceTypeEnum.ACUPUNCTURE && StringUtils.isNotBlank(treatment.getCustomer().getHealthFund().getProviderNumA())) {
+            parameters.put("healthFundName", treatment.getCustomer().getHealthFund().getDescription() + ":");
             parameters.put("insuranceProviderNum", treatment.getCustomer().getHealthFund().getProviderNumA());
-        } else if (treatment.getItem().getType() == ServiceTypeEnum.MASSAGE) {
+        } else if (treatment.getItem().getType() == ServiceTypeEnum.MASSAGE && StringUtils.isNotBlank(treatment.getCustomer().getHealthFund().getProviderNumM())) {
+            parameters.put("healthFundName", treatment.getCustomer().getHealthFund().getDescription() + ":");
             parameters.put("insuranceProviderNum", treatment.getCustomer().getHealthFund().getProviderNumM());
         }
-        parameters.put("insuranceProviderNum", treatment.getPractitioner().getArhgNum());
         List<TreatmentInvoiceVO> invoices = new ArrayList<>();
         treatments.stream().forEach(t -> {
             TreatmentInvoiceVO tiVo = new TreatmentInvoiceVO();
@@ -220,8 +221,8 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         });
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRBeanCollectionDataSource(invoices));
-        response.setContentType("application/x-pdf");
-        response.setHeader("Content-disposition", "inline; filename=" + fileName);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + fileName);
         JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
     }
 

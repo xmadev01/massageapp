@@ -18,8 +18,8 @@ public class Item implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private int duration;
+    @Column
+    private Integer duration;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

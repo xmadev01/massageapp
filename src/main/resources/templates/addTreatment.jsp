@@ -68,7 +68,7 @@
                                             <div>
                                                 <label class="form-check form-check-inline" th:each="item  : ${items}">
                                                     <input class="form-check-input" type="checkbox" name="itemIds" th:value="${item.id}" />
-                                                    <span class="form-check-label" th:text="${item.name} + ' - ' + ${item.duration} + 'min'"></span>
+                                                    <span class="form-check-label" th:text="${item.duration} ? ${item.name} + ' - ' + ${item.duration} + ' mins' : ${item.name}"></span>
                                                 </label>
                                             </div>
                                             <div class="text-center mt-3">

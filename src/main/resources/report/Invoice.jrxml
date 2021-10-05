@@ -71,14 +71,14 @@
 				<text><![CDATA[Treatment Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="10" width="101" height="20" uuid="e319e29b-bb2c-4788-ac7f-a0615a679d1d"/>
+				<reportElement x="110" y="10" width="270" height="20" uuid="e319e29b-bb2c-4788-ac7f-a0615a679d1d"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Treatment]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="360" y="10" width="131" height="20" uuid="b2fc7701-042a-4e90-b481-64847985f3e1"/>
+				<reportElement x="393" y="10" width="131" height="20" uuid="b2fc7701-042a-4e90-b481-64847985f3e1"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -102,14 +102,14 @@
 				<textFieldExpression><![CDATA[$F{serviceDate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="178" y="2" width="101" height="21" uuid="59ff3b7a-5d0e-4818-aec4-b46d3e883388"/>
+				<reportElement x="110" y="2" width="270" height="21" uuid="59ff3b7a-5d0e-4818-aec4-b46d3e883388"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{itemName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="358" y="2" width="101" height="21" uuid="59ff3b7a-5d0e-4818-aec4-b46d3e883388"/>
+				<reportElement x="391" y="2" width="101" height="21" uuid="59ff3b7a-5d0e-4818-aec4-b46d3e883388"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -134,14 +134,14 @@
 				<textFieldExpression><![CDATA[$P{providerName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="307" y="16" width="47" height="22" uuid="6f4a9a8a-a33e-4594-bb54-0469d48029cb"/>
+				<reportElement x="340" y="16" width="47" height="22" uuid="6f4a9a8a-a33e-4594-bb54-0469d48029cb"/>
 				<textElement textAlignment="Right">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="357" y="16" width="133" height="21" uuid="4699b00e-bf3f-4130-a829-a39f0bb9a8c9"/>
+				<reportElement x="390" y="16" width="133" height="21" uuid="4699b00e-bf3f-4130-a829-a39f0bb9a8c9"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
