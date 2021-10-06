@@ -66,7 +66,15 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public void saveTemplate(Template template) {
-        templateRepository.save(template);
+        if (template.getId() == -1) {
+            final Optional<Template> t = templateRepository.findById(template.getId());
+            t.ifPresent(temp -> {
+                temp.setName(template.getName());
+                temp.setContent(template.getContent());
+            });
+        } else {
+            templateRepository.save(template);
+        }
     }
 
     @Override
