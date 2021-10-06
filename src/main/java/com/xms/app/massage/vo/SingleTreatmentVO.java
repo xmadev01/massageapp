@@ -12,5 +12,6 @@ public class SingleTreatmentVO {
     private LocalDate serviceDate;
     private String practitionerId;
     private String itemName;
+    private Integer duration;
     private String medicalCaseRecord;
 }

@@ -82,26 +82,20 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
 
     @Override
     public void assignCustomerToPractitioner(final TreatmentVO treatmentVO) {
-        final String[] names = treatmentVO.getCustomerName().split(" ");
-        Optional<Customer> customerOpt;
-        if (names.length == 3) {
-            customerOpt = customerService.findByFirstNameLastName(names[0], names[1], names[2]);
-        } else if (names.length == 2) {
-            customerOpt = customerService.findByFirstNameLastName(names[0], "", names[1]);
-        } else {
-            customerOpt = customerService.findByFirstName(names[0]);
-        }
-        if (customerOpt.isPresent()) {
+        final long customerId = Long.parseLong(treatmentVO.getCustomerName().split("-")[2].trim());
+        Customer customer = customerService.loadCustomer(customerId);
+
+        if (customer != null) {
             treatmentVO.getItemIds().forEach(itemId -> {
                 final Treatment treatment = new Treatment();
                 final Item item = itemService.findById(itemId).get();
-                treatment.setCustomer(customerOpt.get());
+                treatment.setCustomer(customer);
                 treatment.setServiceDate(treatmentVO.getServiceDate());
                 treatment.setPractitioner(practitionerService.loadPractitioner(Long.parseLong(treatmentVO.getPractitionerId())));
                 treatment.setItem(item);
                 treatment.setMedicalCaseRecord(treatmentVO.getMedicalCaseRecord());
                 treatment.setExpenseAmt(item.getPrice());
-                treatment.setClaimedAmt(item.getPrice().multiply(BigDecimal.valueOf(customerOpt.get().getRebateRate().doubleValue()))
+                treatment.setClaimedAmt(item.getPrice().multiply(BigDecimal.valueOf(customer.getRebateRate().doubleValue()))
                         .divide(BigDecimal.valueOf(100)));
                 treatment.setCreatedDate(LocalDateTime.now());
                 treatmentRepository.save(treatment);
@@ -111,22 +105,19 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
 
     @Override
     public void assignCustomerToPractitionerForUpdate(final SingleTreatmentVO treatmentVO) {
-        final String[] names = treatmentVO.getCustomerName().split(" ");
-        Optional<Customer> customerOpt;
-        if (names.length == 3) {
-            customerOpt = customerService.findByFirstNameLastName(names[0], names[1], names[2]);
-        } else {
-            customerOpt = customerService.findByFirstNameLastName(names[0], "", names[1]);
-        }
-        if (customerOpt.isPresent()) {
+        final long customerId = Long.parseLong(treatmentVO.getCustomerName().split("-")[2].trim());
+        Customer customer = customerService.loadCustomer(customerId);
+
+        if (customer != null) {
             final Optional<Treatment> treatmentOpt = treatmentRepository.findById(treatmentVO.getTreatmentId());
             if (treatmentOpt.isPresent()) {
                 Treatment treatment = treatmentOpt.get();
-                treatment.setCustomer(customerOpt.get());
+                treatment.setCustomer(customer);
                 treatment.setServiceDate(treatmentVO.getServiceDate());
                 treatment.setPractitioner(practitionerService.loadPractitioner(Long.parseLong(treatmentVO.getPractitionerId())));
                 treatment.setMedicalCaseRecord(treatmentVO.getMedicalCaseRecord());
                 treatment.setCreatedDate(LocalDateTime.now());
+                treatment.setDuration(treatmentVO.getDuration());
                 treatmentRepository.save(treatment);
             }
         }
@@ -134,7 +125,7 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
 
     public List<ConsultationDto> findAllOrderByCustomer(PagingRequest pagingRequest) {
         StringBuilder querySQLBuilder = new StringBuilder()
-                .append("select t.id as templateId, t.service_date, t.customer, i.id as itemId, c.health_fund, t.expense_amt, t.claimed_amt, t.medical_case_record from treatment t ")
+                .append("select t.id as treatmentId, t.service_date, t.customer, i.id as itemId, t.duration, c.health_fund, t.expense_amt, t.claimed_amt, t.medical_case_record from treatment t ")
                 .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ");
         if (StringUtils.isNotBlank(pagingRequest.getFromDate()) && StringUtils.isNotBlank(pagingRequest.getToDate())) {
@@ -172,10 +163,11 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         if (treatment.isPresent()) {
             treatmentVO.setTreatmentId(treatmentId);
             treatmentVO.setServiceDate(treatment.get().getServiceDate());
-            treatmentVO.setCustomerName(treatment.get().getCustomer().getFullName());
+            treatmentVO.setCustomerName(treatment.get().getCustomer().getFullNameBirthDayId());
             treatmentVO.setPractitionerId(String.valueOf(treatment.get().getPractitioner().getId()));
             treatmentVO.setMedicalCaseRecord(treatment.get().getMedicalCaseRecord());
             treatmentVO.setItemName(treatment.get().getItem().getDisplayName());
+            treatmentVO.setDuration(treatment.get().getDuration());
         }
         return treatmentVO;
     }
@@ -215,7 +207,7 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         treatments.stream().forEach(t -> {
             TreatmentInvoiceVO tiVo = new TreatmentInvoiceVO();
             tiVo.setServiceDate(t.getServiceDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            tiVo.setItemName(t.getItem().getDisplayName());
+            tiVo.setItemName(t.getItemDisplayName());
             tiVo.setPrice("$" + NumberFormat.getCurrencyInstance().format(t.getExpenseAmt()));
             invoices.add(tiVo);
         });

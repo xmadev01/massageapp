@@ -54,6 +54,7 @@ public abstract class AbstractXMSService {
             consultationVo.setCustomerName(customer);
             consultationVo.setItem(item);
             consultationVo.setType(type);
+            consultationVo.setDuration(consultationDto.getDuration());
             consultationVo.setHealthFund(healthFund);
             consultationVo.setPaidAmt(CommonUtils.formatCurrencyData(pAmt));
             consultationVo.setClaimedAmt(CommonUtils.formatCurrencyData(cAmt));

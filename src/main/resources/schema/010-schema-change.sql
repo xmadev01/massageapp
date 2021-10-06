@@ -73,6 +73,7 @@ CREATE TABLE Treatment (
    customer INT NOT NULL,
    service_date TIMESTAMP NOT NULL,
    item INT NOT NULL,
+   duration INT NULL,
    practitioner INT NOT NULL,
    expense_amt DECIMAL NOT NULL,
    claimed_amt DECIMAL NOT NULL,

@@ -76,15 +76,16 @@ function applyTreatmentDataTable() {
                 text: 'Export as PDF',
                 extend: 'pdfHtml5',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5 ]
+                    columns: [ 0, 1, 2, 3, 5, 6 ]
                 }
             }
         ],
         columns: [
-            {"data": "serviceDate","width": "15%"},
+            {"data": "serviceDate","width": "10%"},
             {"data": "customerName","width": "15%"},
             {"data": "item","width": "15%"},
             {"data": "type","width": "10%"},
+            {"data": "duration","width": "5%"},
             {"data": "healthFund","width": "15%"},
             {"data": "paidAmt","width": "10%"},
             {"data": "claimedAmt","width": "10%"},
@@ -102,7 +103,7 @@ function applyTreatmentDataTable() {
             {
                 "render": function(data, type, row) {
                     if (data) {
-                        return data.name + ' - ' + data.duration + 'min';
+                        return data.name;
                     }
                     return '';
                 },
@@ -124,15 +125,15 @@ function applyTreatmentDataTable() {
                    }
                 },
                 "sortable": false,
-                "targets": 4
-            },
-            {
-                "sortable": false,
                 "targets": 5
             },
             {
                 "sortable": false,
                 "targets": 6
+            },
+            {
+                "sortable": false,
+                "targets": 7
             },
             {
                 "render": function(data, type, row) {
@@ -142,7 +143,7 @@ function applyTreatmentDataTable() {
                         return "";
                     }
                 },
-                "targets": 7
+                "targets": 8
             }
         ],
         footerCallback: function (row, data, start, end, display) {
@@ -173,7 +174,7 @@ function applyTreatmentDataTable() {
 
             var idxList = [];
 
-            var hfColData = api.column(4, { page: 'current'} )
+            var hfColData = api.column(5, { page: 'current'} )
                             .data();
 
             //skip individual insurance total and all insurance total row
@@ -185,17 +186,6 @@ function applyTreatmentDataTable() {
             }
             // Total over this page
             pageTotal_col5 = api
-                .column(5, { page: 'current'} )
-                .data()
-                .reduce( function (a, b, idx) {
-                    if (idxList.includes(idx)) {
-                        return intVal(a) + intVal(b);
-                    } else {
-                        return intVal(a);
-                    }
-                }, 0 );
-
-            pageTotal_col6 = api
                 .column(6, { page: 'current'} )
                 .data()
                 .reduce( function (a, b, idx) {
@@ -206,11 +196,22 @@ function applyTreatmentDataTable() {
                     }
                 }, 0 );
 
+            pageTotal_col6 = api
+                .column(7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b, idx) {
+                    if (idxList.includes(idx)) {
+                        return intVal(a) + intVal(b);
+                    } else {
+                        return intVal(a);
+                    }
+                }, 0 );
+
             // Update footer
-            $(api.column(5).footer()).html(
+            $(api.column(6).footer()).html(
                 formatCurrencyData(pageTotal_col5)
             );
-            $(api.column(6).footer()).html(
+            $(api.column(7).footer()).html(
                 formatCurrencyData(pageTotal_col6)
             );
         }

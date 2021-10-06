@@ -13,6 +13,7 @@ public class ConsultationDto {
     private String customerName;
     private Item item;
     private String type;
+    private Integer duration;
     private String healthFund;
     private BigDecimal paidAmt;
     private BigDecimal claimedAmt;

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -66,8 +67,21 @@ public class Customer {
     public String getFullName() {
         if (StringUtils.isNotBlank(middleName)) {
             return firstName + " " + middleName + " " + lastName;
-        } else {
+        } else if (StringUtils.isNotBlank(lastName)) {
             return firstName + " " + lastName;
+        } else {
+            return firstName;
+        }
+    }
+
+    @Transient
+    public String getFullNameBirthDayId() {
+        if (StringUtils.isNotBlank(middleName)) {
+            return firstName + " " + middleName + " " + lastName + " - " + birthday.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - " + id;
+        } else if (StringUtils.isNotBlank(lastName)) {
+            return firstName + " " + lastName  + " - " + birthday.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - " + id;
+        } else {
+            return firstName + " - " + birthday.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - " + id;
         }
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,7 +24,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getAllItems() {
-        return itemRepository.findAll();
+        return itemRepository.findAll().stream().filter(item -> item.isActive()).collect(Collectors.toList());
     }
 
     @Override

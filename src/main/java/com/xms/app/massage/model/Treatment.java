@@ -26,6 +26,9 @@ public class Treatment implements Serializable {
     @JoinColumn(name = "item")
     private Item item;
 
+    @Column
+    private Integer duration;
+
     @ManyToOne
     @JoinColumn(name = "practitioner", nullable = false)
     private Practitioner practitioner;
@@ -45,4 +48,12 @@ public class Treatment implements Serializable {
     @Version
     private long version;
 
+    @Transient
+    public String getItemDisplayName() {
+        if (duration != null) {
+            return item.getDisplayName() + " - " + duration + " min";
+        } else {
+            return item.getDisplayName();
+        }
+    }
 }

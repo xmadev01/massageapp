@@ -11,6 +11,7 @@ public class ConsultationVO {
     private String customerName;
     private Item item;
     private String type;
+    private Integer duration;
     private String healthFund;
     private String paidAmt;
     private String claimedAmt;

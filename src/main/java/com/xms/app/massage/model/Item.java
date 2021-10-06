@@ -35,6 +35,6 @@ public class Item implements Serializable {
 
     @Transient
     public String getDisplayName() {
-        return name + " - " + duration + "min";
+        return name;
     }
 }

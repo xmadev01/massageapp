@@ -129,7 +129,7 @@ public class CustomerController {
     @ResponseBody
     public List<String> getAllCustomers(@RequestParam String term) {
         return customerService.getCustomers(term).stream()
-                              .map(Customer::getFullName)
+                              .map(Customer::getFullNameBirthDayId)
                               .collect(Collectors.toList());
     }
 

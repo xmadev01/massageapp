@@ -121,7 +121,7 @@ public class HomeServiceImpl extends AbstractXMSService implements HomeService {
 
     public List<ConsultationDto> findAllOrderByCustomer(String startDateStr, String endDateStr, String searchVal) {
         StringBuilder querySQLBuilder = new StringBuilder()
-                .append("select t.id as templateId, t.service_date, t.customer, i.id as itemId, c.health_fund, t.expense_amt, t.claimed_amt, t.medical_case_record from treatment t ")
+                .append("select t.id as treatmentId, t.service_date, t.customer, i.id as itemId, t.duration, c.health_fund, t.expense_amt, t.claimed_amt, t.medical_case_record from treatment t ")
                 .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where t.service_date between '").append(startDateStr).append("' and '").append(endDateStr).append("' ");
