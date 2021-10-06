@@ -8,7 +8,10 @@ $(document ).ready(function() {
     treatmentTbl = applyTreatmentDataTable();
 
     $('#treatmentTbl tbody').on('click', 'tr', function () {
-        $(this).toggleClass('selected');
+        var serviceDate = treatmentTbl.row(this).data().serviceDate;
+        if (serviceDate) {
+            $(this).toggleClass('selected');
+        }
     });
 
     $('#btnAdd').click(function () {
@@ -44,6 +47,7 @@ $(document ).ready(function() {
         if (getSelectedTreatmentIds().length > 0) {
             var form = document.getElementById('listTreatmentFrm');
             $('#treatmentIds').val(getSelectedTreatmentIds().join(","));
+            removeRowSelection();
             form.method = 'POST';
             form.action = '/downloadInvoice';
             form.target = '_blank';
@@ -119,12 +123,18 @@ function setupMedicalCaseRecordDialog() {
     });
 }
 
+function removeRowSelection() {
+    $('#treatmentTbl tbody tr').each(function() {
+        $(this).removeClass('selected');
+    })
+}
+
 function applyTreatmentDataTable() {
 
     return $('#treatmentTbl').DataTable({
         processing: true,
         serverSide: true,
-        pageLength: 50,
+        pageLength: 200,
         dom: 'Bfrtip',
         order: [[1, 'asc'], [3, 'asc'], [2, 'asc'], [0, 'asc']],
         ajax: {
