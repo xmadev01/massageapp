@@ -15,6 +15,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,6 +28,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -128,6 +131,7 @@ public class TreatmentController {
 
     @PostMapping("/downloadInvoice")
     public void downloadInvoice(HttpServletRequest request, HttpServletResponse response, @RequestParam List<Long> treatmentIds, Model model) throws JRException, IOException {
+
         treatmentService.downloadInvoice(treatmentIds, response);
         final ServletOutputStream outputStream = response.getOutputStream();
     }

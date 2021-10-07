@@ -152,6 +152,7 @@ function applyTreatmentDataTable() {
             {
                 text: 'Export as PDF',
                 extend: 'pdfHtml5',
+                title: 'treatment_history',
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 5, 6 ]
                 }
@@ -159,10 +160,10 @@ function applyTreatmentDataTable() {
         ],
         columns: [
             {"data": "serviceDate","width": "10%"},
-            {"data": "customerName","width": "15%"},
+            {"data": "customerName","width": "10%"},
             {"data": "item","width": "15%"},
             {"data": "type","width": "10%"},
-            {"data": "duration","width": "5%"},
+            {"data": "duration","width": "10%"},
             {"data": "healthFund","width": "15%"},
             {"data": "paidAmt","width": "10%"},
             {"data": "claimedAmt","width": "10%"},

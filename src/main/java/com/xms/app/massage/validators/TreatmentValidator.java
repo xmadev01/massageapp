@@ -3,6 +3,7 @@ package com.xms.app.massage.validators;
 import com.xms.app.massage.service.TreatmentService;
 import com.xms.app.massage.vo.SingleTreatmentVO;
 import com.xms.app.massage.vo.TreatmentVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -33,7 +34,7 @@ public class TreatmentValidator implements Validator {
                     messageSource.getMessage("treatment.customerName.not.empty", null, Locale.getDefault()));
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "practitionerId", null,
                     messageSource.getMessage("treatment.practitionerId.not.selected", null, Locale.getDefault()));
-            if (treatmentVo.getItemIds() == null) {
+            if (treatmentVo.getItemIds() == null && StringUtils.isBlank(treatmentVo.getOtherItemName())) {
                 errors.rejectValue("itemIds", null, messageSource.getMessage("treatment.item.not.selected", null, Locale.getDefault()));
             }
         } else if (target instanceof SingleTreatmentVO) {

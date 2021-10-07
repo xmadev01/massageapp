@@ -4,7 +4,8 @@ public enum ServiceTypeEnum {
 
     MASSAGE("Massage"),
     ACUPUNCTURE("Acupuncture"),
-    CONSULTATION("Consultation");
+    CONSULTATION("Consultation"),
+    OTHER("Other");
 
     private String displayName;
     ServiceTypeEnum(String displayName) {

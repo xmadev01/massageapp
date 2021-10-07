@@ -2,6 +2,7 @@ package com.xms.app.massage.utils;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -17,6 +18,13 @@ public class MessageUtils {
         final List<String> errorMessages = errors.stream()
                                                  .map(fe -> fe.getDefaultMessage())
                                                  .collect(Collectors.toList());
+        model.addAttribute("errorMsgs", errorMessages);
+    }
+
+    public static void addObjectErrorMessages(final Model model, final List<ObjectError> errors) {
+        final List<String> errorMessages = errors.stream()
+                .map(fe -> fe.getDefaultMessage())
+                .collect(Collectors.toList());
         model.addAttribute("errorMsgs", errorMessages);
     }
 }

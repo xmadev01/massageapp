@@ -1,6 +1,7 @@
 package com.xms.app.massage.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class Treatment implements Serializable {
 
     private LocalDate serviceDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "item")
     private Item item;
 

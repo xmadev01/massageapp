@@ -74,6 +74,16 @@
                                                 <input class="" type="text" th:field="*{duration}"  size="3" />
                                                 <strong>&nbsp;min</strong>
                                             </div>
+                                            <div class="mt-3">
+                                                <label class="form-label">Expense Amount</label>
+                                                <strong>&nbsp;$</strong>
+                                                <input class="" type="text" th:field="*{expenseAmt}"  size="5" />
+                                            </div>
+                                            <div class="mt-3">
+                                                <label class="form-label">Claimed Amount</label>
+                                                <strong>&nbsp;$</strong>
+                                                <input class="" type="text" th:field="*{claimedAmt}"  size="5" />
+                                            </div>
                                             <div class="text-center mt-3">
                                                 <a id="btnAssign" href="#" class="btn btn-info">Assign</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;

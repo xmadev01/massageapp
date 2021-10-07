@@ -71,6 +71,20 @@
                                                     <span class="form-check-label" th:text="${item.duration} ? ${item.name} + ' - ' + ${item.duration} + ' mins' : ${item.name}"></span>
                                                 </label>
                                             </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Other</label>
+                                                <input class="form-control" type="text" th:field="*{otherItemName}" />
+                                            </div>
+                                            <div class="mt-3">
+                                                <label class="form-label">Expense Amount</label>
+                                                <strong>&nbsp;$</strong>
+                                                <input class="" type="text" th:field="*{expenseAmt}"  size="5" />
+                                            </div>
+                                            <div class="mt-3">
+                                                <label class="form-label">Claimed Amount</label>
+                                                <strong>&nbsp;$</strong>
+                                                <input class="" type="text" th:field="*{claimedAmt}"  size="5" />
+                                            </div>
                                             <div class="text-center mt-3">
                                                 <a id="btnAssign" href="#" class="btn btn-info">Assign</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;

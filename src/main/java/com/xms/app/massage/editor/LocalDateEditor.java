@@ -10,8 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class LocalDateEditor extends PropertyEditorSupport {
 
-    private static final DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("d/M/yyyy");
-    private static final DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
     public String getAsText() {
@@ -19,7 +18,7 @@ public class LocalDateEditor extends PropertyEditorSupport {
             return "";
         }
         LocalDate date = (LocalDate) getValue();
-        return date.format(dtf2);
+        return date.format(dtf);
     }
 
     @Override
@@ -27,7 +26,7 @@ public class LocalDateEditor extends PropertyEditorSupport {
         if (StringUtils.isBlank(text)) {
             setValue(null);
         } else {
-            setValue(LocalDate.parse(text, dtf1));
+            setValue(LocalDate.parse(text, dtf));
         }
     }
 }

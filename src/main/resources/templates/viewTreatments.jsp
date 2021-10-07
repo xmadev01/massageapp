@@ -55,6 +55,7 @@
                                         <th>Name</th>
                                         <th>Item</th>
                                         <th>Type</th>
+                                        <th>Duration (min)</th>
                                         <th>Health Fund</th>
                                         <th>Paid Amount</th>
                                         <th>Claimed Amount</th>

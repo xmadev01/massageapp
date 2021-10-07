@@ -90,7 +90,7 @@
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('healthFund')}" th:errors="*{healthFund}"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Rebate Rate (%)</label>
+                                                <label class="form-label">Claim Back Percentage (%)</label>
                                                 <input class="form-control" type="text" th:field="*{rebateRate}" name="rebateRate" />
                                                 <div class="alert alert-warning" th:if="${#fields.hasErrors('rebateRate')}" th:errors="*{rebateRate}"></div>
                                             </div>

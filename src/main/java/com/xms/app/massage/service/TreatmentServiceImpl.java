@@ -20,6 +20,9 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -86,20 +89,38 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         Customer customer = customerService.loadCustomer(customerId);
 
         if (customer != null) {
-            treatmentVO.getItemIds().forEach(itemId -> {
+            if (treatmentVO.getItemIds() != null) {
+                treatmentVO.getItemIds().forEach(itemId -> {
+                    final Treatment treatment = new Treatment();
+                    final Item item = itemService.findById(itemId).get();
+                    treatment.setCustomer(customer);
+                    treatment.setServiceDate(treatmentVO.getServiceDate());
+                    treatment.setPractitioner(practitionerService.loadPractitioner(Long.parseLong(treatmentVO.getPractitionerId())));
+                    treatment.setItem(item);
+                    treatment.setMedicalCaseRecord(treatmentVO.getMedicalCaseRecord());
+                    treatment.setExpenseAmt(item.getPrice());
+                    treatment.setClaimedAmt(item.getPrice().multiply(BigDecimal.valueOf(customer.getRebateRate().doubleValue()))
+                            .divide(BigDecimal.valueOf(100)));
+                    treatment.setCreatedDate(LocalDateTime.now());
+                    treatmentRepository.save(treatment);
+                });
+            }
+            if (StringUtils.isNotBlank(treatmentVO.getOtherItemName())) {
                 final Treatment treatment = new Treatment();
-                final Item item = itemService.findById(itemId).get();
+                final Item item = new Item();
+                item.setName(treatmentVO.getOtherItemName());
+                item.setPrice(BigDecimal.ZERO);
+                item.setType(ServiceTypeEnum.OTHER);
                 treatment.setCustomer(customer);
                 treatment.setServiceDate(treatmentVO.getServiceDate());
                 treatment.setPractitioner(practitionerService.loadPractitioner(Long.parseLong(treatmentVO.getPractitionerId())));
                 treatment.setItem(item);
                 treatment.setMedicalCaseRecord(treatmentVO.getMedicalCaseRecord());
-                treatment.setExpenseAmt(item.getPrice());
-                treatment.setClaimedAmt(item.getPrice().multiply(BigDecimal.valueOf(customer.getRebateRate().doubleValue()))
-                        .divide(BigDecimal.valueOf(100)));
+                treatment.setExpenseAmt(treatmentVO.getExpenseAmt() == null ? BigDecimal.ZERO : treatmentVO.getExpenseAmt());
+                treatment.setClaimedAmt(treatmentVO.getClaimedAmt() == null ? BigDecimal.ZERO : treatmentVO.getClaimedAmt());
                 treatment.setCreatedDate(LocalDateTime.now());
                 treatmentRepository.save(treatment);
-            });
+            }
         }
     }
 
@@ -118,6 +139,8 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
                 treatment.setMedicalCaseRecord(treatmentVO.getMedicalCaseRecord());
                 treatment.setCreatedDate(LocalDateTime.now());
                 treatment.setDuration(treatmentVO.getDuration());
+                treatment.setExpenseAmt(treatmentVO.getExpenseAmt());
+                treatment.setClaimedAmt(treatmentVO.getClaimedAmt());
                 treatmentRepository.save(treatment);
             }
         }
@@ -168,6 +191,8 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
             treatmentVO.setMedicalCaseRecord(treatment.get().getMedicalCaseRecord());
             treatmentVO.setItemName(treatment.get().getItem().getDisplayName());
             treatmentVO.setDuration(treatment.get().getDuration());
+            treatmentVO.setExpenseAmt(treatment.get().getExpenseAmt());
+            treatmentVO.setClaimedAmt(treatment.get().getClaimedAmt());
         }
         return treatmentVO;
     }
@@ -182,6 +207,7 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
 
     @Override
     public void downloadInvoice(List<Long> treatmentIds, HttpServletResponse response) throws JRException, IOException {
+
         final String fileName = "Invoice.pdf";
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(ResourceUtils.getFile("classpath:report/Invoice.jasper"));
 
@@ -216,6 +242,15 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=" + fileName);
         JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+    }
+
+    @Override
+    public boolean validateTreatments(List<Long> treatmentIds, List<ObjectError> errors) {
+        final long numOfCustomer = treatmentIds.stream().map(treatmentId -> treatmentRepository.findById(treatmentId).get().getCustomer().getId()).distinct().count();
+        if (numOfCustomer > 1) {
+            errors.add(new ObjectError("", "Only the treatment for the same customer can be updated at a time."));
+        }
+        return errors.isEmpty();
     }
 
 }

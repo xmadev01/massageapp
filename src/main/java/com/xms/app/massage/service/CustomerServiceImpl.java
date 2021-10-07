@@ -146,7 +146,7 @@ public class CustomerServiceImpl extends AbstractXMSService implements CustomerS
 
     public List<ConsultationDto> findAllTreatments(PagingRequest pagingRequest) {
         StringBuilder querySQLBuilder = new StringBuilder()
-                .append("select t.id as treatmentId, t.service_date, t.customer, i.id as itemId, c.health_fund, t.expense_amt, t.claimed_amt, t.medical_case_record from treatment t ")
+                .append("select t.id as treatmentId, t.service_date, t.customer, i.id as itemId, t.duration, c.health_fund, t.expense_amt, t.claimed_amt, t.medical_case_record from treatment t ")
                 .append("inner join item i on t.item = i.id ")
                 .append("inner join customer c on t.customer = c.id ")
                 .append("where c.id = " + pagingRequest.getCustomerId() + " ");
