@@ -28,7 +28,7 @@
                         <div class="card-body">
                             <div class="m-sm-4">
                                 <div class="text-center">
-                                    <img src="/images/logo.png" alt="Charles Hall"  />
+                                    <img src="/images/zodiac-logo.png" alt="Charles Hall"  />
                                 </div>
                                 <form id="loginFrm" name="loginFrm" method="post" th:action="@{/login}">
                                     <div class="mb-3">
