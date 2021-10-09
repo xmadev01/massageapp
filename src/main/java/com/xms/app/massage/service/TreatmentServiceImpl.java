@@ -209,7 +209,7 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
     public void downloadInvoice(List<Long> treatmentIds, HttpServletResponse response) throws JRException, IOException {
 
         final String fileName = "Invoice.pdf";
-        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(ResourceUtils.getFile("classpath:report/Invoice.jasper"));
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(ResourceUtils.getFile("classpath:report/Invoice-z.jasper"));
 
         final Treatment treatment = treatmentRepository.findById(new Long(treatmentIds.get(0))).get();
         Map<String, Object> parameters = new HashMap<>();
