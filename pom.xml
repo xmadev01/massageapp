@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.xms.app</groupId>
     <artifactId>massage</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>massage</name>
     <description>MassageApp for Spring Boot</description>
     <packaging>jar</packaging>
