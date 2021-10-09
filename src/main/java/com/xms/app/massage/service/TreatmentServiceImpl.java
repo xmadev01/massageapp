@@ -15,9 +15,11 @@ import com.xms.app.massage.vo.TreatmentVO;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.phantomjs.InetUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
@@ -27,6 +29,7 @@ import org.springframework.validation.ObjectError;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -209,7 +212,7 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
     public void downloadInvoice(List<Long> treatmentIds, HttpServletResponse response) throws JRException, IOException {
 
         final String fileName = "Invoice.pdf";
-        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(ResourceUtils.getFile("classpath:report/Invoice-z.jasper"));
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new ClassPathResource("report/Invoice-z.jasper", getClass().getClassLoader()).getFile());
 
         final Treatment treatment = treatmentRepository.findById(new Long(treatmentIds.get(0))).get();
         Map<String, Object> parameters = new HashMap<>();
