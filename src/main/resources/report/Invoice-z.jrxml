@@ -25,25 +25,11 @@
 				<imageExpression><![CDATA["http://localhost/images/invoice_z-logo.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="95" y="0" width="315" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
+				<reportElement x="70" y="9" width="323" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058"/>
 				<textElement>
-					<font size="19" isBold="true"/>
+					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Zodiac Massage & Accupuncture]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="95" y="25" width="305" height="15" uuid="c226e44d-3bb5-4145-b0b3-903bf1d79fde"/>
-				<text><![CDATA[Shop G020, Marrickville Metro Shopping CTR, NSW 2204]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="95" y="40" width="255" height="15" uuid="b96f7183-44f8-43ad-ba60-43d8fbf50b6e"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[ABN: 90 646 076 495]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="108" width="95" height="20" uuid="429d967b-9e58-49fe-8b99-d386d522df39"/>
@@ -59,6 +45,17 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{patientName}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="71" y="40" width="305" height="15" uuid="efd4b680-ea0d-46f4-9e64-4e15b800f725"/>
+				<text><![CDATA[Shop G020, Marrickville Metro Shopping CTR, NSW 2204]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="56" width="255" height="15" uuid="f56c0f69-8d30-49b0-b14d-550c7b8efe1b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ABN: 90 646 076 495]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
