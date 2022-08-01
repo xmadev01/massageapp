@@ -40,7 +40,6 @@ CREATE TABLE Customer (
    medication VARCHAR(500) NULL,
    active  BOOLEAN DEFAULT TRUE NOT NULL,
    version INT DEFAULT 0 NOT NULL,
-   UNIQUE KEY customer_email_UNIQUE (email),
    foreign key (health_fund) references Health_Fund(id)
 );
 

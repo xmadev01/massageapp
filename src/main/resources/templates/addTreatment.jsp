@@ -35,7 +35,7 @@
                                             <input th:type="hidden" th:id="customerId" />
                                             <div class="mb-3">
                                                 <label class="form-label">Customer Name</label>
-                                                <input class="form-control" type="text" th:field="*{customerName}" />
+                                                <input class="form-control" type="text" th:field="*{customerName}"/>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Treatment Date</label>

@@ -102,8 +102,13 @@ public class TreatmentServiceImpl extends AbstractXMSService implements Treatmen
                     treatment.setItem(item);
                     treatment.setMedicalCaseRecord(treatmentVO.getMedicalCaseRecord());
                     treatment.setExpenseAmt(item.getPrice());
-                    treatment.setClaimedAmt(item.getPrice().multiply(BigDecimal.valueOf(customer.getRebateRate().doubleValue()))
-                            .divide(BigDecimal.valueOf(100)));
+
+                    if (customer.getRebateRate() != null) {
+                        treatment.setClaimedAmt(item.getPrice().multiply(BigDecimal.valueOf(customer.getRebateRate().doubleValue()))
+                                .divide(BigDecimal.valueOf(100)));
+                    } else {
+                        treatment.setClaimedAmt(BigDecimal.ZERO);
+                    }
                     treatment.setCreatedDate(LocalDateTime.now());
                     treatmentRepository.save(treatment);
                 });

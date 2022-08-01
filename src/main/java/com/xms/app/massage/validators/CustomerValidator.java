@@ -34,9 +34,6 @@ public class CustomerValidator implements Validator {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", null,
                     messageSource.getMessage("customer.firstName.not.empty", null, Locale.getDefault()));
 
-            if (!EmailValidator.getInstance().isValid(customer.getEmail())) {
-                errors.rejectValue("email", null, messageSource.getMessage("customer.email.invalid", null, Locale.getDefault()));
-            }
             if (customer.getHealthFund() != null && customer.getRebateRate() == null) {
                 errors.rejectValue("rebateRate", null, messageSource.getMessage("customer.rebateRate.not.empty", null, Locale.getDefault()));
             }
